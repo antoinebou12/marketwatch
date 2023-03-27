@@ -1,6 +1,6 @@
 # write github actions for python test
 
-name: Upload Python Package
+name: Python Test and Build
 
 on: [push, pull_request]
 
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: PYTHON_VERSION
+          python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -37,5 +37,4 @@ jobs:
           poetry run pytest
       - name: Build package
         run: poetry build
-        
 
