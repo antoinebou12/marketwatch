@@ -17,13 +17,13 @@ import json
 
 import httpx
 from bs4 import BeautifulSoup
-from exception import MarketWatchException
 from rich.progress import track
-from schemas import Order
-from schemas import OrderType
-from schemas import Position
-from schemas import PriceType
-from schemas import Term
+from marketwatch.exceptions import MarketWatchException
+from marketwatch.schemas import Order
+from marketwatch.schemas import OrderType
+from marketwatch.schemas import Position
+from marketwatch.schemas import PriceType
+from marketwatch.schemas import Term
 
 
 class MarketWatch:
@@ -967,7 +967,11 @@ class MarketWatch:
 
 
 if __name__ == "__main__":
-    marketwatch = MarketWatch("antoine.boucher.1@etsmtl.net", "PASSWORD")
+    import os
+    username = os.environ.get("MARKETWATCH_USERNAME")
+    password = os.environ.get("MARKETWATCH_PASSWORD")
+
+    marketwatch = MarketWatch(username, password)
 
     print(f"Price: {marketwatch.get_price('AAPL')} \n")
     print(f"Games: {marketwatch.get_games()} \n")

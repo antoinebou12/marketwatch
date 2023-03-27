@@ -1,13 +1,15 @@
 import pytest
+import os
 
-from marketwatch import MarketWatch
-from marketwatch import MarketWatchException
+from marketwatch import MarketWatch, MarketWatchException
 
 
 @pytest.fixture
 def authenticated_marketwatch():
-    email = "user@example.com"
-    password = "password"
+    username = os.environ.get("MARKETWATCH_USERNAME")
+    password = os.environ.get("MARKETWATCH_PASSWORD")
+    email = username
+    password = password
     try:
         return MarketWatch(email, password)
     except MarketWatchException as e:
@@ -44,6 +46,3 @@ def test_get_user_id(authenticated_marketwatch):
     mw.get_user_id()
 
 
-# def test_get_games():
-#     mw = MarketWatch("","" )
-#     mw.get_games()
