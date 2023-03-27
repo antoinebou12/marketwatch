@@ -343,7 +343,7 @@ class MarketWatch:
         )
         if regions is None:
             raise MarketWatchException("Failed to get price")
-        return f"{ticker} : ${regions.text}"
+        return f"{ticker.upper()} : ${regions.text}"
 
     def get_portfolio(self, game_id: str):
         """
@@ -533,12 +533,13 @@ class MarketWatch:
         """
         # https://api.wsj.net/api/autocomplete/search?q=AAPL&need=symbol&excludeExs=xmstar&maxRows=12&entitlementToken=cecc4267a0194af89ca343805a3e57af&it=stock,exchangetradedfund,fund&cc=us&xe=coindesk
         response = self.session.get(
-            f"https://api.wsj.net/api/autocomplete/search?q={search}",
+            "https://api.wsj.net/api/autocomplete/search",
             params={
                 "q": search,
                 "need": "symbol",
                 "excludeExs": "xmstar",
                 "maxRows": 12,
+                "entitlementToken":"cecc4267a0194af89ca343805a3e57af",
                 "it": "stock,exchangetradedfund,fund",
                 "cc": "us",
                 "xe": "coindesk",
@@ -547,7 +548,8 @@ class MarketWatch:
         if response.status_code != 200:
             raise MarketWatchException("Error while getting search")
 
-        results = response.json()[0]
+
+        results = response.json()["symbols"][0]
         return {
             "chartingSymbol": results["chartingSymbol"],
             "company": results["company"],
@@ -610,7 +612,7 @@ class MarketWatch:
 
         """
         return self._create_payload(
-            game_id=self.game_id,
+            game_id=game_id,
             ticker=ticker,
             shares=shares,
             term=term,
@@ -638,7 +640,7 @@ class MarketWatch:
         :param price: Price
         """
         return self._create_payload(
-            game_id=self.game_id,
+            game_id=game_id,
             ticker=ticker,
             shares=shares,
             term=term,
@@ -667,7 +669,7 @@ class MarketWatch:
 
         """
         return self._create_payload(
-            game_id=self.game_id,
+            game_id=game_id,
             ticker=ticker,
             shares=shares,
             term=term,
@@ -723,7 +725,10 @@ class MarketWatch:
         if priceType in [PriceType.LIMIT, PriceType.STOP]:
             payload["limitStopPrice"] = str(price)
 
-        return self._submit(game_id, payload)
+        return self._submit(
+            game_id=game_id,
+            payload=payload,
+        )
 
     # Get UID from ticker name
     def _get_ticker_uid(self, ticker):
@@ -737,13 +742,12 @@ class MarketWatch:
             return None
 
     # Execture order
-    def _submit(self, game_id, payload):
-        url = (
-            f"https://vse-api.marketwatch.com/v1/games/{game_id}/ledgers/"
-            + payload["ledgerId"]
-            + "/trades"
-        )
+    def _submit(self, game_id: str, payload: dict):
         headers = {"Content-Type": "application/json"}
+
+        ledger_id = payload["ledgerId"]
+
+        url = f"https://vse-api.marketwatch.com/v1/games/{game_id}/ledgers/{ledger_id}/trades"
         response = json.loads(
             self.session.post(url=url, headers=headers, json=payload).text
         )
@@ -840,7 +844,7 @@ class MarketWatch:
             self.session.get(
                 f"https://www.marketwatch.com/games/{game_id}/portfolio"
             ).text,
-            features="lxml",
+            "html.parser",
         )
 
         try:

@@ -2,7 +2,7 @@
 
 name: Python Test and Build
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 env:
   PYTHON_VERSION: "3.10"
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install poetry
+          pip install poetry genbadge
           poetry install
       - name: Export Environment Variables
         run: |
@@ -37,4 +37,18 @@ jobs:
           poetry run pytest
       - name: Build package
         run: poetry build
+      - name: Coverage
+        run: poetry run pytest --cov=marketwatch --cov-report=xml --cov-report=html
+      - name: genbadge coverage
+        run: genbadge coverage -o .github/badge/coverage.svg -i coverage.xml
+      - name: Upload Artifact to Github HTML
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverageHTML
+          path: htmlcov
+      - name: Upload Artifact to Github XML
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverageXML
+          path: coverage.xml
 
