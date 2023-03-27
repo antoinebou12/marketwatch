@@ -46,8 +46,6 @@ jobs:
         pip install poetry
         poetry install
         pip install build wheel setuptools twine
-    - name: poetry set version ${{ env.VERSION }}
-      run: poetry version ${{ env.VERSION }}
     - name: Build package
       run: poetry build
     - name: Publish package
