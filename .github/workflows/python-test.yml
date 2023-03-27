@@ -6,7 +6,7 @@ on: [push, pull_request]
 
 env:
   PYTHON_VERSION: 3.10
-  MARKETWATCH_USERNAME: ${{ variables.MARKETWATCH_USERNAME }}
+  MARKETWATCH_USERNAME: ${{ secrets.MARKETWATCH_USERNAME }}
   MARKETWATCH_PASSWORD: ${{ secrets.MARKETWATCH_PASSWORD }}
 
 permissions:
@@ -26,8 +26,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           poetry install
+      - name: Export Environment Variables
+        run: |
+          echo "MARKETWATCH_USERNAME=${MARKETWATCH_USERNAME}" >> $GITHUB_ENV
+          echo "MARKETWATCH_PASSWORD=${MARKETWATCH_PASSWORD}" >> $GITHUB_ENV
+          export MARKETWATCH_USERNAME
+          export MARKETWATCH_PASSWORD
       - name: Test with pytest
         run: |
           poetry run pytest
-
+      - name: Build package
+        run: poetry build
+        
 
