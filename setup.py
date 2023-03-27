@@ -1,4 +1,5 @@
 import pathlib
+
 from setuptools import setup
 
 # The directory containing this file
@@ -25,5 +26,5 @@ setup(
     ],
     packages=["marketwatch"],
     include_package_data=True,
-    install_requires=["beautifulsoup4", "requests"]
+    install_requires=["beautifulsoup4", "requests"],
 )

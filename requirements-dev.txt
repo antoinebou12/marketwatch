@@ -1,1 +1,3 @@
 pytest
+pre-commit
+sphinx

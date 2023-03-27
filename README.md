@@ -15,12 +15,14 @@ Based on code from
 ### Example
 
 ```
-from marketwatch import MarketWatch
+if __name__ == "__main__":
+	marketwatch = MarketWatch(
+		"username", "password"
+	)
 
-api = MarketWatch("email", "password")
-api.get_game("algoets")
-api.buy("AAPL", 100)
-
-print(api.get_pending_orders())
-print(api.get_positions())
+	print(marketwatch.get_games())
+	games1 = marketwatch.get_games()[0]["name"].lower().replace(" ", "-")
+	print(marketwatch.get_game(games1))
+	print(marketwatch.get_price("AAPL"))
+	print(marketwatch.get_portfolio(games1))
 ```

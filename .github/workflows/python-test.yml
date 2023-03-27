@@ -1,0 +1,7 @@
+# write github actions for python test
+
+name: Upload Python Package
+
+on: [push, pull_request]
+
+jobs:
