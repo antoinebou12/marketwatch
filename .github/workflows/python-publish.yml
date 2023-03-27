@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 env:
-  PYTHON_VERSION: 3.10
+  PYTHON_VERSION: "3.10"
 
 jobs:
   deploy:

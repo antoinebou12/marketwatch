@@ -5,7 +5,7 @@ name: Python Test and Build
 on: [push, pull_request]
 
 env:
-  PYTHON_VERSION: 3.10
+  PYTHON_VERSION: "3.10"
   MARKETWATCH_USERNAME: ${{ secrets.MARKETWATCH_USERNAME }}
   MARKETWATCH_PASSWORD: ${{ secrets.MARKETWATCH_PASSWORD }}
 
