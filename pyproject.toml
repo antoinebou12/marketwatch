@@ -1,21 +1,22 @@
 [tool.poetry]
 name = "marketwatch"
-version = "0.1.4"
+version = "0.1.5"
 description = "MarketWatch's API"
 authors = ["Antoine Boucher <antoine.boucher012@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "http://github.com/antoineboucher/marketwatch"
-documentation = "http://github.com/antoineboucher/marketwatch"
+documentation = "http://github.com/antoineboucher/marketwatch/wiki"
 keywords = ["marketwatch", "api", "stock", "finance", "market", "game"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 
 [tool.poetry.dependencies]
