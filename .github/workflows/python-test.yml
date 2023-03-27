@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install poetry genbadge[coverage]
+          pip install poetry genbadge[coverage] defusedxml
           poetry install
       - name: Export Environment Variables
         run: |
