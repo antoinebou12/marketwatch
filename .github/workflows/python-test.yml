@@ -42,12 +42,12 @@ jobs:
       - name: genbadge coverage
         run: genbadge coverage -o .github/badge/coverage.svg -i coverage.xml
       - name: Upload Artifact to Github HTML
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverageHTML
           path: htmlcov
       - name: Upload Artifact to Github XML
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverageXML
           path: coverage.xml
