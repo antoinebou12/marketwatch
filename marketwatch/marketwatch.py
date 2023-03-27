@@ -1,9 +1,6 @@
-from hashlib import sha1
 import httpx
-from urllib.parse import urlparse
 from enum import Enum
 from bs4 import BeautifulSoup
-from lxml import html
 
 
 # Order Types and Enums

@@ -10,8 +10,8 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="marketwatch",
-    version="1.0.0",
-    description="MarketWatch's  API",
+    version="0.1.1",
+    description="MarketWatch's API",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/antoinebou12/marketwatch",
@@ -21,8 +21,9 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.10",
     ],
-    packages=["pymarketwatch"],
+    packages=["marketwatch"],
     include_package_data=True,
     install_requires=["beautifulsoup4", "requests"]
 )
