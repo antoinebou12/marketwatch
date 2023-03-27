@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
       - name: Test with doctest
         run: |
-          python -m doctest src/*.py
+          python -m doctest marketwatch/*.py
       - name: Build mkdocs
         run: |
           mkdocs build
