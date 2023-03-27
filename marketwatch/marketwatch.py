@@ -1,13 +1,10 @@
-# Autor: bwees, based on code from https://github.com/kevindong/MarketWatch_API/
-
-import json
-import requests
+from hashlib import sha1
+import httpx
 from urllib.parse import urlparse
 from enum import Enum
-import re
-import csv
 from bs4 import BeautifulSoup
 from lxml import html
+
 
 # Order Types and Enums
 class Term(Enum):
@@ -43,319 +40,235 @@ class Position:
 		self.quantity = quantity
 		self.entry_price = ep
 
+class MarketWatchException(Exception):
+	def __init__(self, message):
+		self.message = f"MarketWatchException: {message}"
+
 # Main Class for Interacting with MarketWatch API
 class MarketWatch:
-	def __init__(self, email, password, game, debug = False, new_backend=True):
-		self.debug = debug
-		self.game = game
-		self.session = requests.Session()
-		self.route = "games/" if new_backend else "game/"
+	def __init__(self, email, password):
+		self.session = httpx.Client()
 
-		self.login(email, password)
-		self.check_error()
+		self.email = email
+		self.password = password
+		self.client_id = self.get_client_id()
+		self.login()
 
-	# Main login flow, subject to change at any point
-	def login(self, email, password):
-		r = self.session.get("https://sso.accounts.dowjones.com/login-page")
 
-		# parse url and extract query string into dictionary
-		url = urlparse(r.url)
-		given_params = dict(q.split("=") for q in url.query.split("&"))
+	def generate_csrf_token(self):
+		# Get the csrf token from the login page
+		client = self.session.get("https://sso.accounts.dowjones.com/login-page")
+		return client.cookies["csrf"]
 
+
+	def get_client_id(self):
+		return "5hssEAdMy0mJTICnJNvC9TXEw3Va7jfO"
+
+	def get_user_id(self):
+		user = self.session.post("https://sso.accounts.dowjones.com/getuser", data={
+			"username": self.email,
+			"csrf": self.generate_csrf_token(),
+		})
+
+		if user.status_code == 200:
+			return user.json()["id"]
+
+	async def login(self):
 		login_data = {
-			"client_id": given_params['client'],
+			"client_id": self.client_id ,
 			"connection": "DJldap",
-			"headers": {"X-REMOTE-USER": email},
-			"nonce": given_params["nonce"],
-			"ns": "prod/accounts-mw",
-			"password": password,
+			"headers": {
+				"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Content-Type": "application/json;charset=utf-8",
+				"Origin": "https://accounts.marketwatch.com",
+				"Connection": "keep-alive",
+				"Referer": "https://accounts.marketwatch.com/login-page/signin",
+				"TE": "Trailers",
+				"X-REMOTE-USER": self.email,
+				"x-_dj-_client__id": self.client_id,
+				"x-_oidc-_provider": "localop",
+				},
+			"nonce": "0590aaf2-c662-4fc4-9edc-81727f80798c",
+            "ns": "prod/accounts-mw",
+			"password": self.password,
 			"protocol": "oauth2",
-			"redirect_uri": "https://accounts.marketwatch.com/auth/sso/login",
+			"redirect_uri": "https://accounts.marketwatch.com/login-page/callback",
 			"response_type": "code",
-			"scope": "openid idp_id roles email given_name family_name djid djUsername djStatus trackid tags prts suuid createTimestamp",
-			"state": given_params["state"],
+			"scope": "openid idp_id roles email given_name family_name djid djUsername djStatus trackid tags prts suuid updated_at",
 			"tenant": "sso",
-			"ui_locales": ",en-us-x-mw-3-8",
-			"username": email,
-			"_csrf": self.session.cookies.get_dict()['_csrf'],
-			"_intstate": "deprecated"
+			"username": self.email,
+			"ui_locales": "en-us-x-mw-11-8",
+			"_csrf": self.generate_csrf_token(),
+			"_intstate": "deprecated",
 		}
 
-		login = self.session.post("https://sso.accounts.dowjones.com/usernamepassword/login", data=login_data).content
-		soup = BeautifulSoup(login, "html.parser")
+		login = await self.session.post("https://sso.accounts.dowjones.com/authenticate", data=login_data)
 
-		try:
-			soup.findAll("input", {"name": "wa"})[0]
-		except Exception:
-			m = json.loads(login)["message"]
-			raise Exception(f"Login Failed: {m}")
+		if login.status_code == 401:
+			print(login.url)
+			print(login.content)
+			raise MarketWatchException("Login failed check your credentials")
 
-		callback_payload = {
-			"wa": [soup.findAll("input", {"name": "wa"})[0]["value"].strip()],
-			"wresult": [soup.findAll("input", {"name": "wresult"})[0]["value"].strip()],
-			"wctx": [soup.findAll("input", {"name": "wctx"})[0]["value"].strip()]
+		# Get the token value from the response
+		response_data = BeautifulSoup(login.text, "html.parser")
+
+		# Get the token value from the response
+		token = response_data.find("input", {"name": "token"})["value"]
+		params = response_data.find("input", {"name": "params"})["value"]
+
+		data = {
+		'token': token,
+		'params': params,
 		}
 
-		self.session.post("https://sso.accounts.dowjones.com/login/callback", data=callback_payload)
+		response = self.session.post('https://sso.accounts.dowjones.com/postauth/handler', data=data, follow_redirects=True)
+		response = self.session.post('https://sso.accounts.dowjones.com/postauth/handler', data=data, follow_redirects=True)
 
-	def check_error(self):  # sourcery skip: raise-specific-error
-		if (
-			self.session.get(
-				f"https://www.marketwatch.com/{self.route}{self.game}"
-			).status_code
-			!= 200
-		):
-			raise Exception("Marketwatch Stock Market Game Down")
+		if response.status_code in [200, 302]:
+			print("Login successful")
 
-	# Get current market price for ticker
-	def get_price(self, ticker):
-		try:
-			page = self.session.get(f"http://www.marketwatch.com/investing/stock/{ticker}")
-			tree = html.fromstring(page.content)
-			price = tree.xpath("//*[@id='maincontent']/div[2]/div[3]/div/div[2]/h2/bg-quote")
-			return round(float(price[0].text), 2)
-		except Exception:
-			return None
+		# check if the login was successful
+		if response.status_code == 200:
+			soup = BeautifulSoup(response.text, 'html.parser')
+			username = soup.find("li", {"class": "profile__item profile--name divider"}).text.strip()
+			print(f"Logged in as {username}")
 
-	# Main Order execution functions
+			# set all the response cookies to the session
+			for cookie in response.cookies.items():
+				self.session.cookies.set(cookie[0], cookie[1])
 
-	def buy(self, ticker, shares, term = Term.INDEFINITE, priceType = PriceType.MARKET, price = None):
-		return self._create_payload(ticker, shares, term, priceType, price, OrderType.BUY)
 
-	def short(self, ticker, shares, term = Term.INDEFINITE, priceType = PriceType.MARKET, price = None):
-		return self._create_payload(ticker, shares, term, priceType, price, OrderType.SHORT)
-
-	def sell(self, ticker, shares, term = Term.INDEFINITE, priceType = PriceType.MARKET, price = None):
-		return self._create_payload(ticker, shares, term, priceType, price, OrderType.SELL)
-
-	def cover(self, ticker, shares, term = Term.INDEFINITE, priceType = PriceType.MARKET, price = None):
-		return self._create_payload(ticker, shares, term, priceType, price, OrderType.COVER)
-
-	# Payload creation for order execution
-	def _create_payload(self, ticker, shares, term, priceType, price, orderType):
-		ticker = self._get_ticker_uid(ticker)
-
-		# Get form payload
-		r = self.session.get(
-			f"https://www.marketwatch.com/{self.route}{self.game}/tradeorder?chartingSymbol={ticker}"
+	async def check_login(self):
+		# Check if the user is logged in
+		response = await self.session.get("https://www.marketwatch.com")
+		if response.status_code != 200:
+			return False
+		soup = BeautifulSoup(response.text, 'html.parser')
+		return bool(
+			username := soup.find(
+				"li", {"class": "profile__item profile--name divider"}
+			).text.strip()
 		)
 
-		# Parse form payload
-		soup = BeautifulSoup(r.content, "html.parser")
-		form = soup.findAll("form")[0]
 
-		# with form payload
-		payload = {
-			"djid":form["data-djkey"],
-			"ledgerId":form["data-pub"],
-			"tradeType":orderType.value,
-			"shares":shares,
-			"expiresEndOfDay": term == Term.DAY,
-			"orderType":priceType.value
-		}
+	def get_games(self):
+		self.check_login()
+		games_page = self.session.get("https://www.marketwatch.com/games")
 
-		if priceType in [PriceType.LIMIT, PriceType.STOP]:
-			payload['limitStopPrice'] = str(price)
+		if games_page.status_code != 200:
+			raise MarketWatchException("Failed to get games")
 
-		return self._submit(payload)
+		soup = BeautifulSoup(games_page.text, "html.parser")
 
-	# Get UID from ticker name
-	def _get_ticker_uid(self, ticker):
-		page = self.session.get(f"http://www.marketwatch.com/investing/stock/{ticker}")
-		soup = BeautifulSoup(page.text, features="lxml")
+		games = soup.find("table", {"class": "your-games"})
+		if games is None:
+			raise MarketWatchException("No games found")
+		games = games.find("tbody").find_all("tr")
 
-		try:
-			return self._clean_text(soup.find_all("mw-chart")[0]["data-ticker"])
-		except Exception:
-			return None
+		games_data = []
 
-	# Execture order
-	def _submit(self, payload):
-		url = (
-			f'https://vse-api.marketwatch.com/v1/games/{self.game}/ledgers/'
-			+ payload["ledgerId"]
-			+ '/trades'
-		)
-		headers = {'Content-Type': 'application/json'}
-		response = json.loads(self.session.post(url=url, headers=headers, json=payload).text)
-		return response["data"]["status"]
+		for game in games:
+			game_data = game.find_all("td")
+			game_name = game_data[0].find("a").text
+			game_url = game_data[0].find("a")["href"]
+			game_id = game_url.split("/")[-1]
+			game_return = game_data[1].text
+			game_total_return = game_data[2].text
+			game_rank = game_data[3].text
+			game_end = game_data[4].text
+			game_players = game_data[5].text
 
-	def cancel_order(self, id):
-		url = f'http://www.marketwatch.com/{self.route}{self.game}/trade/cancelorder?id={str(id)}'
-		self.session.get(url)
+			games_data.append({
+				"name": game_name,
+				"url": game_url,
+				"id": game_id,
+				"return": game_return,
+				"total_return": game_total_return,
+				"rank": game_rank,
+				"end": game_end,
+				"players": game_players
+			})
+		return games_data
 
-	def cancel_all_orders(self):
-		for order in self.getPendingOrders():
-			url = f'http://www.marketwatch.com/{self.route}{self.game}/trade/cancelorder?id={str(order.id)}'
-			self.session.get(url)
+	async def get_game(self, game_id):
+		self.check_login()
+		game_page = await self.session.get(f"https://www.marketwatch.com/games/{game_id}")
 
-	def get_pending_orders(self):
-		tree = html.fromstring(
-			self.session.get(
-				f"http://www.marketwatch.com/{self.route}{self.game}/portfolio"
-			).content
-		)
-		rawOrders = tree.xpath("//*[@id='maincontent']/div[3]/div[1]/div[6]/mw-tabs/div[2]/div[2]/div/table/tbody")
+		if game_page.status_code != 200:
+			raise MarketWatchException("Game not found")
+		soup = BeautifulSoup(game_page.text, "html.parser")
 
-		orders = []
-		try:
-			numberOfOrders = len(rawOrders[0])
-		except Exception:
-			return orders
-		for i in range(numberOfOrders):
-			try:
-				cleanID = self._clean_text(rawOrders[0][i][4][0][0].get("data-order"))
-			except Exception:
-				cleanID = None
+		game_title = soup.find("h1", {"class": "game__title"}).text
+		game_time = soup.find("div", {"class": "game__time"}).text
+		game_url = game_page.url
 
-			ticker = self._clean_text(rawOrders[0][i][0][0][0].text)
-			quantity = int(self._clean_text(rawOrders[0][i][3].text))
-			orderType = self._get_order_type(self._clean_text(rawOrders[0][i][2].text))
-			priceType = self._get_price_type(self._clean_text(rawOrders[0][i][2].text))
-			price = self._get_order_price(self._clean_text(rawOrders[0][i][2].text))
+		game_description = soup.find("div", {"class": "about-game"}).find_all("li", {"class": "kv__item"})
+		descriptions = [
+			description.find("span", {"class": "primary"}).text
+			for description in game_description
+		]
+		game_start_date = descriptions[0]
+		game_end_date = descriptions[1]
+		game_players = descriptions[2]
+		game_creator = descriptions[3]
 
-			orders.append(Order(cleanID, ticker, quantity, orderType, priceType, price))
+		game_rank = soup.find("div", {"class": "rank__number"}).text
 
-		return orders
-
-	def _clean_text(self, text):
-		return text.replace("\r\n", "").replace("\t", "").replace(" ", "").replace(",", "")
-
-	def _get_order_type(self, order):
-		order = order.lower()
-		if ("buy" in order):
-			return OrderType.BUY
-		elif ("short" in order):
-			return OrderType.SHORT
-		elif ("cover" in order):
-			return OrderType.COVER
-		elif ("sell" in order):
-			return OrderType.SELL
-		else:
-			return None
-
-	def _get_price_type(self, order):
-		order = order.lower()
-		if ("market" in order):
-			return PriceType.MARKET
-		elif ("limit" in order):
-			return PriceType.LIMIT
-		elif ("stop" in order):
-			return PriceType.STOP
-		else:
-			return None
-
-	def _get_order_price(self, order):
-		return None if ("$" not in order) else float(order[(order.index('$') + 1):])
-
-	def get_positions(self):
-		soup = BeautifulSoup(
-			self.session.get(
-				f"https://www.marketwatch.com/{self.route}{self.game}/portfolio"
-			).text,
-			features="lxml",
-		)
-
-		try:
-			position_csv = self.session.get("https://www.marketwatch.com" + soup.select("a[href*='download?view=holdings']")[0]["href"]).text
-		except IndexError:
-			return []
-
-		positions = []
-		# extract all lines, skipping the header, in the given csv text
-		reader = csv.reader(position_csv.split("\n")[1:])
-		for parts in reader:
-			if len(parts) > 0:
-				avg_entry = float(parts[4].replace("$", "").replace(",", "")) - float(parts[5])
-				# create a Position object for each ticker
-				positions.append(Position(parts[0], parts[3], int(parts[1]), avg_entry))
-
-		return positions
-
-	def get_portfolio_stats(self):
-		soup = BeautifulSoup(
-			self.session.get(
-				f"http://www.marketwatch.com/{self.route}{self.game}/portfolio"
-			).content,
-			features="lxml",
-		)
-		table = soup.find_all("div", {"class": "element--profile"})[0]
-		table = table.find_all("ul", {"class": "list"})[0]
-
-		stats_elements = table.find_all("span", {"class": "primary"})
-		stats_elements = [x.text.strip() for x in stats_elements]
-		return {
-			"cash": float(
-				self._clean_text(stats_elements[0].replace("$", "").replace(",", ""))
-			),
-			"value": float(
-				self._clean_text(stats_elements[4].replace("$", "").replace(",", ""))
-			),
-			"power": float(
-				self._clean_text(stats_elements[5].replace("$", "").replace(",", ""))
-			),
-			"rank": int(
-				self._clean_text(
-					soup.find_all("div", {"class": "rank__number"})[0].text.strip()
-				)
-			),
-			"overall_gains": float(
-				self._clean_text(stats_elements[2].replace("$", "").replace(",", ""))
-			),
-			"overall_returns": float(
-				self._clean_text(stats_elements[3].replace("%", ""))
-			)
-			/ 100,
-			"short_reserve": float(
-				self._clean_text(stats_elements[6].replace("$", "").replace(",", ""))
-			),
-			"borrowed": float(
-				self._clean_text(stats_elements[7].replace("$", "").replace(",", ""))
-			),
-		}
-
-	def get_game_settings(self):
-		soup = BeautifulSoup(
-			self.session.get(
-				f"http://www.marketwatch.com/{self.route}{self.game}/settings"
-			).content,
-			features="lxml",
-		)
-		sTable1 = [x.text.strip() for x in soup.find_all("table", {"class": "portfolio-options"})[0].find_all("td", {"class": "table__cell"})]
-		sTable2 = [x.text.strip() for x in soup.find_all("table", {"class": "portfolio-options"})[1].find_all("td", {"class": "table__cell"})]
-		sTable3 = [x.text.strip() for x in soup.find_all("table", {"class": "portfolio-options"})[2].find_all("td", {"class": "table__cell"})]
-		sTable4 = [x.text.strip() for x in soup.find_all("table", {"class": "portfolio-options"})[3].find_all("td", {"class": "table__cell"})]
-
+		profile = soup.find("div", {"class": "element--profile"}).find_all("li", {"class": "kv__item"})
+		elements = [
+			element.find("span", {"class": "primary"}).text for element in profile
+		]
+		game_portfolio_value = elements[0]
+		game_gain_percentage = elements[1]
+		game_gain = elements[2]
+		game_return = elements[3]
+		game_cash_remaining = elements[4]
+		game_buying_power = elements[5]
+		game_shorts_reserve = elements[6]
+		game_cash_borrowed = elements[7]
 
 		return {
-			"game_public": self._clean_text(sTable1[1]) == "Public",
-			"portfolios_public": self._clean_text(sTable2[1]) == "Public",
-			"start_balance": float(
-				self._clean_text(sTable3[1]).replace("$", "").replace(",", "")
-			),
-			"commission": float(
-				self._clean_text(sTable3[3]).replace("$", "").replace(",", "")
-			),
-			"credit_interest_rate": float(
-				self._clean_text(sTable3[5]).replace("%", "")
-			)
-			/ 100,
-			"leverage_debt_interest_rate": float(
-				self._clean_text(sTable3[7]).replace("%", "")
-			)
-			/ 100,
-			"minimum_stock_price": float(
-				self._clean_text(sTable3[9]).replace("$", "").replace(",", "")
-			),
-			"maximum_stock_price": float(
-				self._clean_text(sTable3[11]).replace("$", "").replace(",", "")
-			),
-			"volume_limit": float(self._clean_text(sTable4[1]).replace("%", ""))
-			/ 100,
-			"short_selling_enabled": self._clean_text(sTable4[3]) == "Enabled",
-			"margin_trading_enabled": self._clean_text(sTable4[5]) == "Enabled",
-			"limit_orders_enabled": self._clean_text(sTable4[7]) == "Enabled",
-			"stop_loss_orders_enabled": self._clean_text(sTable4[9]) == "Enabled",
-			"partial_share_trading_enabled": self._clean_text(sTable4[11])
-			== "Enabled",
+			"name": game_id,
+			"title": game_title.strip(),
+			"time": game_time,
+			"url": game_url.to_string(),
+			"start_date": game_start_date,
+			"end_date": game_end_date,
+			"players": game_players,
+			"creator": game_creator,
+			"rank": game_rank,
+			"portfolio_value": game_portfolio_value,
+			"gain_percentage": game_gain_percentage,
+			"gain": game_gain,
+			"return": game_return,
+			"cash_remaining": game_cash_remaining,
+			"buying_power": game_buying_power,
+			"shorts_reserve": game_shorts_reserve,
+			"cash_borrowed": game_cash_borrowed,
 		}
+
+	async def get_price(self, ticker):
+		# Get the price of a stock
+		response = await self.session.get(f"https://www.marketwatch.com/investing/stock{ticker}")
+		if response.status_code != 200:
+			raise MarketWatchException("Failed to get price")
+		soup = BeautifulSoup(response.text, "html.parser")
+		# //*[@id="maincontent"]/div[2]/div[3]/div/div[2]/h2/bg-quote
+		regions = soup.find_all("div", {"class": "region--intraday"}).find("bg-quote")
+		if regions is None:
+			raise MarketWatchException("Failed to get price")
+		return regions.find("bg-quote").text
+
+
+if __name__ == "__main__":
+	marketwatch = MarketWatch(
+		"user", "password"
+	)
+
+	print(marketwatch.get_games())
+	print(marketwatch.get_game(marketwatch.get_games()[0]["name"].lower().replace(" ", "-")))
+
+

@@ -1,2 +1,2 @@
-social-auth-core
 bs4
+httpx
