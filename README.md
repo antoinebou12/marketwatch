@@ -5,7 +5,7 @@
 ![PyPI - License](https://img.shields.io/pypi/l/marketwatch)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/marketwatch)
 ![GitHub last commit](https://img.shields.io/github/last-commit/antoinebou12/marketwatch)
-[![Publish Python 🐍 distributions 📦 to PyPI](https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml/badge.svg)](https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml)
+[![Publish 📦 to PyPI](https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml/badge.svg?branch=main)](https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml)
 [![Python Test and Build](https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml/badge.svg)](https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml)
 ![Coverage](https://raw.githubusercontent.com/antoinebou12/marketwatch/main/.github/badge/coverage.svg)
 
