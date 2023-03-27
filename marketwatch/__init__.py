@@ -6,10 +6,11 @@ portfolio, place orders, and get the leaderboard.
 
 Example:
 	>>> from marketwatch import MarketWatch
-	>>> mw = MarketWatch("email", "password")
+    >>> import os
+	>>> mw = MarketWatch(os.environ["MARKETWATCH_USERNAME"], os.environ["MARKETWATCH_PASSWORD"])
 	>>> mw.get_games()
 	>>> mw.get_portfolio(1234)
-	>>> mw.place_order(1234, "AAPL", 10, "buy", "market")
+	>>> mw.buy(1234, "AAPL", 1)
 	>>> mw.get_leaderboard(1234)
 """
 import csv
