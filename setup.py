@@ -11,13 +11,13 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="marketwatch",
-    version="0.1.1",
+    version="0.1.2",
     description="MarketWatch's API",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/antoinebou12/marketwatch",
-    author="bwees",
-    author_email="brandonwees@gmail.com",
+    author="antoinebou12",
+    author_email="antoine.boucher.1@etsmtl.ca",
     license="Apache 2.0",
     classifiers=[
         "Programming Language :: Python :: 3",
