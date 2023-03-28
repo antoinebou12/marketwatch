@@ -109,8 +109,6 @@ def test_get_portfolio(authenticated_marketwatch):
     assert isinstance(portfolio, dict)
     assert "portfolio" in portfolio
     assert "portfolio_value" in portfolio
-    assert "gain_percentage" in portfolio
-    assert "gain" in portfolio
     assert "return" in portfolio
     assert "cash_remaining" in portfolio
     assert "buying_power" in portfolio
@@ -119,14 +117,15 @@ def test_get_portfolio(authenticated_marketwatch):
     assert "portfolio_allocation" in portfolio
 
     _extracted_from_test_get_portfolio(portfolio, "portfolio", "quantity")
+    assert "sign" in portfolio["portfolio"][0]
     assert "holding" in portfolio["portfolio"][0]
     assert "holding_percentage" in portfolio["portfolio"][0]
     assert "price" in portfolio["portfolio"][0]
     assert "price_gain" in portfolio["portfolio"][0]
     assert "price_gain_percentage" in portfolio["portfolio"][0]
     assert "value" in portfolio["portfolio"][0]
-    assert "gain" in portfolio["portfolio"][0]
-    assert "gain_percentage" in portfolio["portfolio"][0]
+    assert "value_point" in portfolio["portfolio"][0]
+    assert "value_percentage" in portfolio["portfolio"][0]
 
     assert isinstance(portfolio["portfolio_value"], str)
     assert isinstance(portfolio["gain_percentage"], str)

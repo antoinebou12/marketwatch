@@ -46,6 +46,18 @@ marketwatch.get_leaderboard("game-name")
 marketwatch.get_portfolio("game-name")
 ```
 
+### Get Portfolio Performance
+
+```
+marketwatch.get_portfolio_performance("game-name")
+```
+
+### Get Transactions
+
+```
+marketwatch.get_transactions("game-name")
+```
+
 ### Get Positions
 
 ```
