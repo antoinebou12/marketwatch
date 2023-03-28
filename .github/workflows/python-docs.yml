@@ -44,4 +44,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifact_name: site
-          prewiew: true
+          preview: true
