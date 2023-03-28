@@ -324,9 +324,9 @@ def _extracted_from_test__clean_text(mw, arg1):
     return result
 
 
-def test_check_error(authenticated_marketwatch):
+def test_check_error_game(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    mw.check_error()
+    mw.check_error_game()
 
 def test__get_ticker_uid(authenticated_marketwatch):
     mw = authenticated_marketwatch

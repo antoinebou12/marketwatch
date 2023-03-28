@@ -13,6 +13,7 @@ Example:
 	>>> mw.buy(1234, "AAPL", 1)
 	>>> mw.get_leaderboard(1234)
 """
+
 import csv
 import json
 
@@ -256,7 +257,7 @@ class MarketWatch:
                 }
             )
         return games_data
-    
+
     @auth
     def get_game(self, game_id: str) -> list:
         """
@@ -954,6 +955,12 @@ class MarketWatch:
             "html.parser",
         )
 
+        if download:
+            return self.session.get(
+                "https://www.marketwatch.com"
+                + soup.select("a[href*='download?view=holdings']")[0]["href"]
+            )
+
         try:
             position_csv = self.session.get(
                 "https://www.marketwatch.com"
@@ -1069,7 +1076,7 @@ class MarketWatch:
             text.replace("\r\n", "").replace("\t", "").replace(" ", "").replace(",", "")
         )
 
-    def check_error(self):
+    def check_error_game(self):
         """
         Check if the game is down
 
@@ -1079,6 +1086,85 @@ class MarketWatch:
         if self.session.get("https://www.marketwatch.com/games").status_code != 200:
             raise MarketWatchException("Marketwatch Stock Market Game Down")
 
+    # decorator to check if the game is down
+    def check_error(func):
+        def wrapper(*args, **kwargs):
+            args[0].check_error_game()
+            return func(*args, **kwargs)
+        return wrapper
+
+    def create_watchlist(self, name: str):
+        """
+        Create a watchlist
+
+        :param name: Watchlist name
+        :param tickers: List of tickers
+        :return: None
+        """
+        response = self.session.post("https://api.marketwatch.com/api/oskar/me/marketwatch-com")
+
+        if response.status_code != 201:
+            raise MarketWatchException("Failed to create watchlist")
+
+        response_json = response.json()
+
+        return {
+            "Id": response_json["Id"],
+            "Name": name,
+            "TotalItemCount": response_json["TotalItemCount"],
+            "Revision": response_json["Revision"],
+            "Items": response_json["Items"],
+            "CreateDateUtc": response_json["CreateDateUtc"],
+            "LastModifiedDateUtc": response_json["LastModifiedDateUtc"],
+        }
+
+    def add_to_watchlist(self, watchlist_id: str, tickers: list):
+        """
+        Add tickers to a watchlist
+
+        :param watchlist_id: Watchlist ID
+        :param tickers: List of tickers
+        :return: None
+        """
+        items = []
+        for ticker in tickers:
+            self._get_ticker_uid(ticker)
+            items.append({"ChartingSymbol": ticker})
+
+        response = self.session.post(f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items", json=items)
+
+        if response.status_code != 201:
+            raise MarketWatchException("Failed to add to watchlist")
+        
+        return response.json()
+
+    def get_watchlists(self):
+        """
+        Get all watchlists
+
+        :return: List of watchlists
+        """
+
+        response = self.session.post("https://api.marketwatch.com/api/oskar/me/marketwatch-com/1270679988639624?needed=IndustryClassification|BlueGrassChannels&showItems=true")
+
+        if response.status_code != 200:
+            raise MarketWatchException("Failed to get watchlists")
+
+        return response.json()
+
+    def delete_watchlist_item(self, watchlist_id: str, ticker: str):
+        """
+        Delete a ticker from a watchlist
+
+        :param watchlist_id: Watchlist ID
+        :param ticker: Ticker to delete
+        :return: None
+        """
+        ticker_uid = self._get_ticker_uid(ticker)
+        response = self.session.delete(f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items/{ticker_uid}")
+
+        if response.status_code != 200:
+            raise MarketWatchException("Failed to delete ticker from watchlist")
 
 if __name__ == "__main__":
     import os
