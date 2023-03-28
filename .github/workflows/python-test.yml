@@ -2,7 +2,7 @@
 
 name: Python Test and Build
 
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 env:
   PYTHON_VERSION: "3.10"

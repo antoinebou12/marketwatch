@@ -200,6 +200,16 @@ class MarketWatch:
             ).text.strip()
         )
 
+    # auth decorator in class
+    def auth(func):
+        def wrapper(self, *args, **kwargs):
+            if not self.check_login():
+                self.login()
+            return func(self, *args, **kwargs)
+
+        return wrapper
+
+    @auth
     def get_games(self):
         """
         Get all the games
@@ -208,7 +218,6 @@ class MarketWatch:
 
                         :return: List of games
         """
-        self.check_login()
         games_page = self.session.get("https://www.marketwatch.com/games")
 
         if games_page.status_code != 200:
@@ -247,7 +256,8 @@ class MarketWatch:
                 }
             )
         return games_data
-
+    
+    @auth
     def get_game(self, game_id: str) -> list:
         """
         Get a game
@@ -257,7 +267,6 @@ class MarketWatch:
                         :param game_id: Game id
         :return: Game data
         """
-        self.check_login()
         game_page = self.session.get(f"https://www.marketwatch.com/games/{game_id}")
 
         if game_page.status_code != 200:
@@ -346,6 +355,7 @@ class MarketWatch:
             raise MarketWatchException("Failed to get price")
         return f"{ticker.upper()} : ${regions.text}"
 
+    @auth
     def get_portfolio(self, game_id: str):
         """
         Get the portfolio of a game
@@ -355,7 +365,6 @@ class MarketWatch:
 
                         :return: Portfolio of the game
         """
-        self.check_login()
         response = self.session.get(
             f"https://www.marketwatch.com/games/{game_id}/portfolio"
         )
@@ -443,6 +452,7 @@ class MarketWatch:
             "portfolio_allocation": portfolio_allocation,
         }
 
+    @auth
     def get_portfolio_performance(self, game_id: str, download: bool = False, next_page_url: str = None):
         """
         Get the portfolio performance of a game
@@ -453,7 +463,6 @@ class MarketWatch:
 
         :return: Portfolio performance of the game
         """
-        self.check_login()
         if next_page_url is None:
             response = self.session.get(
                 f"https://www.marketwatch.com/games/{game_id}/performance"
@@ -504,7 +513,7 @@ class MarketWatch:
 
         return portfolio_performance
 
-
+    @auth
     def get_transactions(self, game_id: str, download: bool = False, next_page_url: str = None):
         """
         Get the transactions of a game
@@ -514,7 +523,6 @@ class MarketWatch:
         :param next_page_url: The next page url
         :return: A list of transactions
         """
-        self.check_login()
         response = self.session.get(
             f"https://www.marketwatch.com/games/{game_id}/transactions"
         )
@@ -558,6 +566,7 @@ class MarketWatch:
         return transactions
 
 
+    @auth
     def get_leaderboard(self, game_id: str, download: bool = False):
         """
         Get the leaderboard of a game
@@ -566,7 +575,6 @@ class MarketWatch:
 
         :return: Leaderboard of the game
         """
-        self.check_login()
         if download:
             return self.session.get(
                 f"https://www.marketwatch.com/games/{game_id}/download?view=rankings&amp;pub=&amp;isDownload=true"
@@ -771,6 +779,7 @@ class MarketWatch:
             orderType=OrderType.COVER,
         )
 
+    @auth
     def _create_payload(
         self,
         game_id: str,
@@ -794,7 +803,6 @@ class MarketWatch:
 
         :return: Payload
         """
-        self.check_login()
         ticker_uid = self._get_ticker_uid(ticker)
         response = self.session.post(
             f"https://www.marketwatch.com/games/{game_id}/tradeorder?chartingSymbol={ticker_uid}"
@@ -929,10 +937,16 @@ class MarketWatch:
 
         :param order: Order string
         :return: Price
+
+        Symbol	Shares	% Holdings	Type	Price	Price Change	Price Change %	Value	Value Gain/Loss	Value Gain/Loss %
+        AAPD	12	< 1%	BUY	$24.90	0.27	1.08%	$298.74	$6.66	2.28%
+        AAPL	623	12%	BUY	$156.54	-1.74	-1.10%	$97,524.42	-$1,786.29	-1.80%
+        ANCTF	400	2%	BUY	$47.99	0.19	0.40%	$19,196.00	$374.05	1.99%
+        BAC	100	< 1%	BUY	$28.38	-0.11	-0.38%	$2,838.24	$32.24	1.15%
         """
         return None if ("$" not in order) else float(order[(order.index("$") + 1) :])
 
-    def get_positions(self, game_id: str):
+    def get_positions(self, game_id: str, download: bool = False):
         soup = BeautifulSoup(
             self.session.get(
                 f"https://www.marketwatch.com/games/{game_id}/portfolio"
@@ -951,13 +965,16 @@ class MarketWatch:
         positions = []
         # extract all lines, skipping the header, in the given csv text
         reader = csv.reader(position_csv.split("\n")[1:])
-        for parts in reader:
-            if len(parts) > 0:
-                avg_entry = float(parts[4].replace("$", "").replace(",", "")) - float(
-                    parts[5]
-                )
-                # create a Position object for each ticker
-                positions.append(Position(parts[0], parts[3], int(parts[1]), avg_entry))
+
+        for row in reader:
+            if len(row) == 0:
+                continue
+
+            ticker = row[0]
+            quantity = int(row[1].replace(",", ""))
+            price = float(row[4].replace("$", "").replace(",", ""))
+            ep = float(row[8].replace("$", "").replace(",", "")) / quantity
+            positions.append(Position(ticker, quantity, price, ep))
 
         return positions
 
