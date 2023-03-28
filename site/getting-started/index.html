@@ -540,95 +540,80 @@
 <h1 id="marketwatch-python-library">MarketWatch Python Library</h1>
 <p>This is a Python library for interacting with the <a href="https://www.marketwatch.com/">MarketWatch</a> virtual trading platform. The library provides an easy-to-use interface for performing various actions such as getting game details, portfolio information, buying and selling stocks, getting leaderboard information, and more.</p>
 <h2 id="installation">Installation</h2>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>sh</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-sh">pip install marketwatch
-</code></div></div></pre>
-
+<pre><code class="language-python">pip install marketwatch
+</code></pre>
 <h2 id="usage">Usage</h2>
 <p>First, you need to create an account on <a href="https://www.marketwatch.com/">MarketWatch</a> and then create a virtual game.</p>
 <p>Once you have created a game, you will be able to get the game's <code>id</code> from its URL, which will be used throughout the library.</p>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">if __name__ == "__main__":
+<pre><code class="language-python">if __name__ == &quot;__main__&quot;:
     import os
-    username = os.environ.get("MARKETWATCH_USERNAME")
-    password = os.environ.get("MARKETWATCH_PASSWORD")
+    username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)
+    password = os.environ.get(&quot;MARKETWATCH_PASSWORD&quot;)
 
     marketwatch = MarketWatch(username, password)
-</code></div></div></pre>
-
+</code></pre>
 <h3 id="examples">Examples</h3>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">import os
+<pre><code class="language-python">import os
 from marketwatch import MarketWatch
-
-# Login
-mw = MarketWatch(os.environ["MARKETWATCH_USERNAME"], os.environ["MARKETWATCH_PASSWORD"])
-</code></div></div></pre>
-
+</code></pre>
+<pre><code class="language-python"># Login
+mw = MarketWatch(os.environ[&quot;MARKETWATCH_USERNAME&quot;], os.environ[&quot;MARKETWATCH_PASSWORD&quot;])
+</code></pre>
 <h4 id="get-games">Get Games</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_games()
-</code></div></div></pre>
-
+<pre><code class="language-python">mw.get_games()
+</code></pre>
 <p>This method returns a list of games the user has created or joined. For each game, you get its <code>name</code>, <code>url</code>, <code>id</code>, <code>return</code>, <code>total_return</code>, <code>rank</code>, <code>end</code>, and <code>players</code>.</p>
 <h4 id="get-portfolio">Get portfolio</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_portfolio(game_id)
-</code></div></div></pre>
-
+<pre><code class="language-python">mw.get_portfolio(game_id)
+</code></pre>
 <p>This method returns a dictionary containing information about the user's portfolio, including the <code>ticker</code>, <code>quantity</code>, <code>price</code>, <code>value</code>, and <code>value_percentage</code> for each holding. <code>game_id</code> is the <code>id</code> of the game you want to retrieve the portfolio for.</p>
 <h4 id="buy-and-sell-stocks">Buy and Sell stocks</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.buy(game_id, ticker, quantity)
+<pre><code class="language-python">mw.buy(game_id, ticker, quantity)
 mw.sell(game_id, ticker, quantity)
-</code></div></div></pre>
-
+</code></pre>
 <p>These methods allow the user to buy or sell stocks in the specified game. <code>game_id</code> is the <code>id</code> of the game you want to trade in, <code>ticker</code> is the stock's symbol, and <code>quantity</code> is the number of shares you want to buy or sell.</p>
 <h4 id="get-leaderboard">Get leaderboard</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_leaderboard(game_id)
-</code></div></div></pre>
-
+<pre><code class="language-python">mw.get_leaderboard(game_id)
+</code></pre>
 <p>This method returns a list of the top players in the specified game. For each player, you get their <code>rank</code>, <code>name</code>, <code>return</code>, and <code>return_percentage</code>. <code>game_id</code> is the <code>id</code> of the game you want to retrieve the leaderboard for.</p>
 <h4 id="get-game-settings">Get game settings</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_game_settings(game_id)
-</code></div></div></pre>
-
+<pre><code class="language-python">mw.get_game_settings(game_id)
+</code></pre>
 <p>This method returns a dictionary containing information about the specified game, including the <code>id</code>, <code>name</code>, <code>description</code>, <code>end_date</code>, <code>currency</code>, <code>starting_balance</code>, <code>transaction_fee</code>, <code>margin_interest_rate</code>, <code>order_types</code>, and <code>leverage</code>.</p>
 <h4 id="get-stock-price">Get stock price</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_price(ticker)
-</code></div></div></pre>
-
+<pre><code>mw.get_price(ticker)
+</code></pre>
 <p>This method returns the current price of the specified stock.</p>
 <h4 id="get-positions">Get positions</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_positions(game_id)
-</code></div></div></pre>
-
+<p><code>mw.get_positions(game_id)</code></p>
 <p>This method returns a list of the user's current positions in the specified game. For each position, you get the <code>ticker</code>, <code>quantity</code>, <code>price</code>, <code>gain</code>, <code>gain_percentage</code>, <code>value</code>, and <code>value_percentage</code>.</p>
 <h4 id="get-pending-orders">Get pending orders</h4>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">mw.get_pending_orders(game_id)
-</code></div></div></pre>
-
+<p><code>mw.get_pending_orders(game_id)</code></p>
 <p>This method returns a list of the user's pending orders in the specified game. For each order, you get the <code>ticker</code>, <code>quantity</code>, <code>price</code>, <code>order_type</code>, and <code>expiration</code>.</p>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto">
-<code class="!whitespace-pre hljs language-python">
-if __name__ == "__main__":
+<pre><code>if __name__ == &quot;__main__&quot;:
     import os
-    username = os.environ.get("MARKETWATCH_USERNAME")
-    password = os.environ.get("MARKETWATCH_PASSWORD")
+    username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)
+    password = os.environ.get(&quot;MARKETWATCH_PASSWORD&quot;)
 
     marketwatch = MarketWatch(username, password)
 
-    print(f"Price: {marketwatch.get_price('AAPL')} \n")
-    print(f"Games: {marketwatch.get_games()} \n")
+    print(f&quot;Price: {marketwatch.get_price('AAPL')} \n&quot;)
+    print(f&quot;Games: {marketwatch.get_games()} \n&quot;)
 
-    games1 = marketwatch.get_games()[0]["name"].lower().replace(" ", "-")
+    games1 = marketwatch.get_games()[0][&quot;name&quot;].lower().replace(&quot; &quot;, &quot;-&quot;)
 
-    print(f"Game: {marketwatch.get_game(games1)} \n")
-    print(f"Game Settings: {marketwatch.get_game_settings(games1)} \n")
+    print(f&quot;Game: {marketwatch.get_game(games1)} \n&quot;)
+    print(f&quot;Game Settings: {marketwatch.get_game_settings(games1)} \n&quot;)
 
-    print(f"Leaderboard: {marketwatch.get_leaderboard(games1)} \n")
-    print(f"Porfolio: {marketwatch.get_portfolio(games1)} \n")
+    print(f&quot;Leaderboard: {marketwatch.get_leaderboard(games1)} \n&quot;)
+    print(f&quot;Porfolio: {marketwatch.get_portfolio(games1)} \n&quot;)
 
-    print(f"Position: {marketwatch.get_positions(games1)}")
-    print(f"Orders Pending: {marketwatch.get_pending_orders(games1)}")
-    marketwatch.buy(games1, "AAPL", 100)
+    print(f&quot;Position: {marketwatch.get_positions(games1)}&quot;)
+    print(f&quot;Orders Pending: {marketwatch.get_pending_orders(games1)}&quot;)
+    marketwatch.buy(games1, &quot;AAPL&quot;, 100)
 
-    print(f"Position diff: {marketwatch.get_positions(games1)}")
-</code></div></div></pre>
+    print(f&quot;Position diff: {marketwatch.get_positions(games1)}&quot;)
+</code></pre>
 
 
 

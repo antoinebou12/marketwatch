@@ -395,12 +395,10 @@
 <p>https://register.marketwatch.com/register?type=mw-vse</p>
 <h2 id="example-usage">Example Usage</h2>
 <p>Now that you have authenticated with the MarketWatch API, you can start making requests to it using the methods provided by the MarketWatch Python library. Let's take a look at an example of how to use the library to get your portfolio information:</p>
-<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>python</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-python">
-mw = MarketWatch("email", "password")
+<pre><code>mw = MarketWatch(&quot;email&quot;, &quot;password&quot;)
 portfolio = mw.get_portfolio()
 print(portfolio)
-</code></div></div></pre>
-
+</code></pre>
 <p>This code will make a request to the MarketWatch API to retrieve your portfolio information and print it to the console. The <code>get_portfolio</code> method returns a dictionary containing information about the stocks you currently hold in your portfolio, such as the stock symbol, the number of shares, and the current value of each stock.</p>
 <p>We have provided an explanation of the MarketWatch Python library and shown how to get started with using it. The library provides an easy-to-use interface for interacting with the MarketWatch virtual trading platform, and is particularly useful for users who want to automate their trading strategies or build trading bots. If you have any questions or issues with using the library, please refer to the documentation or reach out to the developer community for help.</p>
 

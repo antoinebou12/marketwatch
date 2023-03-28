@@ -28,3 +28,10 @@ The developer's LinkedIn profile can be found at
 Feel free to connect with the developer on LinkedIn to discuss the library or other topics.
 
 Thank you for your interest in the MarketWatch Python library!
+
+
+
+# Funding
+
+[![Buymeacoffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/antoineboucher)
+[![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white)](https://buy.stripe.com/eVaaEYfLvaTp8jm5kl)
