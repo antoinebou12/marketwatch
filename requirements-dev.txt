@@ -1,3 +1,6 @@
 pytest
 pre-commit
 sphinx
+mkdocs
+mkdocstrings[python]
+mkdocs-material

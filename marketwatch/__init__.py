@@ -6,10 +6,11 @@ portfolio, place orders, and get the leaderboard.
 
 Example:
 	>>> from marketwatch import MarketWatch
-	>>> mw = MarketWatch("email", "password")
+    >>> import os
+	>>> mw = MarketWatch(os.environ["MARKETWATCH_USERNAME"], os.environ["MARKETWATCH_PASSWORD"])
 	>>> mw.get_games()
 	>>> mw.get_portfolio(1234)
-	>>> mw.place_order(1234, "AAPL", 10, "buy", "market")
+	>>> mw.buy(1234, "AAPL", 1)
 	>>> mw.get_leaderboard(1234)
 """
 import csv
@@ -385,44 +386,21 @@ class MarketWatch:
 
         for row in table:
             cells = row.find_all("td")
+            sign = "-" if cells[4].find("small", {"class": "secondary"}).find("span", {"class": "point"}).text[0] == "-" else "+"
             ticker = cells[1].find("a", {"class": "primary"}).find("mini-quote").text
-            quantity = (
-                cells[1]
-                .find("div", {"class": "secondary"})
-                .find("small", {"class": "text"})
-                .text
-            )
+            quantity = cells[1].find("div", {"class": "secondary"}).find("small").text
             holding = cells[2].find("div", {"class": "secondary"}).text
             holding_percentage = cells[2].find("div", {"class": "primary"}).text
             price = cells[3].find("div", {"class": "primary"}).text
-            price_gain = (
-                cells[3]
-                .find("small", {"class": "secondary"})
-                .find("span", {"class": "point"})
-                .text
-            )
-            price_gain_percentage = (
-                cells[3]
-                .find("small", {"class": "secondary"})
-                .find("span", {"class": "percent"})
-                .text
-            )
+            price_gain = cells[3].find("small", {"class": "secondary"}).find("span", {"class": "point"}).text
+            price_gain_percentage = cells[3].find("small", {"class": "secondary"}).find("span", {"class": "percent"}).text
             value = cells[4].find("div", {"class": "primary"}).text
-            gain = (
-                cells[4]
-                .find("small", {"class": "secondary"})
-                .find("span", {"class": "point"})
-                .text
-            )
-            gain_percentage = (
-                cells[4]
-                .find("small", {"class": "secondary"})
-                .find("span", {"class": "percent"})
-                .text
-            )
+            value_point = cells[4].find("small", {"class": "secondary"}).find("span", {"class": "point"}).text
+            value_percentage = cells[4].find("small", {"class": "secondary"}).find("span", {"class": "percent"}).text
 
             portfolio.append(
                 {
+                    "sign": sign,
                     "ticker": ticker,
                     "quantity": quantity,
                     "holding": holding,
@@ -431,8 +409,8 @@ class MarketWatch:
                     "price_gain": price_gain,
                     "price_gain_percentage": price_gain_percentage,
                     "value": value,
-                    "gain": gain,
-                    "gain_percentage": gain_percentage,
+                    "value_percentage": value_percentage,
+                    "value_point": value_point,
                 }
             )
 
@@ -464,6 +442,121 @@ class MarketWatch:
             "cash_borrowed": game_cash_borrowed,
             "portfolio_allocation": portfolio_allocation,
         }
+
+    def get_portfolio_performance(self, game_id: str, download: bool = False, next_page_url: str = None):
+        """
+        Get the portfolio performance of a game
+
+        :param game_id: Game id
+        :param download: Download the portfolio performance
+        :param next_page_url: Next page url
+
+        :return: Portfolio performance of the game
+        """
+        self.check_login()
+        if next_page_url is None:
+            response = self.session.get(
+                f"https://www.marketwatch.com/games/{game_id}/performance"
+            )
+        else:
+            response = self.session.get(
+                next_page_url
+            )
+
+        if response.status_code != 200:
+            raise MarketWatchException("Game not found")
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+
+        # ledger_id = self.get_ledger_id(game_id=game_id)
+        ledger_id = soup.find("div", {"class": "element element--table portfolio-performance"})["pub"]
+        table = soup.find("div", {"class": "element element--table portfolio-performance"}).find("tbody").find_all("tr")
+
+        if download:
+            print("Downloaded")
+            return self.session.get(
+                f"https://www.marketwatch.com/games/{game_id}/download?view=performance&amp;pub={ledger_id}&amp;isDownload=true"
+            )
+
+        portfolio_performance = []
+
+        for row in table:
+            cells = row.find_all("td")
+            portfolio_performance.append(
+                {
+                    "date": cells[0].text,
+                    "cash": cells[1].text,
+                    "market_value": cells[2].text,
+                    "total_value": cells[3].text,
+                    "return": cells[4].text,
+                }
+            )
+
+        cursor_next = soup.find("div", {"class": "element element--table portfolio-performance"})["cursor-next"]
+
+        if next_page := soup.find("a", {"class": "link align--right  j-next"}):
+            portfolio_performance += self.get_portfolio_performance(
+                game_id=game_id,
+                download=download,
+                next_page_url=f"https://www.marketwatch.com/games/{game_id}/performance?pub={ledger_id}&cursor={cursor_next}"
+            )
+
+        return portfolio_performance
+
+
+    def get_transactions(self, game_id: str, download: bool = False, next_page_url: str = None):
+        """
+        Get the transactions of a game
+
+        :param game_id: The game id
+        :param download: Download the transactions as a csv file
+        :param next_page_url: The next page url
+        :return: A list of transactions
+        """
+        self.check_login()
+        response = self.session.get(
+            f"https://www.marketwatch.com/games/{game_id}/transactions"
+        )
+
+        if response.status_code != 200:
+            raise MarketWatchException("Game not found")
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        table = soup.find("div", {"class": "element element--table transactions"}).find("tbody").find_all("tr")
+
+        if download:
+            return self.session.get(
+                f"https://www.marketwatch.com/games/{game_id}/download?view=transactions&amp;pub=&amp;isDownload=true"
+            )
+
+        transactions = []
+
+        for row in table:
+            cells = row.find_all("td")
+            transactions.append(
+                {
+                    "symbol": cells[0].text,
+                    "buy_date": cells[1].text,
+                    "sell_date": cells[2].text,
+                    "type": cells[3].text,
+                    "shares": cells[4].text,
+                    "price": cells[5].text,
+                }
+            )
+
+        cursor_next = soup.find("div", {"class": "element element--table portfolio-performance"})["cursor-next"]
+
+        if next_page := soup.find("a", {"class": "link align--right  j-next"}):
+            transactions += self.get_transactions(
+                game_id=game_id,
+                download=download,
+                next_page_url=f"https://www.marketwatch.com/games/{game_id}/transactions?cursor={cursor_next}"
+            )
+
+        return transactions
+
 
     def get_leaderboard(self, game_id: str, download: bool = False):
         """
