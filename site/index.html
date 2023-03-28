@@ -1,0 +1,735 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="about/">
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
+    
+    
+      
+        <title>MarketWatch API</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.240905d7.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#marketwatch-api-python-library" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="MarketWatch API" class="md-header__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MarketWatch API
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="MarketWatch API" class="md-nav__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    MarketWatch API
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Home
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table Of Contents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import" class="md-nav__link">
+    Import
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login" class="md-nav__link">
+    Login
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-price" class="md-nav__link">
+    Get Price
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-games" class="md-nav__link">
+    Get Games
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-game" class="md-nav__link">
+    Get Game
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-game-settings" class="md-nav__link">
+    Get Game Settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-leaderboard" class="md-nav__link">
+    Get Leaderboard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-portfolio" class="md-nav__link">
+    Get Portfolio
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-positions" class="md-nav__link">
+    Get Positions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-pending-orders" class="md-nav__link">
+    Get Pending Orders
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buy" class="md-nav__link">
+    Buy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sell" class="md-nav__link">
+    Sell
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="explanation/" class="md-nav__link">
+        Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutorials/" class="md-nav__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contacts/" class="md-nav__link">
+        Contacts
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table Of Contents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import" class="md-nav__link">
+    Import
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login" class="md-nav__link">
+    Login
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-price" class="md-nav__link">
+    Get Price
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-games" class="md-nav__link">
+    Get Games
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-game" class="md-nav__link">
+    Get Game
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-game-settings" class="md-nav__link">
+    Get Game Settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-leaderboard" class="md-nav__link">
+    Get Leaderboard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-portfolio" class="md-nav__link">
+    Get Portfolio
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-positions" class="md-nav__link">
+    Get Positions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-pending-orders" class="md-nav__link">
+    Get Pending Orders
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buy" class="md-nav__link">
+    Buy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sell" class="md-nav__link">
+    Sell
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="marketwatch-api-python-library">Marketwatch API Python Library</h1>
+<h2 id="table-of-contents">Table Of Contents</h2>
+<pre><code>* [About](#about)
+* [Getting Started](#getting-started)
+* [Explanation](#explanation)
+* [Examples](#examples)
+* [API Reference](#api)
+* [Tutorials](#tutorials)
+* [Reference](#reference)
+* [Contacts](#contacts)
+</code></pre>
+<p><img alt="PyPI" src="https://img.shields.io/pypi/v/marketwatch" />
+<img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/marketwatch" />
+<img alt="PyPI - License" src="https://img.shields.io/pypi/l/marketwatch" />
+<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/marketwatch" />
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/antoinebou12/marketwatch" />
+<a href="https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml"><img alt="Publish 📦 to PyPI" src="https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml/badge.svg?branch=main" /></a>
+<a href="https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml"><img alt="Python Test and Build" src="https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml/badge.svg" /></a>
+<img alt="Coverage" src="https://raw.githubusercontent.com/antoinebou12/marketwatch/main/.github/badge/coverage.svg" /></p>
+<p>https://www.marketwatch.com</p>
+<p>A Python libary to interact with the MarketWatch Stock Market Game
+Based on code from</p>
+<ul>
+<li>https://github.com/kevindong/MarketWatch_API/</li>
+<li>https://github.com/bwees/pymarketwatch</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<pre><code>pip install marketwatch
+</code></pre>
+<pre><code>pip install git+https://github.com/antoinebou12/marketwatch.git
+</code></pre>
+<pre><code>git clone https://github.com/antoinebou12/marketwatch.git
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="import">Import</h3>
+<pre><code>from marketwatch import MarketWatch
+</code></pre>
+<h3 id="login">Login</h3>
+<pre><code>marketwatch = MarketWatch(username, password)
+</code></pre>
+<h3 id="get-price">Get Price</h3>
+<pre><code>marketwatch.get_price(&quot;AAPL&quot;)
+</code></pre>
+<h3 id="get-games">Get Games</h3>
+<pre><code>marketwatch.get_games()
+</code></pre>
+<h3 id="get-game">Get Game</h3>
+<pre><code>marketwatch.get_game(&quot;game-name&quot;)
+</code></pre>
+<h3 id="get-game-settings">Get Game Settings</h3>
+<pre><code>marketwatch.get_game_settings(&quot;game-name&quot;)
+</code></pre>
+<h3 id="get-leaderboard">Get Leaderboard</h3>
+<pre><code>marketwatch.get_leaderboard(&quot;game-name&quot;)
+</code></pre>
+<h3 id="get-portfolio">Get Portfolio</h3>
+<pre><code>marketwatch.get_portfolio(&quot;game-name&quot;)
+</code></pre>
+<h3 id="get-positions">Get Positions</h3>
+<pre><code>marketwatch.get_positions(&quot;game-name&quot;)
+</code></pre>
+<h3 id="get-pending-orders">Get Pending Orders</h3>
+<pre><code>marketwatch.get_pending_orders(&quot;game-name&quot;)
+</code></pre>
+<h3 id="buy">Buy</h3>
+<pre><code>marketwatch.buy(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
+</code></pre>
+<h3 id="sell">Sell</h3>
+<pre><code>marketwatch.sell(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
+</code></pre>
+<h3 id="example">Example</h3>
+<pre><code>if __name__ == &quot;__main__&quot;:
+    import os
+    username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)
+    password = os.environ.get(&quot;MARKETWATCH_PASSWORD&quot;)
+
+    marketwatch = MarketWatch(username, password)
+
+    print(f&quot;Price: {marketwatch.get_price('AAPL')} \n&quot;)
+    print(f&quot;Games: {marketwatch.get_games()} \n&quot;)
+
+    games1 = marketwatch.get_games()[0][&quot;name&quot;].lower().replace(&quot; &quot;, &quot;-&quot;)
+
+    print(f&quot;Game: {marketwatch.get_game(games1)} \n&quot;)
+    print(f&quot;Game Settings: {marketwatch.get_game_settings(games1)} \n&quot;)
+
+    print(f&quot;Leaderboard: {marketwatch.get_leaderboard(games1)} \n&quot;)
+    print(f&quot;Porfolio: {marketwatch.get_portfolio(games1)} \n&quot;)
+
+    print(f&quot;Position: {marketwatch.get_positions(games1)}&quot;)
+    print(f&quot;Orders Pending: {marketwatch.get_pending_orders(games1)}&quot;)
+    marketwatch.buy(games1, &quot;AAPL&quot;, 100)
+
+    print(f&quot;Position diff: {marketwatch.get_positions(games1)}&quot;)
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.19047be9.min.js"></script>
+      
+    
+  </body>
+</html>

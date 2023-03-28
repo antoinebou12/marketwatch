@@ -1,5 +1,19 @@
 ### Example
 
+This code snippet shows an example usage of the `MarketWatch` class. It first imports the `os` module and uses it to retrieve the user's MarketWatch username and password from the environment variables `MARKETWATCH_USERNAME` and `MARKETWATCH_PASSWORD`. It then creates a `MarketWatch` object with these credentials.
+
+The example code then demonstrates the usage of several methods provided by the `MarketWatch` class, including:
+
+* `get_price(ticker)`: This method takes a stock ticker as an argument and returns its current price.
+* `get_games()`: This method returns a list of games the user is currently playing on MarketWatch.
+* `get_game(game_id)`: This method takes a game ID as an argument and returns details about the game, such as its name, start and end dates, and current ranking.
+* `get_game_settings(game_id)`: This method takes a game ID as an argument and returns its settings, such as the starting cash balance and trading rules.
+* `get_leaderboard(game_id)`: This method takes a game ID as an argument and returns the current leaderboard for that game.
+* `get_portfolio(game_id)`: This method takes a game ID as an argument and returns the user's portfolio for that game, including information such as the quantity and value of each holding.
+* `get_positions(game_id)`: This method takes a game ID as an argument and returns the user's current positions for that game.
+* `get_pending_orders(game_id)`: This method takes a game ID as an argument and returns the user's pending orders for that game.
+* `buy(game_id, ticker, quantity)`: This method takes a game ID, stock ticker, and quantity as arguments and places a buy order for the specified quantity of shares.
+
 ```
 if __name__ == "__main__":
     import os

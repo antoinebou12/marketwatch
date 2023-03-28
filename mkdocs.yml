@@ -11,7 +11,11 @@ plugins:
 
 nav:
   - Home: index.md
-  - API: api.md
-  - Examples: examples.md
   - About: about.md
+  - Getting Started: getting-started.md
+  - Explanation: explanation.md
+  - Examples: examples.md
+  - API Reference: api.md
+  - Tutorials: tutorials.md
   - Reference: reference.md
+  - Contacts: contacts.md
