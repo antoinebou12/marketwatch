@@ -8,23 +8,29 @@ class MarketWatchGame(MarketWatch):
         self.game = self.get_game()
         self.ledger_id = super().get_ledger_id(self.game_id)
 
-    def get_game_settings(self):
+    def get_settings(self):
         return super().get_game_settings(self.game_id)
 
-    def get_game_leaderboard(self):
+    def get_leaderboard(self):
         return super().get_leaderboard(self.game_id)
 
-    def get_game_orders(self):
+    def get_orders(self):
         return super().get_pending_orders(self.game_id)
 
-    def get_game_portfolio(self):
+    def get_portfolio(self):
         return super().get_portfolio(self.game_id)
 
     def get_game(self):
         return super().get_game(self.game_id)
 
-    def get_portfolio_performance(self, game_id: str, download: bool = False, next_page_url: str = None):
-        return super().get_portfolio_performance(game_id, download, next_page_url)
+    def get_portfolio_performance(self, download: bool = False, next_page_url: str = None):
+        return super().get_portfolio_performance(self.game_id, download, next_page_url)
 
-    def get_transactions(self, game_id: str, download: bool = False, next_page_url: str = None):
-        return super().get_transactions(game_id, download, next_page_url)
+    def get_transactions(self, download: bool = False, next_page_url: str = None):
+        return super().get_transactions(self.game_id, download, next_page_url)
+
+    def get_positions(self, download: bool = False):
+        return super().get_positions(self.game_id, download)
+
+    def get_ledger_id(self):
+        return super().get_ledger_id(self.game_id)
