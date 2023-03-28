@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../api/">
+        <link rel="prev" href="../explanation/">
       
       
-        <link rel="next" href="../about/">
+        <link rel="next" href="../api/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
@@ -172,8 +172,38 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
-        API
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../explanation/" class="md-nav__link">
+        Explanation
       </a>
     </li>
   
@@ -239,8 +269,23 @@
   
   
     <li class="md-nav__item">
-      <a href="../about/" class="md-nav__link">
-        About
+      <a href="../api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        Tutorials
       </a>
     </li>
   
@@ -256,6 +301,21 @@
     <li class="md-nav__item">
       <a href="../reference/" class="md-nav__link">
         Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contacts/" class="md-nav__link">
+        Contacts
       </a>
     </li>
   
@@ -310,6 +370,19 @@
   <h1>Examples</h1>
 
 <h3 id="example">Example</h3>
+<p>This code snippet shows an example usage of the <code>MarketWatch</code> class. It first imports the <code>os</code> module and uses it to retrieve the user's MarketWatch username and password from the environment variables <code>MARKETWATCH_USERNAME</code> and <code>MARKETWATCH_PASSWORD</code>. It then creates a <code>MarketWatch</code> object with these credentials.</p>
+<p>The example code then demonstrates the usage of several methods provided by the <code>MarketWatch</code> class, including:</p>
+<ul>
+<li><code>get_price(ticker)</code>: This method takes a stock ticker as an argument and returns its current price.</li>
+<li><code>get_games()</code>: This method returns a list of games the user is currently playing on MarketWatch.</li>
+<li><code>get_game(game_id)</code>: This method takes a game ID as an argument and returns details about the game, such as its name, start and end dates, and current ranking.</li>
+<li><code>get_game_settings(game_id)</code>: This method takes a game ID as an argument and returns its settings, such as the starting cash balance and trading rules.</li>
+<li><code>get_leaderboard(game_id)</code>: This method takes a game ID as an argument and returns the current leaderboard for that game.</li>
+<li><code>get_portfolio(game_id)</code>: This method takes a game ID as an argument and returns the user's portfolio for that game, including information such as the quantity and value of each holding.</li>
+<li><code>get_positions(game_id)</code>: This method takes a game ID as an argument and returns the user's current positions for that game.</li>
+<li><code>get_pending_orders(game_id)</code>: This method takes a game ID as an argument and returns the user's pending orders for that game.</li>
+<li><code>buy(game_id, ticker, quantity)</code>: This method takes a game ID, stock ticker, and quantity as arguments and places a buy order for the specified quantity of shares.</li>
+</ul>
 <pre><code>if __name__ == &quot;__main__&quot;:
     import os
     username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)

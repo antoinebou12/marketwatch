@@ -9,22 +9,24 @@
       
       
       
+        <link rel="prev" href="../about/">
       
-        <link rel="next" href="about/">
       
-      <link rel="icon" href="assets/images/favicon.png">
+        <link rel="next" href="../explanation/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
     
     
       
-        <title>MarketWatch API</title>
+        <title>Getting Started - MarketWatch API</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.240905d7.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.240905d7.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -40,9 +42,9 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -67,7 +69,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#marketwatch-api-python-library" class="md-skip">
+        <a href="#marketwatch-python-library" class="md-skip">
           Skip to content
         </a>
       
@@ -83,7 +85,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="MarketWatch API" class="md-header__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
+    <a href=".." title="MarketWatch API" class="md-header__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -102,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Getting Started
             
           </span>
         </div>
@@ -136,7 +138,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="MarketWatch API" class="md-nav__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
+    <a href=".." title="MarketWatch API" class="md-nav__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -146,6 +148,36 @@
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
     
       
       
@@ -165,12 +197,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Home
+          Getting Started
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="." class="md-nav__link md-nav__link--active">
-        Home
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Getting Started
       </a>
       
         
@@ -189,13 +221,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table-of-contents" class="md-nav__link">
-    Table Of Contents
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     Installation
   </a>
@@ -211,25 +236,12 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#import" class="md-nav__link">
-    Import
+  <a href="#examples" class="md-nav__link">
+    Examples
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#login" class="md-nav__link">
-    Login
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-price" class="md-nav__link">
-    Get Price
-  </a>
-  
-</li>
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#get-games" class="md-nav__link">
@@ -239,65 +251,56 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get-game" class="md-nav__link">
-    Get Game
+  <a href="#get-portfolio" class="md-nav__link">
+    Get portfolio
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#get-game-settings" class="md-nav__link">
-    Get Game Settings
+  <a href="#buy-and-sell-stocks" class="md-nav__link">
+    Buy and Sell stocks
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-leaderboard" class="md-nav__link">
-    Get Leaderboard
+    Get leaderboard
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#get-portfolio" class="md-nav__link">
-    Get Portfolio
+  <a href="#get-game-settings" class="md-nav__link">
+    Get game settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-stock-price" class="md-nav__link">
+    Get stock price
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-positions" class="md-nav__link">
-    Get Positions
+    Get positions
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-pending-orders" class="md-nav__link">
-    Get Pending Orders
+    Get pending orders
   </a>
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#buy" class="md-nav__link">
-    Buy
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sell" class="md-nav__link">
-    Sell
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
-  </a>
+      </ul>
+    </nav>
   
 </li>
         
@@ -322,37 +325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="about/" class="md-nav__link">
-        About
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="getting-started/" class="md-nav__link">
-        Getting Started
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="explanation/" class="md-nav__link">
+      <a href="../explanation/" class="md-nav__link">
         Explanation
       </a>
     </li>
@@ -367,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="examples/" class="md-nav__link">
+      <a href="../examples/" class="md-nav__link">
         Examples
       </a>
     </li>
@@ -382,7 +355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/" class="md-nav__link">
+      <a href="../api/" class="md-nav__link">
         API Reference
       </a>
     </li>
@@ -397,7 +370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorials/" class="md-nav__link">
+      <a href="../tutorials/" class="md-nav__link">
         Tutorials
       </a>
     </li>
@@ -412,7 +385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="../reference/" class="md-nav__link">
         Reference
       </a>
     </li>
@@ -427,7 +400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contacts/" class="md-nav__link">
+      <a href="../contacts/" class="md-nav__link">
         Contacts
       </a>
     </li>
@@ -461,13 +434,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table-of-contents" class="md-nav__link">
-    Table Of Contents
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     Installation
   </a>
@@ -483,25 +449,12 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#import" class="md-nav__link">
-    Import
+  <a href="#examples" class="md-nav__link">
+    Examples
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#login" class="md-nav__link">
-    Login
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-price" class="md-nav__link">
-    Get Price
-  </a>
-  
-</li>
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#get-games" class="md-nav__link">
@@ -511,65 +464,56 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#get-game" class="md-nav__link">
-    Get Game
+  <a href="#get-portfolio" class="md-nav__link">
+    Get portfolio
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#get-game-settings" class="md-nav__link">
-    Get Game Settings
+  <a href="#buy-and-sell-stocks" class="md-nav__link">
+    Buy and Sell stocks
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-leaderboard" class="md-nav__link">
-    Get Leaderboard
+    Get leaderboard
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#get-portfolio" class="md-nav__link">
-    Get Portfolio
+  <a href="#get-game-settings" class="md-nav__link">
+    Get game settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-stock-price" class="md-nav__link">
+    Get stock price
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-positions" class="md-nav__link">
-    Get Positions
+    Get positions
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-pending-orders" class="md-nav__link">
-    Get Pending Orders
+    Get pending orders
   </a>
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#buy" class="md-nav__link">
-    Buy
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sell" class="md-nav__link">
-    Sell
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
-  </a>
+      </ul>
+    </nav>
   
 </li>
         
@@ -593,79 +537,59 @@
                   
 
 
-<h1 id="marketwatch-api-python-library">Marketwatch API Python Library</h1>
-<h2 id="table-of-contents">Table Of Contents</h2>
-<ul>
-<li><a href="#about">About</a></li>
-<li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#explanation">Explanation</a></li>
-<li><a href="#examples">Examples</a></li>
-<li><a href="#api">API Reference</a></li>
-<li><a href="#tutorials">Tutorials</a></li>
-<li><a href="#reference">Reference</a></li>
-<li><a href="#contacts">Contacts</a></li>
-</ul>
-<p><br></p>
-<p><img alt="PyPI" src="https://img.shields.io/pypi/v/marketwatch" />
-<img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/marketwatch" />
-<img alt="PyPI - License" src="https://img.shields.io/pypi/l/marketwatch" />
-<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/marketwatch" />
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/antoinebou12/marketwatch" />
-<a href="https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml"><img alt="Publish 📦 to PyPI" src="https://github.com/antoinebou12/marketwatch/actions/workflows/python-publish.yml/badge.svg?branch=main" /></a>
-<a href="https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml"><img alt="Python Test and Build" src="https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml/badge.svg" /></a>
-<img alt="Coverage" src="https://raw.githubusercontent.com/antoinebou12/marketwatch/main/.github/badge/coverage.svg" /></p>
-<p>https://www.marketwatch.com</p>
-<p>A Python libary to interact with the MarketWatch Stock Market Game
-Based on code from</p>
-<ul>
-<li>https://github.com/kevindong/MarketWatch_API/</li>
-<li>https://github.com/bwees/pymarketwatch</li>
-</ul>
+<h1 id="marketwatch-python-library">MarketWatch Python Library</h1>
+<p>This is a Python library for interacting with the <a href="https://www.marketwatch.com/">MarketWatch</a> virtual trading platform. The library provides an easy-to-use interface for performing various actions such as getting game details, portfolio information, buying and selling stocks, getting leaderboard information, and more.</p>
 <h2 id="installation">Installation</h2>
-<pre><code>pip install marketwatch
-</code></pre>
-<pre><code>pip install git+https://github.com/antoinebou12/marketwatch.git
-</code></pre>
-<pre><code>git clone https://github.com/antoinebou12/marketwatch.git
+<pre><code class="language-python">pip install marketwatch
 </code></pre>
 <h2 id="usage">Usage</h2>
-<h3 id="import">Import</h3>
-<pre><code>from marketwatch import MarketWatch
+<p>First, you need to create an account on <a href="https://www.marketwatch.com/">MarketWatch</a> and then create a virtual game.</p>
+<p>Once you have created a game, you will be able to get the game's <code>id</code> from its URL, which will be used throughout the library.</p>
+<pre><code class="language-python">if __name__ == &quot;__main__&quot;:
+    import os
+    username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)
+    password = os.environ.get(&quot;MARKETWATCH_PASSWORD&quot;)
+
+    marketwatch = MarketWatch(username, password)
 </code></pre>
-<h3 id="login">Login</h3>
-<pre><code>marketwatch = MarketWatch(username, password)
+<h3 id="examples">Examples</h3>
+<pre><code class="language-python">import os
+from marketwatch import MarketWatch
 </code></pre>
-<h3 id="get-price">Get Price</h3>
-<pre><code>marketwatch.get_price(&quot;AAPL&quot;)
+<pre><code class="language-python"># Login
+mw = MarketWatch(os.environ[&quot;MARKETWATCH_USERNAME&quot;], os.environ[&quot;MARKETWATCH_PASSWORD&quot;])
 </code></pre>
-<h3 id="get-games">Get Games</h3>
-<pre><code>marketwatch.get_games()
+<h4 id="get-games">Get Games</h4>
+<pre><code class="language-python">mw.get_games()
 </code></pre>
-<h3 id="get-game">Get Game</h3>
-<pre><code>marketwatch.get_game(&quot;game-name&quot;)
+<p>This method returns a list of games the user has created or joined. For each game, you get its <code>name</code>, <code>url</code>, <code>id</code>, <code>return</code>, <code>total_return</code>, <code>rank</code>, <code>end</code>, and <code>players</code>.</p>
+<h4 id="get-portfolio">Get portfolio</h4>
+<pre><code class="language-python">mw.get_portfolio(game_id)
 </code></pre>
-<h3 id="get-game-settings">Get Game Settings</h3>
-<pre><code>marketwatch.get_game_settings(&quot;game-name&quot;)
+<p>This method returns a dictionary containing information about the user's portfolio, including the <code>ticker</code>, <code>quantity</code>, <code>price</code>, <code>value</code>, and <code>value_percentage</code> for each holding. <code>game_id</code> is the <code>id</code> of the game you want to retrieve the portfolio for.</p>
+<h4 id="buy-and-sell-stocks">Buy and Sell stocks</h4>
+<pre><code class="language-python">mw.buy(game_id, ticker, quantity)
+mw.sell(game_id, ticker, quantity)
 </code></pre>
-<h3 id="get-leaderboard">Get Leaderboard</h3>
-<pre><code>marketwatch.get_leaderboard(&quot;game-name&quot;)
+<p>These methods allow the user to buy or sell stocks in the specified game. <code>game_id</code> is the <code>id</code> of the game you want to trade in, <code>ticker</code> is the stock's symbol, and <code>quantity</code> is the number of shares you want to buy or sell.</p>
+<h4 id="get-leaderboard">Get leaderboard</h4>
+<pre><code class="language-python">mw.get_leaderboard(game_id)
 </code></pre>
-<h3 id="get-portfolio">Get Portfolio</h3>
-<pre><code>marketwatch.get_portfolio(&quot;game-name&quot;)
+<p>This method returns a list of the top players in the specified game. For each player, you get their <code>rank</code>, <code>name</code>, <code>return</code>, and <code>return_percentage</code>. <code>game_id</code> is the <code>id</code> of the game you want to retrieve the leaderboard for.</p>
+<h4 id="get-game-settings">Get game settings</h4>
+<pre><code class="language-python">mw.get_game_settings(game_id)
 </code></pre>
-<h3 id="get-positions">Get Positions</h3>
-<pre><code>marketwatch.get_positions(&quot;game-name&quot;)
+<p>This method returns a dictionary containing information about the specified game, including the <code>id</code>, <code>name</code>, <code>description</code>, <code>end_date</code>, <code>currency</code>, <code>starting_balance</code>, <code>transaction_fee</code>, <code>margin_interest_rate</code>, <code>order_types</code>, and <code>leverage</code>.</p>
+<h4 id="get-stock-price">Get stock price</h4>
+<pre><code>mw.get_price(ticker)
 </code></pre>
-<h3 id="get-pending-orders">Get Pending Orders</h3>
-<pre><code>marketwatch.get_pending_orders(&quot;game-name&quot;)
-</code></pre>
-<h3 id="buy">Buy</h3>
-<pre><code>marketwatch.buy(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
-</code></pre>
-<h3 id="sell">Sell</h3>
-<pre><code>marketwatch.sell(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
-</code></pre>
-<h3 id="example">Example</h3>
+<p>This method returns the current price of the specified stock.</p>
+<h4 id="get-positions">Get positions</h4>
+<p><code>mw.get_positions(game_id)</code></p>
+<p>This method returns a list of the user's current positions in the specified game. For each position, you get the <code>ticker</code>, <code>quantity</code>, <code>price</code>, <code>gain</code>, <code>gain_percentage</code>, <code>value</code>, and <code>value_percentage</code>.</p>
+<h4 id="get-pending-orders">Get pending orders</h4>
+<p><code>mw.get_pending_orders(game_id)</code></p>
+<p>This method returns a list of the user's pending orders in the specified game. For each order, you get the <code>ticker</code>, <code>quantity</code>, <code>price</code>, <code>order_type</code>, and <code>expiration</code>.</p>
 <pre><code>if __name__ == &quot;__main__&quot;:
     import os
     username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)
@@ -727,10 +651,10 @@ Based on code from</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.19047be9.min.js"></script>
+      <script src="../assets/javascripts/bundle.19047be9.min.js"></script>
       
     
   </body>
