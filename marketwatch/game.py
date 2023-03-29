@@ -23,7 +23,9 @@ class MarketWatchGame(MarketWatch):
     def get_game(self):
         return super().get_game(self.game_id)
 
-    def get_portfolio_performance(self, download: bool = False, next_page_url: str = None):
+    def get_portfolio_performance(
+        self, download: bool = False, next_page_url: str = None
+    ):
         return super().get_portfolio_performance(self.game_id, download, next_page_url)
 
     def get_transactions(self, download: bool = False, next_page_url: str = None):
@@ -31,6 +33,3 @@ class MarketWatchGame(MarketWatch):
 
     def get_positions(self, download: bool = False):
         return super().get_positions(self.game_id, download)
-
-    def get_ledger_id(self):
-        return super().get_ledger_id(self.game_id)

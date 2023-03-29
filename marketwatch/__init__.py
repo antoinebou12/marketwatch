@@ -13,13 +13,14 @@ Example:
 	>>> mw.buy(1234, "AAPL", 1)
 	>>> mw.get_leaderboard(1234)
 """
-
 import csv
 import json
+from typing import List
 
 import httpx
 from bs4 import BeautifulSoup
 from rich.progress import track
+
 from marketwatch.exceptions import MarketWatchException
 from marketwatch.schemas import Order
 from marketwatch.schemas import OrderType
@@ -106,6 +107,8 @@ class MarketWatch:
 
         :return: None
         """
+
+        # https://sso.accounts.dowjones.com/authorize?response_type=id_token&nonce=foobar&ui_locales=en-us-x-wsj-3-0&scope=email%2Cfirst_name%2Clast_name%2Croles%2Copenid%2Cuuid&client_id=5hssEAdMy0mJTICnJNvC9TXEw3Va7jfO&redirect_uri=${CALLBACK_URI}
         login_data = {
             "client_id": self.client_id,
             "connection": "DJldap",
@@ -396,17 +399,45 @@ class MarketWatch:
 
         for row in table:
             cells = row.find_all("td")
-            sign = "-" if cells[4].find("small", {"class": "secondary"}).find("span", {"class": "point"}).text[0] == "-" else "+"
+            sign = (
+                "-"
+                if cells[4]
+                .find("small", {"class": "secondary"})
+                .find("span", {"class": "point"})
+                .text[0]
+                == "-"
+                else "+"
+            )
             ticker = cells[1].find("a", {"class": "primary"}).find("mini-quote").text
             quantity = cells[1].find("div", {"class": "secondary"}).find("small").text
             holding = cells[2].find("div", {"class": "secondary"}).text
             holding_percentage = cells[2].find("div", {"class": "primary"}).text
             price = cells[3].find("div", {"class": "primary"}).text
-            price_gain = cells[3].find("small", {"class": "secondary"}).find("span", {"class": "point"}).text
-            price_gain_percentage = cells[3].find("small", {"class": "secondary"}).find("span", {"class": "percent"}).text
+            price_gain = (
+                cells[3]
+                .find("small", {"class": "secondary"})
+                .find("span", {"class": "point"})
+                .text
+            )
+            price_gain_percentage = (
+                cells[3]
+                .find("small", {"class": "secondary"})
+                .find("span", {"class": "percent"})
+                .text
+            )
             value = cells[4].find("div", {"class": "primary"}).text
-            value_point = cells[4].find("small", {"class": "secondary"}).find("span", {"class": "point"}).text
-            value_percentage = cells[4].find("small", {"class": "secondary"}).find("span", {"class": "percent"}).text
+            value_point = (
+                cells[4]
+                .find("small", {"class": "secondary"})
+                .find("span", {"class": "point"})
+                .text
+            )
+            value_percentage = (
+                cells[4]
+                .find("small", {"class": "secondary"})
+                .find("span", {"class": "percent"})
+                .text
+            )
 
             portfolio.append(
                 {
@@ -454,7 +485,9 @@ class MarketWatch:
         }
 
     @auth
-    def get_portfolio_performance(self, game_id: str, download: bool = False, next_page_url: str = None):
+    def get_portfolio_performance(
+        self, game_id: str, download: bool = False, next_page_url: str = None
+    ):
         """
         Get the portfolio performance of a game
 
@@ -469,19 +502,22 @@ class MarketWatch:
                 f"https://www.marketwatch.com/games/{game_id}/performance"
             )
         else:
-            response = self.session.get(
-                next_page_url
-            )
+            response = self.session.get(next_page_url)
 
         if response.status_code != 200:
             raise MarketWatchException("Game not found")
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-
         # ledger_id = self.get_ledger_id(game_id=game_id)
-        ledger_id = soup.find("div", {"class": "element element--table portfolio-performance"})["pub"]
-        table = soup.find("div", {"class": "element element--table portfolio-performance"}).find("tbody").find_all("tr")
+        ledger_id = soup.find(
+            "div", {"class": "element element--table portfolio-performance"}
+        )["pub"]
+        table = (
+            soup.find("div", {"class": "element element--table portfolio-performance"})
+            .find("tbody")
+            .find_all("tr")
+        )
 
         if download:
             print("Downloaded")
@@ -503,19 +539,23 @@ class MarketWatch:
                 }
             )
 
-        cursor_next = soup.find("div", {"class": "element element--table portfolio-performance"})["cursor-next"]
+        cursor_next = soup.find(
+            "div", {"class": "element element--table portfolio-performance"}
+        )["cursor-next"]
 
         if next_page := soup.find("a", {"class": "link align--right  j-next"}):
             portfolio_performance += self.get_portfolio_performance(
                 game_id=game_id,
                 download=download,
-                next_page_url=f"https://www.marketwatch.com/games/{game_id}/performance?pub={ledger_id}&cursor={cursor_next}"
+                next_page_url=f"https://www.marketwatch.com/games/{game_id}/performance?pub={ledger_id}&cursor={cursor_next}",
             )
 
         return portfolio_performance
 
     @auth
-    def get_transactions(self, game_id: str, download: bool = False, next_page_url: str = None):
+    def get_transactions(
+        self, game_id: str, download: bool = False, next_page_url: str = None
+    ):
         """
         Get the transactions of a game
 
@@ -533,7 +573,11 @@ class MarketWatch:
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-        table = soup.find("div", {"class": "element element--table transactions"}).find("tbody").find_all("tr")
+        table = (
+            soup.find("div", {"class": "element element--table transactions"})
+            .find("tbody")
+            .find_all("tr")
+        )
 
         if download:
             return self.session.get(
@@ -555,17 +599,18 @@ class MarketWatch:
                 }
             )
 
-        cursor_next = soup.find("div", {"class": "element element--table portfolio-performance"})["cursor-next"]
+        cursor_next = soup.find(
+            "div", {"class": "element element--table portfolio-performance"}
+        )["cursor-next"]
 
         if next_page := soup.find("a", {"class": "link align--right  j-next"}):
             transactions += self.get_transactions(
                 game_id=game_id,
                 download=download,
-                next_page_url=f"https://www.marketwatch.com/games/{game_id}/transactions?cursor={cursor_next}"
+                next_page_url=f"https://www.marketwatch.com/games/{game_id}/transactions?cursor={cursor_next}",
             )
 
         return transactions
-
 
     @auth
     def get_leaderboard(self, game_id: str, download: bool = False):
@@ -641,7 +686,7 @@ class MarketWatch:
                 "need": "symbol",
                 "excludeExs": "xmstar",
                 "maxRows": 12,
-                "entitlementToken":"cecc4267a0194af89ca343805a3e57af",
+                "entitlementToken": "cecc4267a0194af89ca343805a3e57af",
                 "it": "stock,exchangetradedfund,fund",
                 "cc": "us",
                 "xe": "coindesk",
@@ -649,7 +694,6 @@ class MarketWatch:
         )
         if response.status_code != 200:
             raise MarketWatchException("Error while getting search")
-
 
         results = response.json()["symbols"][0]
         return {
@@ -1088,12 +1132,36 @@ class MarketWatch:
 
     # decorator to check if the game is down
     def check_error(func):
+        """
+        Decorator to check if the game is down
+
+        :param func: Function to decorate
+        :return: Decorated function
+        """
+
         def wrapper(*args, **kwargs):
+            """
+            Wrapper function
+
+            :param args: Arguments
+            :param kwargs: Keyword arguments
+            :return: Decorated function
+            """
             args[0].check_error_game()
             return func(*args, **kwargs)
+
         return wrapper
 
-    def create_watchlist(self, name: str):
+    def _get_ticker_uids(self, tickers: List[str]):
+        """
+        Get ticker IDs
+
+        :param tickers: List of tickers
+        :return: List of ticker IDs
+        """
+        return [self._get_ticker_uid(ticker) for ticker in tickers]
+
+    def create_watchlist(self, name: str, tickers: List[str] = None):
         """
         Create a watchlist
 
@@ -1101,7 +1169,17 @@ class MarketWatch:
         :param tickers: List of tickers
         :return: None
         """
-        response = self.session.post("https://api.marketwatch.com/api/oskar/me/marketwatch-com")
+        tickers = [] if tickers is None else self._get_ticker_uids(tickers)
+        data = {"Name": name}
+
+        if tickers:
+            data["Items"] =  tickers
+
+        response = self.session.post(
+            "https://api.marketwatch.com/api/oskar/me/marketwatch-com",
+            data=data,
+            headers={"Content-Type": "application/json"},
+        )
 
         if response.status_code != 201:
             raise MarketWatchException("Failed to create watchlist")
@@ -1131,11 +1209,14 @@ class MarketWatch:
             self._get_ticker_uid(ticker)
             items.append({"ChartingSymbol": ticker})
 
-        response = self.session.post(f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items", json=items)
+        response = self.session.post(
+            f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items",
+            data=json.dumps({"Items": items}),
+        )
 
         if response.status_code != 201:
             raise MarketWatchException("Failed to add to watchlist")
-        
+
         return response.json()
 
     def get_watchlists(self):
@@ -1145,12 +1226,45 @@ class MarketWatch:
         :return: List of watchlists
         """
 
-        response = self.session.post("https://api.marketwatch.com/api/oskar/me/marketwatch-com/1270679988639624?needed=IndustryClassification|BlueGrassChannels&showItems=true")
+        response = self.session.get(
+            "https://api.marketwatch.com/api/oskar/me/marketwatch-com/"
+        )
 
         if response.status_code != 200:
             raise MarketWatchException("Failed to get watchlists")
 
         return response.json()
+
+    def get_watchlist(self, watchlist_id: str):
+        """
+        Get a watchlist
+
+        :param watchlist_id: Watchlist ID
+        :return: Watchlist
+        """
+        response = self.session.get(
+            f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}"
+        )
+
+        if response.status_code != 200:
+            raise MarketWatchException("Failed to get watchlist")
+
+        return response.json()
+
+    def delete_watchlist(self, watchlist_id: str):
+        """
+        Delete a watchlist
+
+        :param watchlist_id: Watchlist ID
+        :return: None
+        """
+        response = self.session.delete(
+            f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}"
+        )
+
+        if response.status_code != 200:
+            raise MarketWatchException("Failed to delete watchlist")
+
 
     def delete_watchlist_item(self, watchlist_id: str, ticker: str):
         """
@@ -1161,13 +1275,26 @@ class MarketWatch:
         :return: None
         """
         ticker_uid = self._get_ticker_uid(ticker)
-        response = self.session.delete(f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items/{ticker_uid}")
+        items = self.get_watchlist(watchlist_id).get("Items")
+        key = next(
+            (
+                item.get("Key")
+                for item in items
+                if item.get("ChartingSymbol") == ticker_uid
+            ),
+            None,
+        )
+        response = self.session.delete(
+            f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items/{key}"
+        )
 
         if response.status_code != 200:
             raise MarketWatchException("Failed to delete ticker from watchlist")
 
+
 if __name__ == "__main__":
     import os
+
     username = os.environ.get("MARKETWATCH_USERNAME")
     password = os.environ.get("MARKETWATCH_PASSWORD")
 

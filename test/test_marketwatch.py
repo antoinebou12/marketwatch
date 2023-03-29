@@ -1,8 +1,13 @@
-import pytest
 import os
 
-from marketwatch import MarketWatch, MarketWatchException
-from marketwatch.schemas import OrderType, Position, PriceType, Term
+import pytest
+
+from marketwatch import MarketWatch
+from marketwatch import MarketWatchException
+from marketwatch.schemas import OrderType
+from marketwatch.schemas import Position
+from marketwatch.schemas import PriceType
+from marketwatch.schemas import Term
 
 
 @pytest.fixture
@@ -46,6 +51,7 @@ def test_get_user_id(authenticated_marketwatch):
     mw = authenticated_marketwatch
     mw.get_user_id()
 
+
 def test_get_games(authenticated_marketwatch):
     mw = authenticated_marketwatch
     games = mw.get_games()
@@ -61,6 +67,7 @@ def test_get_games(authenticated_marketwatch):
     assert "rank" in games[0]
     assert "end" in games[0]
     assert "players" in games[0]
+
 
 def test_get_game(authenticated_marketwatch):
     mw = authenticated_marketwatch
@@ -102,6 +109,7 @@ def test_get_leaderboard(authenticated_marketwatch):
     assert "transactions" in leaderboard[0]
     assert "gain" in leaderboard[0]
 
+
 def test_get_portfolio(authenticated_marketwatch):
     mw = authenticated_marketwatch
     portfolio = mw.get_portfolio("algoets-h2023")
@@ -136,9 +144,8 @@ def test_get_portfolio(authenticated_marketwatch):
     assert isinstance(portfolio["shorts_reserve"], str)
     assert isinstance(portfolio["cash_borrowed"], str)
 
-    _extracted_from_test_get_portfolio(
-        portfolio, "portfolio_allocation", "amount"
-    )
+    _extracted_from_test_get_portfolio(portfolio, "portfolio_allocation", "amount")
+
 
 def _extracted_from_test_get_portfolio(portfolio, arg1, arg2):
     assert isinstance(portfolio[arg1], list)
@@ -154,6 +161,7 @@ def test_get_price(authenticated_marketwatch):
     assert price.__contains__(".")
     assert price.__contains__("AAPL")
     assert price != ""
+
 
 def test_get_search(authenticated_marketwatch):
     mw = authenticated_marketwatch
@@ -187,6 +195,7 @@ def test_short(authenticated_marketwatch):
     assert payload is not None
     assert payload == "Submitted"
 
+
 def test_sell(authenticated_marketwatch):
     mw = authenticated_marketwatch
     payload = mw.sell("algoets-h2023", "aapl", 1)
@@ -202,6 +211,7 @@ def test_cover(authenticated_marketwatch):
     assert payload is not None
     assert payload == "Submitted"
 
+
 def test_submit(authenticated_marketwatch):
     mw = authenticated_marketwatch
     payload = mw._create_payload(
@@ -213,17 +223,21 @@ def test_submit(authenticated_marketwatch):
         OrderType.BUY,
         Term.INDEFINITE,
     )
-    response = mw._submit("algoets-h2023", {
-        "djid": "13-3122",
-        "ledgerId": "_7g9NEC9_Eqy",
-        "tradeType": "Buy",
-        "shares": 1,
-        "expiresEndOfDay": False,
-        "orderType": "Market"
-    })
+    response = mw._submit(
+        "algoets-h2023",
+        {
+            "djid": "13-3122",
+            "ledgerId": "_7g9NEC9_Eqy",
+            "tradeType": "Buy",
+            "shares": 1,
+            "expiresEndOfDay": False,
+            "orderType": "Market",
+        },
+    )
     assert response is not None
     assert isinstance(response, str)
     assert response == "Submitted"
+
 
 def test__get_order_type(authenticated_marketwatch):
     mw = authenticated_marketwatch
@@ -309,11 +323,13 @@ def test_get_game_settings(authenticated_marketwatch):
     assert settings["stop_loss_orders_enabled"] is not None
     assert settings["partial_share_trading_enabled"] is not None
 
+
 def test__clean_text(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    text = _extracted_from_test__clean_text(mw, "buy aapl 1 $1.0")
-    text = _extracted_from_test__clean_text(mw, "buy aapl 1 $1.0 ")
-    text = _extracted_from_test__clean_text(mw, " buy aapl 1 $1.0  ")
+    _extracted_from_test__clean_text(mw, "buy aapl 1 $1.0")
+    _extracted_from_test__clean_text(mw, "buy aapl 1 $1.0 ")
+    _extracted_from_test__clean_text(mw, " buy aapl 1 $1.0  ")
+
 
 def _extracted_from_test__clean_text(mw, arg1):
     result = mw._clean_text(arg1)
@@ -334,3 +350,62 @@ def test__get_ticker_uid(authenticated_marketwatch):
     assert ticker_uid is not None
     assert isinstance(ticker_uid, str)
     assert ticker_uid == "STOCK/US/XNAS/AAPL"
+
+def test_create_watchlist(authenticated_marketwatch):
+    mw = authenticated_marketwatch
+    watchlist = mw.create_watchlist("test")
+    assert watchlist is not None
+    assert isinstance(watchlist, dict)
+    assert watchlist["Id"] is not None
+    assert watchlist["Name"] == "test"
+    assert watchlist["TotalItemCount"] == 0
+    assert watchlist["Revision"] == 0
+    assert watchlist["Items"] == []
+    assert watchlist["CreateDateUtc"] is not None
+    assert watchlist["LastModifiedDateUtc"] is not None
+    mw.delete_watchlist(watchlist["Id"])
+
+def test_delete_watchlist(authenticated_marketwatch):
+    mw = authenticated_marketwatch
+    watchlist = mw.create_watchlist("test")
+    assert watchlist is not None
+    mw.delete_watchlist(watchlist["Id"])
+    watchlists = mw.get_watchlists()
+    assert watchlists is not None
+    assert isinstance(watchlists, list)
+    assert len(watchlists) == 1
+
+def test_get_watchlists(authenticated_marketwatch):
+    mw = authenticated_marketwatch
+    watchlist = mw.create_watchlist("test")
+    assert watchlist is not None
+    assert isinstance(watchlist, dict)
+    assert watchlist["Id"] is not None
+    assert watchlist["Name"] == "test"
+    assert watchlist["TotalItemCount"] == 0
+    assert watchlist["Revision"] == 0
+    assert watchlist["Items"] == []
+    assert watchlist["CreateDateUtc"] is not None
+    assert watchlist["LastModifiedDateUtc"] is not None
+    watchlists = mw.get_watchlists()
+    assert watchlists is not None
+    assert isinstance(watchlists, list)
+    assert len(watchlists) == 2
+    assert watchlists[1]["Id"] == watchlist["Id"]
+    assert watchlists[0]["Name"] == "test"
+    assert watchlists[0]["TotalItemCount"] == 0
+    assert watchlists[0]["Revision"] == 0
+    assert watchlists[0]["Items"] == []
+    assert watchlists[0]["CreateDateUtc"] is not None
+    assert watchlists[0]["LastModifiedDateUtc"] is not None
+    mw.delete_watchlist(watchlist["Id"])
+
+def test_add_to_watchlist(authenticated_marketwatch):
+    mw = authenticated_marketwatch
+    watchlists = mw.get_watchlists()
+    watchlist = mw.add_to_watchlist(watchlists[0]["Id"], "aapl")
+    assert watchlist is not None
+    assert isinstance(watchlist, list)
+    assert len(watchlist) == 1
+    assert watchlist[0]["ChartingSymbol"] == "aapl"
+    mw.delete_watchlist_item(watchlists[0]["Id"], "aapl")

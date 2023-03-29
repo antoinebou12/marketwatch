@@ -5,7 +5,7 @@ If you have any questions or comments regarding the MarketWatch Python library, 
 
 ## Github
 
-The source code for the MarketWatch Python library can be found on Github at 
+The source code for the MarketWatch Python library can be found on Github at
 
 [https://github.com/antoinebou12/MarketWatch]()
 
@@ -13,7 +13,7 @@ You can create an issue or pull request on the repository page for any bugs or f
 
 ## Twitter
 
-You can also follow the developer on Twitter at 
+You can also follow the developer on Twitter at
 
 [https://twitter.com/antoinebou12](https://twitter.com/antoinebou12)
 
@@ -21,7 +21,7 @@ for updates on the library and other projects.
 
 ## Linkedin
 
-The developer's LinkedIn profile can be found at 
+The developer's LinkedIn profile can be found at
 
 [https://linkedin.com/in/antoinebou12](https://linkedin.com/in/antoinebou12)
 

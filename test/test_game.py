@@ -1,8 +1,10 @@
-import pytest
-from marketwatch import MarketWatch
-from marketwatch.game import MarketWatchGame
-from marketwatch.exceptions import MarketWatchException, MarketWatchGameException
 import os
+
+import pytest
+
+from marketwatch.exceptions import MarketWatchException
+from marketwatch.game import MarketWatchGame
+
 
 @pytest.fixture
 def authenticated_marketwatch():
@@ -15,6 +17,6 @@ def authenticated_marketwatch():
     except MarketWatchException as e:
         pytest.fail(f"Failed to authenticate: {e}")
 
+
 def test_marketwatch_game_init(authenticated_marketwatch):
     assert authenticated_marketwatch is not None
-
