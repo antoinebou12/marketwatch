@@ -405,6 +405,6 @@ def test_add_to_watchlist(authenticated_marketwatch):
     assert watchlist["Items"] is not None
     assert isinstance(watchlist["Items"], list)
     assert len(watchlist["Items"]) == 1
-    assert watchlist["Items"]["ChartingSymbol"] == "STOCK/US/XNAS/AAPL"
+    assert watchlist["Items"][0]["ChartingSymbol"] == "STOCK/US/XNAS/AAPL"
     mw.delete_watchlist_item(watchlist["Id"], "AAPL")
     mw.delete_watchlist(watchlist["Id"])
