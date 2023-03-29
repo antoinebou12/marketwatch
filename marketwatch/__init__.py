@@ -1177,8 +1177,7 @@ class MarketWatch:
 
         response = self.session.post(
             "https://api.marketwatch.com/api/oskar/me/marketwatch-com",
-            data=data,
-            headers={"Content-Type": "application/json"},
+            json=data,
         )
 
         if response.status_code != 201:
@@ -1203,17 +1202,26 @@ class MarketWatch:
         :param watchlist_id: Watchlist ID
         :param tickers: List of tickers
         :return: None
+
+        {
+        "Items": [
+            {
+            "ChartingSymbol": "STOCK/US/XNAS/AAPL"
+            }
+        ]
+        }
         """
-        items = []
-        for ticker in tickers:
-            self._get_ticker_uid(ticker)
-            items.append({"ChartingSymbol": ticker})
+        data = {"Items": [{"ChartingSymbol": f"{self._get_ticker_uid(ticker)}"} for ticker in tickers]}
+
+        print(data)
 
         response = self.session.post(
             f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items",
-            data=json.dumps({"Items": items}),
+            headers={"Content-Type": "application/json"},
+            data=json.dumps(data),
         )
 
+        print(response.text)
         if response.status_code != 201:
             raise MarketWatchException("Failed to add to watchlist")
 

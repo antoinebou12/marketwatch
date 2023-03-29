@@ -14,5 +14,8 @@ class MarketWatchWatchlist(MarketWatch):
     def add_watchlist_item(self, watchlist_id: str, ticker: str):
         return super().add_to_watchlist(watchlist_id, ticker)
 
+    def create_watchlist(self, watchlist_name: str):
+        return super().create_watchlist(watchlist_name)
+
     def delete_watchlist(self, watchlist_id: str):
         return super().delete_watchlist(watchlist_id)

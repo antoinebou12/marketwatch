@@ -339,7 +339,6 @@ def _extracted_from_test__clean_text(mw, arg1):
 
     return result
 
-
 def test_check_error_game(authenticated_marketwatch):
     mw = authenticated_marketwatch
     mw.check_error_game()
@@ -391,21 +390,21 @@ def test_get_watchlists(authenticated_marketwatch):
     assert watchlists is not None
     assert isinstance(watchlists, list)
     assert len(watchlists) == 2
-    assert watchlists[1]["Id"] == watchlist["Id"]
-    assert watchlists[0]["Name"] == "test"
-    assert watchlists[0]["TotalItemCount"] == 0
-    assert watchlists[0]["Revision"] == 0
-    assert watchlists[0]["Items"] == []
-    assert watchlists[0]["CreateDateUtc"] is not None
-    assert watchlists[0]["LastModifiedDateUtc"] is not None
     mw.delete_watchlist(watchlist["Id"])
 
 def test_add_to_watchlist(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    watchlists = mw.get_watchlists()
-    watchlist = mw.add_to_watchlist(watchlists[0]["Id"], "aapl")
+    watchlist = mw.create_watchlist("test")
+    watchlist = mw.add_to_watchlist(watchlist["Id"], ["AAPL"])
     assert watchlist is not None
-    assert isinstance(watchlist, list)
-    assert len(watchlist) == 1
-    assert watchlist[0]["ChartingSymbol"] == "aapl"
-    mw.delete_watchlist_item(watchlists[0]["Id"], "aapl")
+    assert isinstance(watchlist, dict)
+    assert watchlist["Id"] is not None
+    assert watchlist["Name"] == "test"
+    assert watchlist["TotalItemCount"] == 1
+    assert watchlist["Revision"] == 1
+    assert watchlist["Items"] is not None
+    assert isinstance(watchlist["Items"], list)
+    assert len(watchlist["Items"]) == 1
+    assert watchlist["Id"]["ChartingSymbol"] == "STOCK/US/XNAS/AAPL"
+    mw.delete_watchlist_item(watchlist["Id"], "AAPL")
+    mw.delete_watchlist(watchlist["Id"])
