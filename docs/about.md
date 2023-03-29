@@ -1,4 +1,4 @@
-# # About
+# About
 
 This is a Python library for interacting with the [MarketWatch](https://www.marketwatch.com/) virtual trading platform. The library provides an easy-to-use interface for performing various actions such as getting game details, portfolio information, buying and selling stocks, getting leaderboard information, and more.
 
