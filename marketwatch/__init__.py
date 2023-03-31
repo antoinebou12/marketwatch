@@ -1030,6 +1030,7 @@ class MarketWatch:
         return positions
 
     def get_game_settings(self, game_id: str):
+        # TODO: Add more settings based on the owner's settings or not
         """
         Get game settings
 
