@@ -8,13 +8,8 @@
 
 name: Publish Python 🐍 distributions 📦 to PyPI
 
-
-
-
 on:
   create:
-    tags:
-      - v*
   release:
     types: [published]
   workflow_dispatch:
