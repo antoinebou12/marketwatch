@@ -1,0 +1,473 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../explanation/">
+      
+      
+        <link rel="next" href="../api/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
+    
+    
+      
+        <title>Examples - MarketWatch API</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.240905d7.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#example" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="MarketWatch API" class="md-header__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            MarketWatch API
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Examples
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="MarketWatch API" class="md-nav__button md-logo" aria-label="MarketWatch API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    MarketWatch API
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../explanation/" class="md-nav__link">
+        Explanation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Examples
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Examples
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contacts/" class="md-nav__link">
+        Contacts
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Examples</h1>
+
+<h3 id="example">Example</h3>
+<p>This code snippet shows an example usage of the <code>MarketWatch</code> class. It first imports the <code>os</code> module and uses it to retrieve the user's MarketWatch username and password from the environment variables <code>MARKETWATCH_USERNAME</code> and <code>MARKETWATCH_PASSWORD</code>. It then creates a <code>MarketWatch</code> object with these credentials.</p>
+<p>The example code then demonstrates the usage of several methods provided by the <code>MarketWatch</code> class, including:</p>
+<ul>
+<li><code>get_price(ticker)</code>: This method takes a stock ticker as an argument and returns its current price.</li>
+<li><code>get_games()</code>: This method returns a list of games the user is currently playing on MarketWatch.</li>
+<li><code>get_game(game_id)</code>: This method takes a game ID as an argument and returns details about the game, such as its name, start and end dates, and current ranking.</li>
+<li><code>get_game_settings(game_id)</code>: This method takes a game ID as an argument and returns its settings, such as the starting cash balance and trading rules.</li>
+<li><code>get_leaderboard(game_id)</code>: This method takes a game ID as an argument and returns the current leaderboard for that game.</li>
+<li><code>get_portfolio(game_id)</code>: This method takes a game ID as an argument and returns the user's portfolio for that game, including information such as the quantity and value of each holding.</li>
+<li><code>get_positions(game_id)</code>: This method takes a game ID as an argument and returns the user's current positions for that game.</li>
+<li><code>get_pending_orders(game_id)</code>: This method takes a game ID as an argument and returns the user's pending orders for that game.</li>
+<li><code>buy(game_id, ticker, quantity)</code>: This method takes a game ID, stock ticker, and quantity as arguments and places a buy order for the specified quantity of shares.</li>
+</ul>
+<pre><code>if __name__ == &quot;__main__&quot;:
+    import os
+    username = os.environ.get(&quot;MARKETWATCH_USERNAME&quot;)
+    password = os.environ.get(&quot;MARKETWATCH_PASSWORD&quot;)
+
+    marketwatch = MarketWatch(username, password)
+
+    print(f&quot;Price: {marketwatch.get_price('AAPL')} \n&quot;)
+    print(f&quot;Games: {marketwatch.get_games()} \n&quot;)
+
+    games1 = marketwatch.get_games()[0][&quot;name&quot;].lower().replace(&quot; &quot;, &quot;-&quot;)
+
+    print(f&quot;Game: {marketwatch.get_game(games1)} \n&quot;)
+    print(f&quot;Game Settings: {marketwatch.get_game_settings(games1)} \n&quot;)
+
+    print(f&quot;Leaderboard: {marketwatch.get_leaderboard(games1)} \n&quot;)
+    print(f&quot;Porfolio: {marketwatch.get_portfolio(games1)} \n&quot;)
+
+    print(f&quot;Position: {marketwatch.get_positions(games1)}&quot;)
+    print(f&quot;Orders Pending: {marketwatch.get_pending_orders(games1)}&quot;)
+    marketwatch.buy(games1, &quot;AAPL&quot;, 100)
+
+    print(f&quot;Position diff: {marketwatch.get_positions(games1)}&quot;)
+</code></pre>
+<pre><code>Example:
+    &gt;&gt;&gt; from marketwatch import MarketWatch
+        &gt;&gt;&gt; import os
+    &gt;&gt;&gt; mw = MarketWatch(os.environ[&quot;MARKETWATCH_USERNAME&quot;], os.environ[&quot;MARKETWATCH_PASSWORD&quot;])
+    &gt;&gt;&gt; mw.get_games()
+    &gt;&gt;&gt; mw.get_portfolio('algoets-h2023')
+    &gt;&gt;&gt; mw.buy('algoets-h2023', &quot;AAPL&quot;, 1)
+    &gt;&gt;&gt; mw.get_leaderboard('algoets-h2023')
+Results:
+    &gt;&gt;&gt; mw = MarketWatch(os.environ[&quot;MARKETWATCH_USERNAME&quot;], os.environ[&quot;MARKETWATCH_PASSWORD&quot;])
+        Login successful
+        Logged in as Antoine Boucher
+    &gt;&gt;&gt; mw.get_games()
+        [{'name': 'ALGOETS-H2023', 'url': 'https://www.marketwatch.com/games/algoets-h2023', 'id': 'algoets-h2023',                 'return': '0.17%', 'total_return': '-$1,975.21', 'rank': '17', 'end': '3/31/23', 'players': '27'}]
+    &gt;&gt;&gt; mw.get_portfolio('algoets-h2023')
+{'portfolio': [{'sign': '+', 'ticker': 'AAPD', 'quantity': '12 Shares', 'holding': '\nBuy\n', 'holding_percentage': '&lt; 1%', 'price': '$24.63', 'price_gain': '0.33', 'price_gain_percentage': '1.36%', 'value': '$295.56', 'value_percentage': '1.19%', 'value_point': '$3.48'}, {'sign': '-', 'ticker': 'AAPL', 'quantity': '589 Shares', 'holding': '\nBuy\n', 'holding_percentage': '11%', 'price': '$158.28', 'price_gain': '-1.97', 'price_gain_percentage': '-1.23%', 'value': '$93,226.92', 'value_percentage': '-0.81%', 'value_point': '-$758.50'}, {'sign': '+', 'ticker': 'AAPL', 'quantity': '47 Shares', 'holding': '\nShort\n', 'holding_percentage': '&lt; 1%', 'price': '$158.28', 'price_gain': '-1.97', 'price_gain_percentage': '-1.23%', 'value': '$7,439.16', 'value_percentage': '1.03%', 'value_point': '$77.43'}, {'sign': '+', 'ticker': 'ANCTF', 'quantity': '400 Shares', 'holding': '\nBuy\n', 'holding_percentage': '2%', 'price': '$47.80', 'price_gain': '0.75', 'price_gain_percentage': '1.59%', 'value': '$19,120.00', 'value_percentage': '1.58%', 'value_point': '$298.05'}, {'sign': '+', 'ticker': 'BAC', 'quantity': '100 Shares', 'holding': '\nBuy\n', 'holding_percentage': '&lt; 1%', 'price': '$28.49', 'price_gain': '1.35', 'price_gain_percentage': '4.97%', 'value': '$2,849.00', 'value_percentage': '1.53%', 'value_point': '$43.00'}, {'sign': '-', 'ticker': 'BLK', 'quantity': '100 Shares', 'holding': '\nBuy\n', 'holding_percentage': '8%', 'price': '$648.32', 'price_gain': '3.44', 'price_gain_percentage': '0.53%', 'value': '$64,832.00', 'value_percentage': '-1.56%', 'value_point': '-$1,025.00'}, {'sign': '-', 'ticker': 'BMO', 'quantity': '250 Shares', 'holding': '\nBuy\n', 'holding_percentage': '3%', 'price': '$85.78', 'price_gain': '1.23', 'price_gain_percentage': '1.45%', 'value': '$21,445.00', 'value_percentage': '-0.69%', 'value_point': '-$148.75'}, {'sign': '-', 'ticker': 'COIN', 'quantity': '120 Shares', 'holding': '\nBuy\n', 'holding_percentage': '&lt; 1%', 'price': '$62.54', 'price_gain': '-5.29', 'price_gain_percentage': '-7.80%', 'value': '$7,504.80', 'value_percentage': '-4.37%', 'value_point': '-$343.20'}, {'sign': '+', 'ticker': 'CPRT', 'quantity': '1 Shares', 'holding': '\nBuy\n', 'holding_percentage': '&lt; 1%', 'price': '$72.73', 'price_gain': '1.30', 'price_gain_percentage': '1.82%', 'value': '$72.73', 'value_percentage': '1.41%', 'value_point': '$1.01'}, {'sign': '+', 'ticker': 'DLMAF', 'quantity': '500 Shares', 'holding': '\nBuy\n', 'holding_percentage': '3%', 'price': '$57.14', 'price_gain': '0.19', 'price_gain_percentage': '0.33%', 'value': '$28,570.00', 'value_percentage': '0.47%', 'value_point': '$132.30'}, {'sign': '+', 'ticker': 'GE', 'quantity': '500 Shares', 'holding': '\nBuy\n', 'holding_percentage': '6%', 'price': '$93.31', 'price_gain': '1.94', 'price_gain_percentage': '2.12%', 'value': '$46,655.00', 'value_percentage': '2.84%', 'value_point': '$1,290.00'}, {'sign': '+', 'ticker': 'MA', 'quantity': '700 Shares', 'holding': '\nBuy\n', 'holding_percentage': '30%', 'price': '$354.62', 'price_gain': '2.99', 'price_gain_percentage': '0.85%', 'value': '$248,234.00', 'value_percentage': '0.21%', 'value_point': '$511.00'}, {'sign': '-', 'ticker': 'META', 'quantity': '300 Shares', 'holding': '\nBuy\n', 'holding_percentage': '7%', 'price': '$202.84', 'price_gain': '-3.17', 'price_gain_percentage': '-1.54%', 'value': '$60,852.00', 'value_percentage': '-1.11%', 'value_point': '-$684.00'}, {'sign': '-', 'ticker': 'ROST', 'quantity': '400 Shares', 'holding': '\nBuy\n', 'holding_percentage': '5%', 'price': '$100.63', 'price_gain': '-0.70', 'price_gain_percentage': '-0.69%', 'value': '$40,252.00', 'value_percentage': '-1.89%', 'value_point': '-$777.50'}, {'sign': '-', 'ticker': 'RY', 'quantity': '500 Shares', 'holding': '\nBuy\n', 'holding_percentage': '6%', 'price': '$93.55', 'price_gain': '1.36', 'price_gain_percentage': '1.48%', 'value': '$46,775.00', 'value_percentage': '-0.78%', 'value_point': '-$365.55'}, {'sign': '+', 'ticker': 'TD', 'quantity': '250 Shares', 'holding': '\nBuy\n', 'holding_percentage': '2%', 'price': '$57.93', 'price_gain': '1.38', 'price_gain_percentage': '2.44%', 'value': '$14,482.50', 'value_percentage': '1.38%', 'value_point': '$197.50'}, {'sign': '+', 'ticker': 'TSN', 'quantity': '100 Shares', 'holding': '\nBuy\n', 'holding_percentage': '&lt; 1%', 'price': '$57.99', 'price_gain': '0.93', 'price_gain_percentage': '1.63%', 'value': '$5,799.00', 'value_percentage': '1.44%', 'value_point': '$82.50'}, {'sign': '+', 'ticker': 'V', 'quantity': '500 Shares', 'holding': '\nBuy\n', 'holding_percentage': '14%', 'price': '$221.81', 'price_gain': '0.77', 'price_gain_percentage': '0.35%', 'value': '$110,905.00', 'value_percentage': '0.68%', 'value_point': '$750.00'}], 'portfolio_value': '$998,024.79', 'gain_percentage': '0.17%', 'gain': '-$1,975.21', 'return': '-0.20%', 'cash_remaining': '$186,076.85', 'buying_power': '$71,408.88', 'shorts_reserve': '$7,516.59', 'cash_borrowed': '$0.00', 'portfolio_allocation': []}
+    &gt;&gt; mw.get_leaderboard('algoets-h2023')
+    [{'rank': 'N/A', 'player': 'N/A', 'player_url': 'N/A', 'portfolio_value': 'N/A', 'gain_percentage': 'N/A', 'transactions': 'N/A', 'gain': 'N/A'}, {'rank': '1', 'player': 'Gabriel B', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=aRxpqLsZV3bh', 'portfolio_value': '$1,058,554.25', 'gain_percentage': '5.17%', 'transactions': '9', 'gain': '$58,554.25'}, {'rank': '2', 'player': 'Eric Li', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=AyX19mUAFYLl', 'portfolio_value': '$1,050,503.94', 'gain_percentage': '0.00%', 'transactions': '10', 'gain': '$50,503.94'}, {'rank': '3', 'player': 'Marcelo Guzman', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=UF59tiipo7SI', 'portfolio_value': '$1,027,631.05', 'gain_percentage': '0.41%', 'transactions': '12', 'gain': '$27,631.05'}, {'rank': '4', 'player': 'salim hmidi', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=OYkxYr5vOgZn', 'portfolio_value': '$1,024,083.28', 'gain_percentage': '0.73%', 'transactions': '23', 'gain': '$24,083.28'}, {'rank': '5', 'player': 'Belet Clément', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=wvxYWSVAE28A', 'portfolio_value': '$1,019,546.45', 'gain_percentage': '-0.59%', 'transactions': '25', 'gain': '$19,546.45'}, {'rank': '6', 'player': 'Dickson Chea', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=pbdnS0kYwMqt', 'portfolio_value': '$1,018,345.98', 'gain_percentage': '0.13%', 'transactions': '5', 'gain': '$18,345.98'}, {'rank': '7', 'player': 'Yannis Yapo', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=QpP_TrwKu562', 'portfolio_value': '$1,018,001.53', 'gain_percentage': '1.60%', 'transactions': '24', 'gain': '$18,001.53'}, {'rank': '8', 'player': 'Marius DELEUIL', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=5KAMIinx8frR', 'portfolio_value': '$1,016,723.61', 'gain_percentage': '3.92%', 'transactions': '37', 'gain': '$16,723.61'}, {'rank': '9', 'player': 'Anthony Gomes', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=e7PoS_mV73Vl', 'portfolio_value': '$1,016,281.94', 'gain_percentage': '-1.64%', 'transactions': '4', 'gain': '$16,281.94'}, {'rank': '10', 'player': 'Sourivong Keoborakoth', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=rlrO8fbS5XvG', 'portfolio_value': '$1,013,989.90', 'gain_percentage': '0.22%', 'transactions': '3', 'gain': '$13,989.90'}, {'rank': '11', 'player': 'Raphael Leblanc', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=RkriElAkDawr', 'portfolio_value': '$1,005,545.78', 'gain_percentage': '3.24%', 'transactions': '3', 'gain': '$5,545.78'}, {'rank': '12', 'player': 'Ariel Sashcov', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=lFPDAA1uqVwU', 'portfolio_value': '$1,002,891.74', 'gain_percentage': '-0.18%', 'transactions': '10', 'gain': '$2,891.74'}, {'rank': '13', 'player': 'oue oue', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=_fnpQ0VQWYw4', 'portfolio_value': '$1,001,443.57', 'gain_percentage': '0.19%', 'transactions': '1', 'gain': '$1,443.57'}, {'rank': '14', 'player': 'Alexis Macagno', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=fS8fkt43cXPF', 'portfolio_value': '$1,001,132.13', 'gain_percentage': '0.27%', 'transactions': '6', 'gain': '$1,132.13'}, {'rank': '15', 'player': 'Nadim Mejri', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=QC9NsO3vvpgO', 'portfolio_value': '$1,000,320.86', 'gain_percentage': '-0.15%', 'transactions': '22', 'gain': '$320.86'}, {'rank': '16', 'player': 'Wiamou Odilon Kohoun', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=nXN7msIbjGBw', 'portfolio_value': '$1,000,079.87', 'gain_percentage': '0.00%', 'transactions': '4', 'gain': '$79.87'}, {'rank': '17', 'player': 'Antoine Boucher', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=_7g9NEC9_Eqy', 'portfolio_value': '$998,024.79', 'gain_percentage': '0.17%', 'transactions': '256', 'gain': '-$1,975.21'}, {'rank': '18', 'player': 'Michel-Ange Rodriguez', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=WbjMeERMT_K9', 'portfolio_value': '$980,616.14', 'gain_percentage': '-1.37%', 'transactions': '1', 'gain': '-$19,383.86'}, {'rank': '19', 'player': 'Kevin D', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=L4yFHrYxv8Zt', 'portfolio_value': '$976,684.77', 'gain_percentage': '0.55%', 'transactions': '6', 'gain': '-$23,315.23'}, {'rank': '20', 'player': 'Mohamed Ilias', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=3OFiPTAQg0sW', 'portfolio_value': '$957,943.44', 'gain_percentage': '-2.79%', 'transactions': '8', 'gain': '-$42,056.57'}, {'rank': '21', 'player': 'Florent Duchesne', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=lBPD30iAGrV3', 'portfolio_value': '$879,949.53', 'gain_percentage': '-7.70%', 'transactions': '1', 'gain': '-$120,050.47'}, {'rank': 'N/A', 'player': 'Sadia Hussain', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=3eF9rBieBk_R', 'portfolio_value': '$1,000,000.00', 'gain_percentage': '0.00%', 'transactions': '0', 'gain': '$0.00'}, {'rank': 'N/A', 'player': 'Ilyes Essid', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=h56WzTZABaMW', 'portfolio_value': '$1,000,000.00', 'gain_percentage': '0.00%', 'transactions': '0', 'gain': '$0.00'}, {'rank': 'N/A', 'player': 'Ilyes Essid', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=uqVnT7cFiwFR', 'portfolio_value': '$1,000,000.00', 'gain_percentage': '0.00%', 'transactions': '0', 'gain': '$0.00'}, {'rank': 'N/A', 'player': 'mathieu rochat', 'player_url': 'https://www.marketwatch.com/games/algoets-h2023/portfolio?pub=ySePrgIvU7dE', 'portfolio_value': '$1,000,000.00', 'gain_percentage': '0.00%', 'transactions': '0', 'gain': '$0.00'}]
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.19047be9.min.js"></script>
+      
+    
+  </body>
+</html>

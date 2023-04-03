@@ -10,6 +10,10 @@ from marketwatch.schemas import PriceType
 from marketwatch.schemas import Term
 
 
+GAME_OWNER = "marketwatchapiunittest"
+GAME = "algoets-h2023"
+
+
 @pytest.fixture
 def authenticated_marketwatch():
     username = os.environ.get("MARKETWATCH_USERNAME")
@@ -71,7 +75,7 @@ def test_get_games(authenticated_marketwatch):
 
 def test_get_game(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    game = mw.get_game("algoets-h2023")
+    game = mw.get_game(GAME_OWNER)
     assert game is not None
     assert isinstance(game, dict)
     assert "name" in game
@@ -96,7 +100,7 @@ def test_get_game(authenticated_marketwatch):
 
 def test_get_leaderboard(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    leaderboard = mw.get_leaderboard("algoets-h2023")
+    leaderboard = mw.get_leaderboard(GAME_OWNER)
     assert leaderboard is not None
     assert isinstance(leaderboard, list)
     assert len(leaderboard) > 0
@@ -112,7 +116,7 @@ def test_get_leaderboard(authenticated_marketwatch):
 
 def test_get_portfolio(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    portfolio = mw.get_portfolio("algoets-h2023")
+    portfolio = mw.get_portfolio(GAME_OWNER)
     assert portfolio is not None
     assert isinstance(portfolio, dict)
     assert "portfolio" in portfolio
@@ -183,14 +187,14 @@ def test_get_search(authenticated_marketwatch):
 
 def test_buy(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    payload = mw.buy("algoets-h2023", "aapl", 1)
+    payload = mw.buy(GAME_OWNER, "aapl", 1)
     assert payload is not None
     assert payload == "Submitted"
 
 
 def test_short(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    payload = mw.short("algoets-h2023", "aapl", 1)
+    payload = mw.short(GAME_OWNER, "aapl", 1)
     assert payload is not None
     assert payload is not None
     assert payload == "Submitted"
@@ -198,7 +202,7 @@ def test_short(authenticated_marketwatch):
 
 def test_sell(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    payload = mw.sell("algoets-h2023", "aapl", 1)
+    payload = mw.sell(GAME_OWNER, "aapl", 1)
     assert payload is not None
     assert payload is not None
     assert payload == "Submitted"
@@ -206,7 +210,7 @@ def test_sell(authenticated_marketwatch):
 
 def test_cover(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    payload = mw.cover("algoets-h2023", "aapl", 1)
+    payload = mw.cover(GAME_OWNER, "aapl", 1)
     assert payload is not None
     assert payload is not None
     assert payload == "Submitted"
@@ -215,7 +219,7 @@ def test_cover(authenticated_marketwatch):
 def test_submit(authenticated_marketwatch):
     mw = authenticated_marketwatch
     payload = mw._create_payload(
-        "algoets-h2023",
+        GAME_OWNER,
         "aapl",
         1,
         PriceType.MARKET,
@@ -224,7 +228,7 @@ def test_submit(authenticated_marketwatch):
         Term.INDEFINITE,
     )
     response = mw._submit(
-        "algoets-h2023",
+        GAME_OWNER,
         {
             "djid": "13-3122",
             "ledgerId": "_7g9NEC9_Eqy",
@@ -293,7 +297,7 @@ def test__get_order_price(authenticated_marketwatch):
 
 def test_get_positions(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    positions = mw.get_positions("algoets-h2023")
+    positions = mw.get_positions(GAME)
     assert positions is not None
     assert isinstance(positions, list)
     assert len(positions) > 0
@@ -306,7 +310,7 @@ def test_get_positions(authenticated_marketwatch):
 
 def test_get_game_settings(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    settings = mw.get_game_settings("algoets-h2023")
+    settings = mw.get_game_settings(GAME)
     assert settings is not None
     assert isinstance(settings, dict)
     assert settings["game_public"] is not None

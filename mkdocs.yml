@@ -3,11 +3,15 @@ site_name: MarketWatch API
 theme:
   name: material
   palette:
-    primary: blue
-    accent: blue
+    primary: green
+    accent: light green
+  font:
+    text: Roboto
+    code: Roboto Mono
 
 plugins:
   - mkdocstrings
+  - search
 
 nav:
   - Home: index.md

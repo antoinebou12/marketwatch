@@ -1,17 +1,5 @@
 # Marketwatch API Python Library
 
-## Table Of Contents
-
- - [About](#about)
- - [Getting Started](#getting-started)
- - [Explanation](#explanation)
- - [Examples](#examples)
- - [API Reference](#api)
- - [Tutorials](#tutorials)
- - [Reference](#reference)
- - [Contacts](#contacts)
-
-
 <br>
 
 ![PyPI](https://img.shields.io/pypi/v/marketwatch)
