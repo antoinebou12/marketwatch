@@ -37,7 +37,7 @@ class MarketWatch:
     :param password: Password
     """
 
-    def __init__(self, email, password):
+    def __init__(self, email: str, password: str):
         """
         Initialize the MarketWatch API
 
@@ -58,7 +58,7 @@ class MarketWatch:
         self.ledger_id = None
         self.games = None
 
-    def generate_csrf_token(self):
+    def generate_csrf_token(self) -> str:
         """
         Get the csrf token from the login page
 
@@ -67,7 +67,7 @@ class MarketWatch:
         client = self.session.get("https://sso.accounts.dowjones.com/login-page")
         return client.cookies["csrf"]
 
-    def get_client_id(self):
+    def get_client_id(self) -> str:
         """
         Generate a client id
 
@@ -87,7 +87,7 @@ class MarketWatch:
         if user.status_code == 200:
             return user.json()["id"]
 
-    def get_ledger_id(self, game_id):
+    def get_ledger_id(self, game_id) -> str:
         """
         Get the ledger id
 
@@ -261,14 +261,84 @@ class MarketWatch:
             )
         return games_data
 
+    def create_game(self, name: str, start_date: int, end_date: int, **kwargs) -> dict:
+        """
+        Create a game on MarketWatch.
+
+        Args:
+            name (str): Name of the game to create.
+            start_date (int): Start date of the game in epoch time.
+            end_date (int): End date of the game in epoch time.
+            **kwargs: Additional optional parameters to configure the game.
+
+        Returns:
+            dict: A dictionary containing information about the created game.
+
+        Raises:
+            MarketWatchException: If game creation fails.
+        """
+        url = 'https://vse-api.marketwatch.com/v1/games'
+        headers = {'Content-Type': 'application/json'}
+
+        # Construct payload with default and optional parameters
+        payload = {
+            "name": name,
+            "uri": kwargs.get('uri', name),
+            "startDateUtc": start_date,
+            "endDateUtc": end_date,
+            "allowJoinAfterStart": kwargs.get('allowJoinAfterStart', True),
+            "privacyPortfolios": kwargs.get('privacyPortfolios', 'public'),
+            "privacyGame": kwargs.get('privacyGame', 'public'),
+            "allowComment": kwargs.get('allowComment', True),
+            "description": kwargs.get('description', ''),
+            "startingAmount": kwargs.get('startingAmount', 100000),
+            "commissionPerTrade": kwargs.get('commissionPerTrade', 10),
+            "creditInterestRate": kwargs.get('creditInterestRate', 0),
+            "debitInterestRate": kwargs.get('debitInterestRate', 0),
+            "minimumTradePrice": kwargs.get('minimumTradePrice', 2),
+            "maximumTradePrice": kwargs.get('maximumTradePrice', 500000),
+            "allowShortSelling": kwargs.get('allowShortSelling', True),
+            "marginEnabled": kwargs.get('marginEnabled', True),
+            "allowLimitOrders": kwargs.get('allowLimitOrders', False),
+            "allowStopOrders": kwargs.get('allowStopOrders', False),
+            "allowPartialShares": kwargs.get('allowPartialShares', False),
+        }
+
+        # Make request to create game
+        response = self.session.post(
+            url,
+            headers=headers,
+            json=payload,
+        )
+
+        # Raise exception if game creation fails
+        if response.status_code != 200:
+            raise MarketWatchException('Failed to create game')
+
+        # Return information about created game
+        return self.get_game(name)
+
+
     @auth
     def get_game(self, game_id: str) -> list:
         """
         Get a game
-        {'name': 'algoets-h2023', 'title': 'ALGOETS-H2023', 'time': 'Game ends in 4 days', 'url': 'https://www.marketwatch.com/games/algoets-h2023', 'start_date': 'Mar 20, 2023', 'end_date': 'Mar 31, 2023', 'players': '27', 'creator': 'Mohamed Ilias',
-                        'rank': '15', 'portfolio_value': '$996,289.15', 'gain_percentage': '0.00%', 'gain': '-$3,710.85', 'return': '-0.37%', 'cash_remaining': '$249,845.55', 'buying_power': '$143,734.12', 'shorts_reserve': '$0.00', 'cash_borrowed': '$0.00'}
+        {
+        'name': 'algoets-h2023',
+        'title': 'ALGOETS-H2023',
+        'time': 'Game ends in 4 days',
+        'url': 'https://www.marketwatch.com/games/algoets-h2023',
+        'start_date': 'Mar 20, 2023', 'end_date': 'Mar 31, 2023',
+        'players': '27', 'creator': 'Mohamed Ilias',
+        'rank': '15', 'portfolio_value': '$996,289.15',
+        'gain_percentage': '0.00%', 'gain': '-$3,710.85',
+        'return': '-0.37%', 'cash_remaining': '$249,845.55',
+        'buying_power': '$143,734.12',
+        'shorts_reserve': '$0.00',
+        'cash_borrowed': '$0.00'
+        }
 
-                        :param game_id: Game id
+        :param game_id: Game id
         :return: Game data
         """
         game_page = self.session.get(f"https://www.marketwatch.com/games/{game_id}")
@@ -509,12 +579,10 @@ class MarketWatch:
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # ledger_id = self.get_ledger_id(game_id=game_id)
-        ledger_id = soup.find(
-            "div", {"class": "element element--table portfolio-performance"}
-        )["pub"]
+        ledger_id = self.get_ledger_id(game_id=game_id)
         table = (
-            soup.find("div", {"class": "element element--table portfolio-performance"})
+            soup.find("div", {"class": "portfolio-performance"})
+            .find("table", {"class": "table--primary"})
             .find("tbody")
             .find_all("tr")
         )
@@ -1030,7 +1098,6 @@ class MarketWatch:
         return positions
 
     def get_game_settings(self, game_id: str):
-        # TODO: Add more settings based on the owner's settings or not
         """
         Get game settings
 
@@ -1045,6 +1112,7 @@ class MarketWatch:
         def clean_text(text):
             return text.replace("$", "").replace(",", "").replace("%", "")
 
+        # Extract the game settings from the option tables
         settings = {
             "game_public": option_tables[0]
             .find_all("td", {"class": "table__cell"})[1]
@@ -1107,6 +1175,8 @@ class MarketWatch:
             .text.strip()
             == "Enabled",
         }
+
+        return settings
 
         return settings
 
