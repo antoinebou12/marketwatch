@@ -1,3 +1,9 @@
+"""
+MarketWatch Schemas
+
+This file contains the schemas for the MarketWatch API.
+"""
+
 from enum import Enum
 
 

@@ -1,35 +1,115 @@
+"""
+This module contains the MarketWatchGame class.
+
+The MarketWatchGame class is a subclass of the MarketWatch class.
+It is used to interact with a specific game on MarketWatch.
+
+Example:
+    from marketwatch import MarketWatchGame
+
+    game = MarketWatchGame(email, password, game_id)
+    game.settings
+    game.leaderboard
+    game.orders
+    game.portfolio
+    game.game
+    game.portfolio_performance
+
+"""
+
 from marketwatch import MarketWatch
 
 
 class MarketWatchGame(MarketWatch):
-    def __init__(self, email, password, game_id):
+    """
+    MarketWatchGame class is a subclass of MarketWatch class.
+    It is used to interact with a specific game on MarketWatch.
+    """
+    def __init__(self, email: str, password: str, game_id: str) -> None:
         super().__init__(email, password)
-        self.game_id = game_id
-        self.game = self.get_game()
-        self.ledger_id = super().get_ledger_id(self.game_id)
+        self._id = game_id
+        self.ledger_id = super().get_ledger_id(self._id)
 
-    def get_settings(self):
-        return super().get_game_settings(self.game_id)
+    @property
+    def settings(self) -> dict:
+        """
+        Returns the game settings for the game.
+        :return: dict
+        """
+        return super().get_game_settings(self._id)
 
-    def get_leaderboard(self):
-        return super().get_leaderboard(self.game_id)
+    @property
+    def leaderboard(self)-> dict:
+        """
+        Returns the leaderboard for the game.
+        :return: dict
+        """
+        return super().get_leaderboard(self._id)
 
-    def get_orders(self):
-        return super().get_pending_orders(self.game_id)
+    @property
+    def orders(self):
+        """
+        Returns the orders for the game.
 
-    def get_portfolio(self):
+        :return: dict
+        """
+        return super().get_pending_orders(self._id)
+
+    @property
+    def portfolio(self):
+        """
+        Returns the portfolio for the game.
+
+        :return: dict
+        """
         return super().get_portfolio(self.game_id)
 
-    def get_game(self):
-        return super().get_game(self.game_id)
+    @property
+    def game(self) -> dict:
+        """
+        Returns the game for the game.
 
-    def get_portfolio_performance(
-        self, download: bool = False, next_page_url: str = None
-    ):
-        return super().get_portfolio_performance(self.game_id, download, next_page_url)
+        :return: dict
+        """
+        return super().get_game(self._id)
 
-    def get_transactions(self, download: bool = False, next_page_url: str = None):
-        return super().get_transactions(self.game_id, download, next_page_url)
+    @property
+    def portfolio_performance(self, download: bool = False, next_page_url: str = None):
+        """
+        Returns the portfolio performance for the game.
 
-    def get_positions(self, download: bool = False):
-        return super().get_positions(self.game_id, download)
+        :param download: bool
+        :param next_page_url: str
+        :return: dict
+        """
+        return super().get_portfolio_performance(self._id, download, next_page_url)
+
+    @property
+    def transactions(self, download: bool = False, next_page_url: str = None):
+        """
+        Returns the transactions for the game.
+
+        :param download: bool
+        :param next_page_url: str
+        :return: dict
+        """
+        return super().get_transactions(self._id, download, next_page_url)
+
+    @property
+    def positions(self, download: bool = False):
+        """
+        Returns the positions for the game.
+
+        :param download: bool
+        :return: dict
+        """
+        return super().get_positions(self._id, download)
+
+    @property
+    def game_id(self):
+        """
+        Returns the game id.
+
+        :return: str
+        """
+        return self._id

@@ -1,0 +1,19 @@
+name: Check URLs
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: urls-checker
+      uses: urlstechie/urlchecker-action@master
+      with:
+        # A subfolder or path to navigate to in the present or cloned repository
+        subfolder: docs
+        file_types: .md,.py,.rst
+        print_all: false
+        timeout: 5
+        retry_count: 3
