@@ -412,3 +412,16 @@ def test_add_to_watchlist(authenticated_marketwatch):
     assert watchlist["Items"][0]["ChartingSymbol"] == "STOCK/US/XNAS/AAPL"
     mw.delete_watchlist_item(watchlist["Id"], "AAPL")
     mw.delete_watchlist(watchlist["Id"])
+
+# def test_create_game(marketwatch):
+#     # Créer un nouveau jeu avec les paramètres spécifiés
+#     name = "Mon nouveau jeu"
+#     start_balance = 100000
+#     duration = 30
+#     game_id = marketwatch.create_game(name, start_balance, duration)
+
+#     # Vérifier que le jeu a été créé avec succès
+#     assert isinstance(game_id, int)
+
+#     # Supprimer le jeu nouvellement créé
+#     marketwatch.delete_game(game_id)
