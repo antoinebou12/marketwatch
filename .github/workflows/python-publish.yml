@@ -6,18 +6,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Publish Python 🐍 distributions 📦 to PyPI
+name: Publish Python to PyPI
 
 on:
-  create:
   release:
     types: [published]
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to publish'
-        required: true
-        default: 'v0.1.0'
 
 permissions:
   contents: read
