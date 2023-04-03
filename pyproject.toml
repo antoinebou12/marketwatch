@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "marketwatch"
-version = "0.1.9"
+version = "0.1.10"
 description = "MarketWatch's API"
 authors = ["Antoine Boucher <antoine.boucher012@gmail.com>"]
 license = "Apache License 2.0"
