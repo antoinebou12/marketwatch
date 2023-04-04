@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.10.0
+FROM python:3.11.2
 
 WORKDIR /api
 
