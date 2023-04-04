@@ -8,7 +8,9 @@
 [![Python Test and Build](https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml/badge.svg)](https://github.com/antoinebou12/marketwatch/actions/workflows/python-test.yml)
 ![Coverage](https://raw.githubusercontent.com/antoinebou12/marketwatch/main/.github/badge/coverage.svg)
 
-https://www.marketwatch.com
+[MarketWatch](https://www.marketwatch.com)
+
+[Docuementation](https://antoinebou12.github.io/marketwatch/)
 
 A Python libary to interact with the MarketWatch Stock Market Game
 Based on code from
