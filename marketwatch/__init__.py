@@ -261,6 +261,7 @@ class MarketWatch:
             )
         return games_data
 
+    @auth
     def create_game(self, name: str, start_date: int, end_date: int, **kwargs) -> dict:
         """
         Create a game on MarketWatch.
@@ -317,6 +318,34 @@ class MarketWatch:
 
         # Return information about created game
         return self.get_game(name)
+
+    # @auth
+    # def modify_game(self, game_id: str, **kwargs) -> dict:
+    #     game_settings = self.get_game_settings(game_id)
+    #     headers = {'Content-Type': 'application/json'}
+    #     # Construct payload with default and optional parameters
+    #     payload = {
+    #         "name": kwargs.get('name', 'testgame'),
+    #         "uri": kwargs.get('uri', 'testgame'),
+    #         "startDateUtc": kwargs.get('startDateUtc', 1635619200),
+    #         "endDateUtc": kwargs.get('endDateUtc', 1635619200),
+    #         "allowJoinAfterStart": kwargs.get('allowJoinAfterStart', True),
+    #         "privacyPortfolios": kwargs.get('privacyPortfolios', 'public'),
+    #         "privacyGame": kwargs.get('privacyGame', 'public'),
+    #         "allowComment": kwargs.get('allowComment', True),
+    #         "description": kwargs.get('description', ''),
+    #         "startingAmount": kwargs.get('startingAmount', 100000),
+    #         "commissionPerTrade": kwargs.get('commissionPerTrade', 10),
+    #         "creditInterestRate": kwargs.get('creditInterestRate', 0),
+    #         "debitInterestRate": kwargs.get('debitInterestRate', 0),
+    #         "minimumTradePrice": kwargs.get('minimumTradePrice', 2),
+    #         "maximumTradePrice": kwargs.get('maximumTradePrice', 500000),
+    #         "allowShortSelling": kwargs.get('allowShortSelling', True),
+    #         "marginEnabled": kwargs.get('marginEnabled', True),
+    #         "allowLimitOrders": kwargs.get('allowLimitOrders', False),
+    #         "allowStopOrders": kwargs.get('allowStopOrders', False),
+    #         "allowPartialShares": kwargs.get('allowPartialShares', False),
+    #     }
 
 
     @auth

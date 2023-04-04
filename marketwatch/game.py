@@ -30,6 +30,89 @@ class MarketWatchGame(MarketWatch):
         self._id = game_id
         self.ledger_id = super().get_ledger_id(self._id)
 
+    def create_game(self, name: str, start_date: int, end_date: int, **kwargs) -> dict:
+        """
+        Creates a game on MarketWatch.
+
+        :param name: str
+        :param start_date: int
+        :param end_date: int
+        :param kwargs: dict
+
+        """
+        return super().create_game(name, start_date, end_date, **kwargs)
+
+    def buy(self, symbol: str, quantity: int, order_type: str = 'market', **kwargs) -> dict:
+        """
+        Buy a stock on MarketWatch.
+
+        :param symbol: str
+        :param quantity: int
+        :param order_type: str
+        :param kwargs: dict
+        :return: dict
+
+        """
+        return super().buy(self._id, symbol, quantity, order_type, **kwargs)
+
+    def sell(self, symbol: str, quantity: int, order_type: str = 'market', **kwargs) -> dict:
+        """
+        Sell a stock on MarketWatch.
+
+        :param symbol: str
+        :param quantity: int
+        :param order_type: str
+        :param kwargs: dict
+        :return: dict
+
+        """
+        return super().sell(self._id, symbol, quantity, order_type, **kwargs)
+
+    def short(self, symbol: str, quantity: int, order_type: str = 'market', **kwargs) -> dict:
+        """
+        Short a stock on MarketWatch.
+
+        :param symbol: str
+        :param quantity: int
+        :param order_type: str
+        :param kwargs: dict
+        :return: dict
+
+        """
+        return super().short(self._id, symbol, quantity, order_type, **kwargs)
+
+    def cover(self, symbol: str, quantity: int, order_type: str = 'market', **kwargs) -> dict:
+        """
+        Cover a stock on MarketWatch.
+
+        :param symbol: str
+        :param quantity: int
+        :param order_type: str
+        :param kwargs: dict
+        :return: dict
+
+        """
+        return super().cover(self._id, symbol, quantity, order_type, **kwargs)
+
+    def cancel(self, order_id: str) -> dict:
+        """
+        Cancel an order on MarketWatch.
+
+        :param order_id: str
+        :return: dict
+
+        """
+        return super().cancel_order(self._id, order_id)
+
+    def cancel_all(self) -> dict:
+        """
+        Cancel all orders on MarketWatch.
+
+        :return: dict
+
+        """
+        return super().cancel_all_orders(self._id)
+
     @property
     def settings(self) -> dict:
         """

@@ -1,0 +1,30 @@
+{
+    "name": "marketwatch",
+    "description": "Marketwatch is a web app that allows users to track their favorite stocks and view their performance over time.",
+    "scripts": {
+        "postdeploy": "gunicorn --workers=1 api.spotify:app"
+    },
+    "env": {
+        "MARKETWATCH_USERNAME": {
+            "required": true
+        },
+        "MARKETWATCH_PASSWORD": {
+            "required": true
+        },
+        "MARKETWATCH_GAME_ID": {
+            "required": true
+        }
+    },
+    "formation": {
+        "web": {
+            "quantity": 1
+        }
+    },
+    "addons": [],
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ],
+    "stack": "heroku-20"
+}
