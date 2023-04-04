@@ -1,8 +1,15 @@
 {
-    "redirects": [
-      {
-        "source": "/",
-        "destination": "https://github.com/antoinebou12/marketwatch"
-      }
-    ]
-  }
+  "devCommand": "uvicorn main:app --host 0.0.0.0 --port 5000",
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/marketwatch.py"
+    }
+  ]
+}
