@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "marketwatch"
-version = "0.1.11"
+version = "0.1.9"
 description = "MarketWatch's API"
 authors = ["Antoine Boucher <antoine.boucher012@gmail.com>"]
 license = "Apache License 2.0"
@@ -34,7 +34,7 @@ black = "^23.1.0"
 genbadge = "^1.0.0"
 mkdocs = "^1.4.2"
 mkdocs-material = "^9.1.5"
-mkdocstrings = "^0.21.0"
+mkdocstrings = "^0.20.0"
 
 [build-system]
 requires = ["poetry-core"]
