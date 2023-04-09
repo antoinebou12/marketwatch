@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/game/:game_id",
+      "dest": "/game/game_id"
+    },
+    {
+      "src": "/portfolio/:game_id",
+      "dest": "/portfolio/game_id"
+    },
+    {
+      "src": "/leaderboard/:game_id",
+      "dest": "/leaderboard/game_id"
+    },
+    {
+      "src": "/card/:game_id",
+      "dest": "/card/game_id"
+    }
+  ],
+  "env": {
+    "MARKETWATCH_USERNAME": ${{ secrets.MARKETWATCH_USERNAME }},
+    "MARKETWATCH_PASSWORD": ${{ secrets.MARKETWATCH_PASSWORD }},
+    "MARKETWATCH_GAME_ID": "algoets-h2023"
+  }
+}
