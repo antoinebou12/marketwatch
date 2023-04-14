@@ -81,3 +81,4 @@ Place a sell order for a specific stock by providing the game's name, the stock'
 ```
 marketwatch.sell("game-name", "AAPL", 100)
 ```
+For more examples and detailed explanations of each function, visit the official GitHub repository of the marketwatch library.
