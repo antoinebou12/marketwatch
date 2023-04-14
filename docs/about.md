@@ -1,19 +1,24 @@
 # About
 
-This is a Python library for interacting with the [MarketWatch](https://www.marketwatch.com/) virtual trading platform. The library provides an easy-to-use interface for performing various actions such as getting game details, portfolio information, buying and selling stocks, getting leaderboard information, and more.
+`marketwatch` is a Python library designed for seamless interaction with the M[MarketWatch](https://www.marketwatch.com/) virtual trading platform. The library enables users to efficiently perform various actions, including fetching game details, accessing portfolio information, executing stock transactions, and viewing leaderboard data.
 
 
 ![PyPI](https://img.shields.io/pypi/v/marketwatch)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/marketwatch)
 
+Whether you're an experienced trader or a novice, the marketwatch Python library offers a user-friendly interface to interact with the MarketWatch virtual trading platform. The library is particularly beneficial for individuals aiming to automate their trading strategies or develop trading bots. In this documentation, we provide an overview of the library, its features, and how to get started with using the marketwatch Python library. Useful for performing various actions such as getting game details, portfolio information, buying and selling stocks, getting leaderboard information, and more.
 
-The MarketWatch Python library is a powerful tool for interacting with the MarketWatch virtual trading platform. Whether you're a seasoned trader or a beginner, this library provides an easy-to-use interface for performing various actions such as getting game details, portfolio information, buying and selling stocks, getting leaderboard information, and more.
+## Features
+The `marketwatch` library provides numerous functionalities, including:
 
-This library is particularly useful for users who want to automate their trading strategies or build trading bots. In this article, we will provide an explanation of the code and show how to get started with using the MarketWatch Python library.
+- Access to game details: Retrieve comprehensive information about a specific game.
+- Portfolio management: Fetch portfolio data and monitor your investments in real-time.
+- Stock transactions: Execute buy and sell orders for stocks on the virtual trading platform.
+- Leaderboard data: Access the game's leaderboard to compare your performance against other players.
 
+## Dependencies
+The `marketwatch` library relies on several external libraries to function optimally. These dependencies include:
 
-Python package called `marketwatch`, which provides an API for accessing financial data from MarketWatch. The package has a version number of `0.1.5` and is licensed under the Apache License 2.0.
-
-The package has several dependencies listed, including `httpx`, `beautifulsoup4`, and `rich`. These are libraries that the package relies on to function properly.
-
-Based on this information, it seems like you are well on your way to creating a useful Python package for accessing financial data from MarketWatch! If you have any specific questions or need further assistance, feel free to ask.
+- httpx: A fully featured HTTP client for Python, providing support for connection pooling, request and response streaming, and other advanced features.
+- beautifulsoup4: A popular library for web scraping purposes, allowing for the easy extraction of data from HTML and XML documents.
+- rich: A library for rendering rich text, tables, progress bars, and other visually appealing elements in the terminal.
