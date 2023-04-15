@@ -120,5 +120,12 @@ if __name__ == "__main__":
     print(f"Orders Pending: {marketwatch.get_pending_orders(games1)}")
     marketwatch.buy(games1, "AAPL", 100)
 
-    print(f"Position diff: {marketwatch.get_positions(games1)}")
+    print(f"Updated Positions: {marketwatch.get_positions(game_id)}")
 ```
+
+This example script demonstrates how to use the MarketWatch Python library to interact with the MarketWatch virtual trading platform. The script logs into MarketWatch with the user's credentials, retrieves the user's games and portfolio information, and then places a buy order for 100 shares of AAPL stock.
+
+Please note that you'll need to set the environment variables `MARKETWATCH_USERNAME` and `MARKETWATCH_PASSWORD` with your own MarketWatch account credentials before running this script.
+
+With the MarketWatch Python library, you can easily automate your trading strategies and interact with the virtual trading platform programmatically. This powerful library provides a convenient and efficient way to work with the MarketWatch platform and can be a valuable tool for both beginner and experienced traders.
+
