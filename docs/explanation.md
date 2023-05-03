@@ -1,4 +1,4 @@
-# Explaination
+# Explanation
 
 The MarketWatch Python library is a powerful and user-friendly tool designed to interact with the MarketWatch virtual trading platform. It caters to traders of all skill levels and provides various functionalities, such as retrieving game details, portfolio information, executing stock transactions, and accessing leaderboard data. The library is particularly beneficial for users looking to automate their trading strategies or develop trading bots.
 
