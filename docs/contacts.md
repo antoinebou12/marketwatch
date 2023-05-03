@@ -21,7 +21,7 @@ Stay updated on the latest library developments and other projects by following 
 
 Connect with the developer on LinkedIn to discuss the library or explore other collaboration opportunities:
 
-[https://linkedin.com/in/antoinebou12](https://linkedin.com/in/antoinebou12)
+[https://linkedin.com/in/antoineboucher12](https://linkedin.com/in/antoineboucher12)
 
 Feel free to connect with the developer on LinkedIn to discuss the library or other topics.
 
