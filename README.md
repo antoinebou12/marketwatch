@@ -18,92 +18,123 @@ Based on code from
 - https://github.com/kevindong/MarketWatch_API/
 - https://github.com/bwees/pymarketwatch
 
+## Feature 
+- Logging in and out of the site
+- Getting the current price of a stock
+- Getting information about games on the site
+- Buying, selling, shorting, and covering stocks in a game
+- Creating, adding to, getting, and deleting watchlists
+- Getting, adding to, and deleting items from a portfolio
+- Getting and cancelling pending orders
+- Checking if the game is down
+
 ## Installation
 
-```
+```shell
 pip install marketwatch
 ```
 
-```
+```shell
 pip install git+https://github.com/antoinebou12/marketwatch.git
 ```
 
-```
+```shell
 git clone https://github.com/antoinebou12/marketwatch.git
 ```
 
 ## Usage
+Here are some examples of how you can use the MarketWatch class:
 
 ### Import
-
-```
+First, import the MarketWatch class from the script:
+```python
 from marketwatch import MarketWatch
 ```
 
 ### Login
-
-```
+Then, create an instance of the MarketWatch class using your MarketWatch username and password:
+```python
 marketwatch = MarketWatch(username, password)
 ```
 
-### Get Price
-
-```
+### Get Stock Price
+To get the current price of a stock:
+```python
 marketwatch.get_price("AAPL")
 ```
 
-### Get Games
+### Interact with Games
+https://www.marketwatch.com/games
 
-```
+To get information about games on the site:
+```python
 marketwatch.get_games()
 ```
 
 ### Get Game
-
-```
+```python
 marketwatch.get_game("game-name")
 ```
 
 ### Get Game Settings
-
-```
+```python
 marketwatch.get_game_settings("game-name")
 ```
 
 ### Get Leaderboard
-
-```
+```python
 marketwatch.get_leaderboard("game-name")
 ```
 
 ### Get Portfolio
-
-```
+```python
 marketwatch.get_portfolio("game-name")
 ```
 
 ### Get Positions
-
-```
+```python
 marketwatch.get_positions("game-name")
 ```
 
-### Get Pending Orders
-
-```
+### Get Pending Orders 
+```python
 marketwatch.get_pending_orders("game-name")
 ```
 
-### Buy
-
+### Buy Stock
+```python
+marketwatch.buy(game_id, "AAPL", 100)
 ```
-marketwatch.buy("game-name", "AAPL", 100)
-```
 
-### Sell
-
-```
+### Sell Stock
+```python
 marketwatch.sell("game-name", "AAPL", 100)
+```
+
+### Create Watchlist
+https://www.marketwatch.com/watchlist
+
+To create a watchlist:
+```python
+marketwatch.create_watchlist('My Watchlist')
+```
+
+### Add Stock to Watchlist
+To add stocks to a watchlist:
+```python
+marketwatch.add_to_watchlist(watchlist_id, ['AAPL', 'GOOG'])
+```
+
+### Get All Watchlists
+To get all watchlists:
+```python
+watchlists = marketwatch.get_watchlists()
+```
+
+### Delete Watchlist
+To delete a watchlist:
+```python
+marketwatch.delete_watchlist(watchlist_id)
 ```
 
 ### Example
@@ -133,3 +164,9 @@ if __name__ == "__main__":
 
     print(f"Position diff: {marketwatch.get_positions(games1)}")
 ```
+
+## Contributing
+Contributions are welcome. Please open an issue or submit a pull request.
+
+## License
+This project is licensed under the MIT License.
