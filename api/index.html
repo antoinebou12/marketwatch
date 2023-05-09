@@ -394,6 +394,48 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#create-watchlist" class="md-nav__link">
+    Create Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-to-watchlist" class="md-nav__link">
+    Add to Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-watchlists" class="md-nav__link">
+    Get Watchlists
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-watchlist" class="md-nav__link">
+    Get Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-watchlist" class="md-nav__link">
+    Delete Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-watchlist-item" class="md-nav__link">
+    Delete Watchlist Item
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -569,6 +611,48 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#create-watchlist" class="md-nav__link">
+    Create Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-to-watchlist" class="md-nav__link">
+    Add to Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-watchlists" class="md-nav__link">
+    Get Watchlists
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-watchlist" class="md-nav__link">
+    Get Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-watchlist" class="md-nav__link">
+    Delete Watchlist
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#delete-watchlist-item" class="md-nav__link">
+    Delete Watchlist Item
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -588,59 +672,83 @@
 
 <h3 id="import">Import</h3>
 <p>To start using the marketwatch library, import the MarketWatch class:</p>
-<pre><code>from marketwatch import MarketWatch
+<pre><code class="language-python">from marketwatch import MarketWatch
 </code></pre>
 <h3 id="login">Login</h3>
 <p>Create a MarketWatch instance and log in with your username and password:</p>
-<pre><code>marketwatch = MarketWatch(username, password)
+<pre><code class="language-python">marketwatch = MarketWatch(username, password)
 </code></pre>
 <h3 id="get-price">Get Price</h3>
 <p>Fetch the current price of a stock by passing its ticker symbol:</p>
-<pre><code>marketwatch.get_price(&quot;AAPL&quot;)
+<pre><code class="language-python">marketwatch.get_price(&quot;AAPL&quot;)
 </code></pre>
 <h3 id="get-games">Get Games</h3>
 <p>Retrieve the list of games you are participating in:</p>
-<pre><code>marketwatch.get_games()
+<pre><code class="language-python">marketwatch.get_games()
 </code></pre>
 <h3 id="get-game">Get Game</h3>
 <p>Fetch detailed information about a specific game by providing the game's name:</p>
-<pre><code>marketwatch.get_game(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_game(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-game-settings">Get Game Settings</h3>
 <p>Access the settings of a specific game:</p>
-<pre><code>marketwatch.get_game_settings(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_game_settings(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-leaderboard">Get Leaderboard</h3>
 <p>Retrieve the leaderboard data for a specific game:</p>
-<pre><code>marketwatch.get_leaderboard(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_leaderboard(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-portfolio">Get Portfolio</h3>
 <p>Fetch your portfolio information in a specific game:</p>
-<pre><code>marketwatch.get_portfolio(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_portfolio(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-portfolio-performance">Get Portfolio Performance</h3>
 <p>Retrieve the performance of your portfolio in a specific game:</p>
-<pre><code>marketwatch.get_portfolio_performance(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_portfolio_performance(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-transactions">Get Transactions</h3>
 <p>Access the transaction history for your portfolio in a specific game:</p>
-<pre><code>marketwatch.get_transactions(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_transactions(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-positions">Get Positions</h3>
 <p>Fetch the current positions of your portfolio in a specific game:</p>
-<pre><code>marketwatch.get_positions(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_positions(&quot;game-name&quot;)
 </code></pre>
 <h3 id="get-pending-orders">Get Pending Orders</h3>
 <p>Retrieve the list of pending orders for your portfolio in a specific game:</p>
-<pre><code>marketwatch.get_pending_orders(&quot;game-name&quot;)
+<pre><code class="language-python">marketwatch.get_pending_orders(&quot;game-name&quot;)
 </code></pre>
 <h3 id="buy">Buy</h3>
 <p>Place a buy order for a specific stock by providing the game's name, the stock's ticker symbol, and the number of shares:</p>
-<pre><code>marketwatch.buy(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
+<pre><code class="language-python">marketwatch.buy(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
 </code></pre>
 <h3 id="sell">Sell</h3>
 <p>Place a sell order for a specific stock by providing the game's name, the stock's ticker symbol, and the number of shares:</p>
-<pre><code>marketwatch.sell(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
+<pre><code class="language-python">marketwatch.sell(&quot;game-name&quot;, &quot;AAPL&quot;, 100)
+</code></pre>
+<h3 id="create-watchlist">Create Watchlist</h3>
+<p>Create a new watchlist by providing a name and optionally a list of tickers:</p>
+<pre><code class="language-python">marketwatch.create_watchlist(&quot;My Watchlist&quot;, [&quot;AAPL&quot;, &quot;GOOG&quot;, &quot;TSLA&quot;])
+</code></pre>
+<h3 id="add-to-watchlist">Add to Watchlist</h3>
+<p>Add tickers to an existing watchlist by providing the watchlist ID and a list of tickers:</p>
+<pre><code class="language-python">marketwatch.add_to_watchlist(&quot;watchlist_id&quot;, [&quot;MSFT&quot;, &quot;AMZN&quot;])
+</code></pre>
+<h3 id="get-watchlists">Get Watchlists</h3>
+<p>Retrieve all your watchlists:</p>
+<pre><code class="language-python">marketwatch.get_watchlists()
+</code></pre>
+<h3 id="get-watchlist">Get Watchlist</h3>
+<p>Fetch a specific watchlist by providing its ID:</p>
+<pre><code class="language-python">marketwatch.get_watchlist(&quot;watchlist_id&quot;)
+</code></pre>
+<h3 id="delete-watchlist">Delete Watchlist</h3>
+<p>Delete a specific watchlist by providing its ID:</p>
+<pre><code class="language-python">marketwatch.delete_watchlist(&quot;watchlist_id&quot;)
+</code></pre>
+<h3 id="delete-watchlist-item">Delete Watchlist Item</h3>
+<p>Remove a ticker from a watchlist by providing the watchlist ID and the ticker:</p>
+<pre><code class="language-python">marketwatch.delete_watchlist_item(&quot;watchlist_id&quot;, &quot;AAPL&quot;)
 </code></pre>
 <p>For more examples and detailed explanations of each function, visit the official GitHub repository of the marketwatch library.</p>
 
