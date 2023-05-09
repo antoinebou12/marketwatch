@@ -398,12 +398,13 @@ def test_get_watchlists(authenticated_marketwatch):
 
 def test_add_to_watchlist(authenticated_marketwatch):
     mw = authenticated_marketwatch
-    watchlist = mw.create_watchlist("test")
+    timestamp = str(datetime.now().timestamp())
+    watchlist = mw.create_watchlist(timestamp)
     watchlist = mw.add_to_watchlist(watchlist["Id"], ["AAPL"])
     assert watchlist is not None
     assert isinstance(watchlist, dict)
     assert watchlist["Id"] is not None
-    assert watchlist["Name"] == "test"
+    assert watchlist["Name"] == timestamp
     assert watchlist["TotalItemCount"] == 1
     assert watchlist["Revision"] == 1
     assert watchlist["Items"] is not None
