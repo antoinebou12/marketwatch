@@ -6,7 +6,7 @@ authors = ["Antoine Boucher <antoine.boucher012@gmail.com>"]
 license = "Apache License 2.0"
 readme = "README.md"
 repository = "http://github.com/antoineboucher/marketwatch"
-documentation = "http://github.com/antoineboucher/marketwatch/wiki"
+documentation = "https://antoinebou12.github.io/marketwatch/api/"
 keywords = ["marketwatch", "api", "stock", "finance", "market", "game"]
 classifiers = [
     "Development Status :: 4 - Beta",
