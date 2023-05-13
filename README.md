@@ -10,7 +10,7 @@
 
 [MarketWatch](https://www.marketwatch.com)
 
-[Docuementation](https://antoinebou12.github.io/marketwatch/)
+[Documentation](https://antoinebou12.github.io/marketwatch/)
 
 A Python libary to interact with the MarketWatch Stock Market Game
 Based on code from
