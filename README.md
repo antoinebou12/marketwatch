@@ -19,14 +19,14 @@ Based on code from
 - https://github.com/bwees/pymarketwatch
 
 ## Feature 
-- Logging in and out of the site
-- Getting the current price of a stock
-- Getting information about games on the site
-- Buying, selling, shorting, and covering stocks in a game
-- Creating, adding to, getting, and deleting watchlists
-- Getting, adding to, and deleting items from a portfolio
-- Getting and cancelling pending orders
-- Checking if the game is down
+- [X]  Logging in and out of the site
+- [X]  Getting the current price of a stock
+- [X]  Getting information about games on the site
+- [X]  Buying, selling, shorting, and covering stocks in a game
+- [X]  Creating, adding to, getting, and deleting watchlists
+- [X]  Getting, adding to, and deleting items from a portfolio
+- [X]  Getting and cancelling pending orders
+- [X]  Checking if the game is down
 
 ## Installation
 
