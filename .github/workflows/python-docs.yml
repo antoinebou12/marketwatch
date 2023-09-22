@@ -26,8 +26,9 @@ jobs:
       - name: Check for changes in /docs
         id: check_changes
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- docs/
-          if [[ $? -eq 0 ]]; then
+          git fetch origin ${{ github.event.before }} # Fetch the base commit
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- docs/)
+          if [[ -n "$CHANGED_FILES" ]]; then
             echo "Changes detected in docs folder."
             echo "changes_detected=true" >> $GITHUB_ENV
           else
