@@ -6,7 +6,7 @@ import pytest
 from marketwatch.exceptions import MarketWatchException
 from marketwatch.watchlist import MarketWatchWatchlist
 
-WATCHLIST = "1958844005268781"
+WATCHLIST = "3762211977140901"
 
 @pytest.fixture
 def authenticated_marketwatch():
