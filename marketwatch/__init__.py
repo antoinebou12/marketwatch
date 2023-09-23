@@ -507,7 +507,12 @@ class MarketWatch:
         game_shorts_reserve = elements[6]
         game_cash_borrowed = elements[7]
 
-        table = soup.find("mw-table-dropdown").find("tbody").find_all("tr")
+        table_element = soup.find("mw-table-dropdown")
+        if table_element is None:
+            
+            return {}
+
+        table = table_element.find("tbody").find_all("tr")
 
         portfolio = []
 
@@ -779,7 +784,6 @@ class MarketWatch:
                     "gain": gain,
                 }
             )
-            print(players)
         return players
 
     def get_search(self, search: str):
@@ -1328,15 +1332,12 @@ class MarketWatch:
         """
         data = {"Items": [{"ChartingSymbol": f"{self._get_ticker_uid(ticker)}"} for ticker in tickers]}
 
-        print(data)
-
         response = self.session.post(
             f"https://api.marketwatch.com/api/oskar/me/marketwatch-com/{watchlist_id}/items",
             headers={"Content-Type": "application/json"},
             data=json.dumps(data),
         )
 
-        print(response.text)
         if response.status_code != 201:
             raise MarketWatchException("Failed to add to watchlist")
 
