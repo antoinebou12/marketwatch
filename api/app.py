@@ -10,7 +10,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from marketwatch import MarketWatch
 
 # Initialize FastAPI and Jinja2
-app = FastAPI(docs_url="", redoc_url=None)
+app = FastAPI(docs_url="/docs", redoc_url=None)
 templates=Jinja2Templates(directory="templates")
 
 app.add_middleware(
