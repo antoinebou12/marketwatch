@@ -3,12 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
-from cryptography.hazmat.primitives import asymmetric, hashes, serialization
-from cryptography.hazmat.backends import default_backend
-import base64
-import os
 
 # import sys
 # sys.path.append('..')
