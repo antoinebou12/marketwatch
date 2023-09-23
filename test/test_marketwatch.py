@@ -15,6 +15,19 @@ GAME_OWNER = "marketwatchapiunittest"
 GAME = "algoets-h2023"
 
 
+def is_stock_market_open():
+    # Get the current day and time
+    now = datetime.now()
+    weekday = now.weekday()
+    if weekday >= 5:
+        return False
+    if now.hour < 9 or now.hour > 16:
+        return False
+    if now.hour == 9 and now.minute < 30:
+        return False
+    return True
+
+
 @pytest.fixture
 def authenticated_marketwatch():
     username = os.environ.get("MARKETWATCH_USERNAME")
@@ -116,6 +129,8 @@ def test_get_leaderboard(authenticated_marketwatch):
 
 
 def test_get_portfolio(authenticated_marketwatch):
+    if not is_stock_market_open():
+        pytest.skip("Stock market is closed, skipping test.")
     mw = authenticated_marketwatch
     portfolio = mw.get_portfolio(GAME_OWNER)
     assert portfolio is not None
