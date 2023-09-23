@@ -3,3 +3,5 @@ uvicorn
 httpx
 marketwatch
 jinja2
+python-jose
+pydantic

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ data.game_id }} Leaderboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-black">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-black rounded-lg overflow-hidden shadow-lg">
+            <div class="px-6 py-8">
+                <h1 class="text-3xl font-bold text-white">{{ data.game_id }} Leaderboard</h1>
+                <table class="table-auto w-full mt-8">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-white">Rank</th>
+                            <th class="px-4 py-2 text-white">Player</th>
+                            <th class="px-4 py-2 text-white">Portfolio Value</th>
+                            <th class="px-4 py-2 text-white">Gain Percentage</th>
+                            <th class="px-4 py-2 text-white">Transactions</th>
+                            <th class="px-4 py-2 text-white">Gain</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if data.players|length > 0 %}
+                            {% for player in data.players %}
+                                <tr>
+                                    <td class="border px-4 py-2 text-white">{{ player.rank }}</td>
+                                    <td class="border px-4 py-2 text-white"><a href="{{ player.player_url }}" class="text-blue-500 hover:underline">{{ player.player }}</a></td>
+                                    <td class="border px-4 py-2 text-white">{{ player.portfolio_value }}</td>
+                                    <td class="border px-4 py-2 text-white">{{ player.gain_percentage }}</td>
+                                    <td class="border px-4 py-2 text-white">{{ player.transactions }}</td>
+                                    <td class="border px-4 py-2 text-white">{{ player.gain }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td class="border px-4 py-2 text-center text-white" colspan="6">No portfolio data available.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

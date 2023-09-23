@@ -9,4 +9,4 @@ RUN pip3 install -r requirements.txt --no-cache-dir
 
 COPY api/ .
 
-CMD ["unicorn", "marketwatch:app", "--bind", "0.0.0.0:5000", "--workers", "4", "--threads", "2"]
+CMD ["unicorn", "app:app", "--bind", "0.0.0.0:5000", "--workers", "4", "--threads", "2"]

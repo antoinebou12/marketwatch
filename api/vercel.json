@@ -1,32 +1,22 @@
 {
   "version": 2,
+  "devCommand": "pip install -r requirements-dev.txt && pip install --upgrade pip && uvicorn app:app --host 0.0.0.0 --port 5003",
   "builds": [
     {
-      "src": "main.py",
-      "use": "@vercel/python"
+      "src": "app.py",
+      "use": "@vercel/python",
+      "config": {
+        "buildCommand": "pip install -r requirements.txt && pip install --upgrade pip",
+        "debug": true,
+        "excludeFiles": "docs/**, test/**, *test.py, .github/**,requirements.txt, SECURITY.md, .pre-commit.config.yaml, renovate.json, .gitignore, .gitattributes, .git"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/game/:game_id",
-      "dest": "/game/game_id"
-    },
-    {
-      "src": "/portfolio/:game_id",
-      "dest": "/portfolio/game_id"
-    },
-    {
-      "src": "/leaderboard/:game_id",
-      "dest": "/leaderboard/game_id"
-    },
-    {
-      "src": "/card/:game_id",
-      "dest": "/card/game_id"
+      "src": "/(.*)",
+      "dest": "app.py"
     }
   ],
-  "env": {
-    "MARKETWATCH_USERNAME": ${{ secrets.MARKETWATCH_USERNAME }},
-    "MARKETWATCH_PASSWORD": ${{ secrets.MARKETWATCH_PASSWORD }},
-    "MARKETWATCH_GAME_ID": "algoets-h2023"
-  }
 }
+

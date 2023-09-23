@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{  data.game_id }} Portfolio</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <h1 class="text-3xl font-bold text-white bg-gray-900 px-4 py-2">{{  data.game_id }} Portfolio</h1>
+            <table class="table-auto w-full mt-8">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-white">Rank</th>
+                        <th class="px-4 py-2 text-white">Player</th>
+                        <th class="px-4 py-2 text-white">Portfolio Value</th>
+                        <th class="px-4 py-2 text-white">Gain Percentage</th>
+                        <th class="px-4 py-2 text-white">Transactions</th>
+                        <th class="px-4 py-2 text-white">Gain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if data.players|length > 0 %}
+                        {% for player in data.players %}
+                            <tr>
+                                <td class="border px-4 py-2">{{ player.rank }}</td>
+                                <td class="border px-4 py-2"><a href="{{ player.player_url }}" class="text-blue-500 hover:underline">{{ player.player }}</a></td>
+                                <td class="border px-4 py-2">{{ player.portfolio_value }}</td>
+                                <td class="border px-4 py-2">{{ player.gain_percentage }}</td>
+                                <td class="border px-4 py-2">{{ player.transactions }}</td>
+                                <td class="border px-4 py-2">{{ player.gain }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td class="border px-4 py-2 text-center" colspan="6">No portfolio data available.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
