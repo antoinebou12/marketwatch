@@ -319,18 +319,18 @@ class MarketWatch:
         # Return information about created game
         return self.get_game(name)
 
-	@auth
-	def reset_game(self, game_id: str):
+    @auth
+    def reset_game(self, game_id: str):
 	"""
 	Reset the game.
 	
 	:param game_id: Game ID
 	:return: None
 	"""
-		url = f"https://vse-api.marketwatch.com/v1/reset/{game_id}"
-		response = self.session.post(url)
-		
-		if response.status_code != 200:
+	url = f"https://vse-api.marketwatch.com/v1/reset/{game_id}"
+	response = self.session.post(url)
+	    
+	if response.status_code != 200:
 		raise MarketWatchException("Failed to reset game")
 
 
