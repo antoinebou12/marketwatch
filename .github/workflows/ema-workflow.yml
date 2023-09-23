@@ -1,0 +1,98 @@
+name: Trade on EMA Crossover
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Run this workflow every 5 minutes
+
+env:
+  PYTHON_VERSION: "3.10"
+  MARKETWATCH_USERNAME: ${{ secrets.MARKETWATCH_USERNAME }}
+  MARKETWATCH_PASSWORD: ${{ secrets.MARKETWATCH_PASSWORD }}
+  GAME_NAME: "marketwatchapistrategieema"
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas
+          pip install marketwatch
+
+      - name: Run trading script
+        env:
+          USERNAME: ${{ env.MARKETWATCH_USERNAME }}
+          PASSWORD: ${{ env.MARKETWATCH_PASSWORD }}
+          GAME_NAME: ${{ env.GAME_NAME }}
+        run: |
+          python - <<EOF
+          import time
+          import os
+          import pandas as pd
+          from datetime import datetime
+          from marketwatch import MarketWatch
+
+          # Load environment variables
+          username = os.environ.get('MARKETWATCH_USERNAME')
+          password = os.environ.get('MARKETWATCH_PASSWORD')
+          game_name = os.environ.get('GAME_NAME')
+          
+          marketwatch = MarketWatch(username, password)
+
+          def calculate_ema(price_series, periods):
+              return price_series.ewm(span=periods, adjust=False).mean()
+
+          def trade_on_crossover(df, game_name):
+              short_term = df['EMA_20'].iloc[-1]
+              long_term = df['EMA_80'].iloc[-1]
+              prev_short_term = df['EMA_20'].iloc[-2]
+              prev_long_term = df['EMA_80'].iloc[-2]
+              
+              if short_term > long_term and prev_short_term <= prev_long_term:
+                  print('Golden Cross detected. Attempting to buy stock.')
+                  marketwatch.buy(game_name, 'AAPL', 100)
+                  positions = marketwatch.get_positions(game_name)
+                  if any(pos['ticker'] == 'AAPL' for pos in positions):
+                      print('Buy order successful.')
+                  else:
+                      print('Buy order failed.')
+              elif short_term < long_term and prev_short_term >= prev_long_term:
+                  print('Death Cross detected. Attempting to sell stock.')
+                  marketwatch.sell(game_name, 'AAPL', 100)
+                  positions = marketwatch.get_positions(game_name)
+                  if not any(pos['ticker'] == 'AAPL' for pos in positions):
+                      print('Sell order successful.')
+                  else:
+                      print('Sell order failed.')
+
+          today = datetime.today().weekday()
+          if today >= 5:
+              print("Today is a weekend. Skipping trading.")
+              exit(0)
+
+          price_data = []
+          for _ in range(160):
+              price = marketwatch.get_price('AAPL')
+              price_data.append(price)
+              if len(price_data) > 150:
+                  price_data.pop(0)
+              
+              df = pd.DataFrame(price_data, columns=['Close'])
+              for period in [20, 80]:
+                  ema_column_name = f'EMA_{period}'
+                  df[ema_column_name] = calculate_ema(df['Close'], period)
+              
+              if len(df) >= 80:
+                  trade_on_crossover(df, game_name)
+              
+              time.sleep(60)
+          EOF

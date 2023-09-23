@@ -1,5 +1,5 @@
 import os
-
+from datetime import datetime
 import pytest
 
 from marketwatch.exceptions import MarketWatchException
@@ -7,6 +7,18 @@ from marketwatch.game import MarketWatchGame
 
 GAME_OWNER = "marketwatchapiunittest"
 GAME = "algoets-h2023"
+
+
+def is_stock_market_open():
+    now = datetime.now()
+    weekday = now.weekday()
+    if weekday >= 5:
+        return False
+    if now.hour < 9 or now.hour > 16:
+        return False
+    if now.hour == 9 and now.minute < 30:
+        return False
+    return True
 
 
 @pytest.fixture
@@ -41,6 +53,13 @@ def test_marketwatch_game_get_game(auth_marketwatch_owner, auth_marketwatch):
     assert auth_marketwatch_owner.game is not None
     assert auth_marketwatch.game is not None
 
+# def test_marketwatch_game_reset(auth_marketwatch_owner, auth_marketwatch):
+#     try:
+#         auth_marketwatch_owner.reset_game()
+#         auth_marketwatch.reset_game()
+#     except MarketWatchException as e:
+#         pytest.fail(f"Failed to reset game: {e}")
+
 def test_marketwatch_game_get_game_settings(auth_marketwatch_owner, auth_marketwatch):
     # assert auth_marketwatch_owner.settings is not None
     assert auth_marketwatch.settings is not None
@@ -54,6 +73,9 @@ def test_marketwatch_game_get_pending_orders(auth_marketwatch_owner, auth_market
     # assert auth_marketwatch.orders is not None
 
 def test_marketwatch_game_get_portfolio(auth_marketwatch_owner, auth_marketwatch):
+    if not is_stock_market_open():
+        print("Market is closed. Skipping tests.")
+        return
     assert auth_marketwatch_owner.portfolio is not None
     assert auth_marketwatch.portfolio is not None
 
