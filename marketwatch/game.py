@@ -94,6 +94,14 @@ class MarketWatchGame(MarketWatch):
         """
         return super().cover(self._id, symbol, quantity, order_type, **kwargs)
 
+    def reset_game(self):
+        """
+        Reset this specific game using the stored game_id.
+
+        :return: dict or str indicating the status of the operation
+        """
+        return super().reset_game(self._id)
+
     def cancel(self, order_id: str) -> dict:
         """
         Cancel an order on MarketWatch.
