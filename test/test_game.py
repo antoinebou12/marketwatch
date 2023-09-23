@@ -41,6 +41,13 @@ def test_marketwatch_game_get_game(auth_marketwatch_owner, auth_marketwatch):
     assert auth_marketwatch_owner.game is not None
     assert auth_marketwatch.game is not None
 
+# def test_marketwatch_game_reset(auth_marketwatch_owner, auth_marketwatch):
+#     try:
+#         auth_marketwatch_owner.reset_game()
+#         auth_marketwatch.reset_game()
+#     except MarketWatchException as e:
+#         pytest.fail(f"Failed to reset game: {e}")
+
 def test_marketwatch_game_get_game_settings(auth_marketwatch_owner, auth_marketwatch):
     # assert auth_marketwatch_owner.settings is not None
     assert auth_marketwatch.settings is not None
