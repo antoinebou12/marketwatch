@@ -10,7 +10,6 @@ GAME = "algoets-h2023"
 
 
 def is_stock_market_open():
-    # Get the current day and time
     now = datetime.now()
     weekday = now.weekday()
     if weekday >= 5:
@@ -74,7 +73,7 @@ def test_marketwatch_game_get_pending_orders(auth_marketwatch_owner, auth_market
     # assert auth_marketwatch.orders is not None
 
 def test_marketwatch_game_get_portfolio(auth_marketwatch_owner, auth_marketwatch):
-    if not is_market_open():
+    if not is_stock_market_open():
         print("Market is closed. Skipping tests.")
         return
     assert auth_marketwatch_owner.portfolio is not None
