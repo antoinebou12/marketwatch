@@ -18,7 +18,7 @@ Based on code from
 - https://github.com/kevindong/MarketWatch_API/
 - https://github.com/bwees/pymarketwatch
 
-## Feature 
+## Feature
 - [X]  Logging in and out of the site
 - [X]  Getting the current price of a stock
 - [X]  Getting information about games on the site
