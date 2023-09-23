@@ -12,7 +12,8 @@ from marketwatch import MarketWatch
 
 # Initialize FastAPI and Jinja2
 app = FastAPI(docs_url="/docs", redoc_url=None)
-# smae directory 
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
 templates=Jinja2Templates(directory=os.path.join(current_directory, "templates"))
 
 app.add_middleware(
