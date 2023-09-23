@@ -1,12 +1,29 @@
-# syntax=docker/dockerfile:1
+# Use a specific version for the base image
+FROM python:3.12.0rc3-slim AS build-env
 
-FROM python:3.12.0rc3-slim
-
+# Set working directory
 WORKDIR /api
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt --no-cache-dir
+# Install build utilities and pip dependencies
+RUN apt-get update -y && \
+    apt-get install -y build-essential && \
+    pip install --upgrade pip
 
-COPY api/ .
+# Copy requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["unicorn", "app:app", "--bind", "0.0.0.0:5000", "--workers", "4", "--threads", "2"]
+# Copy only the necessary code files and resources
+COPY api/ ./api/
+
+# Actual runtime image
+FROM python:3.12.0rc3-slim
+
+# Set working directory
+WORKDIR /api
+
+# Copy from build environment
+COPY --from=build-env /api /api
+
+# Command to run the application
+CMD ["unicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

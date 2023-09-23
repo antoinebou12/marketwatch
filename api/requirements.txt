@@ -5,3 +5,4 @@ marketwatch
 jinja2
 python-jose
 pydantic
+marketwatch
