@@ -321,17 +321,17 @@ class MarketWatch:
 
     @auth
     def reset_game(self, game_id: str):
-	"""
-	Reset the game.
-	
-	:param game_id: Game ID
-	:return: None
-	"""
-	url = f"https://vse-api.marketwatch.com/v1/reset/{game_id}"
-	response = self.session.post(url)
-	    
-	if response.status_code != 200:
-		raise MarketWatchException("Failed to reset game")
+        """
+        Reset the game.
+        
+        :param game_id: Game ID
+        :return: None
+        """
+        url = f"https://vse-api.marketwatch.com/v1/reset/{game_id}"
+        response = self.session.post(url)
+            
+        if response.status_code != 200:
+            raise MarketWatchException("Failed to reset game")
 
 
     # @auth
