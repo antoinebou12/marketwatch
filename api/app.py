@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import os
 
 # import sys
 # sys.path.append('..')
@@ -11,7 +12,8 @@ from marketwatch import MarketWatch
 
 # Initialize FastAPI and Jinja2
 app = FastAPI(docs_url="/docs", redoc_url=None)
-templates=Jinja2Templates(directory="templates")
+# smae directory 
+templates=Jinja2Templates(directory=os.path.join(current_directory, "templates"))
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,6 +33,10 @@ async def get_current_user(credentials: HTTPBasicCredentials = Depends(security)
     except Exception as e:
         # Log the error here if you want
         raise HTTPException(status_code=401, detail="MarketWatch validation failed")
+
+@app.get("/")
+def read_root(request: Request):
+    return "Marketwatch API"
 
 @app.get("/game/{game_id}", response_class=HTMLResponse)
 async def game(request: Request, game_id: str, mw: MarketWatch = Depends(get_current_user)):
