@@ -4,7 +4,6 @@
     {
       "src": "app.py",
       "use": "@vercel/python",
-      "devCommand": "pip install -r requirements-dev.txt && pip install --upgrade pip && uvicorn app:app --host 0.0.0.0 --port 5003",
       "config": {
         "buildCommand": "pip install -r requirements.txt && pip install --upgrade pip",
         "debug": true,
