@@ -65,7 +65,13 @@ jobs:
               price_data = {symbol: [] for symbol in stock_symbols}
               for _ in range(160):
                   for symbol in stock_symbols:
-                      price = marketwatch.get_price(symbol)
+                      price_string = marketwatch.get_price(symbol)
+                      try:
+                          price = float(price_string.split(': $')[-1])
+                      except (ValueError, IndexError):
+                          print(f"Unable to parse price for symbol: {symbol}, received: {price_string}")
+                          continue
+
                       price_data[symbol].append(price)
                       if len(price_data[symbol]) > 150:
                           price_data[symbol].pop(0)
