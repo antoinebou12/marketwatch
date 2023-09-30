@@ -4,4 +4,3 @@ httpx
 marketwatch
 jinja2
 pydantic
-marketwatch
