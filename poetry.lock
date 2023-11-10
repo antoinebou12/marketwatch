@@ -359,19 +359,20 @@ testing = ["covdefaults (>=2.3)", "coverage (>=7.2.2)", "diff-cover (>=7.5)", "p
 
 [[package]]
 name = "genbadge"
-version = "1.1.0"
+version = "1.1.1"
 description = "Generate badges for tools that do not provide one."
 optional = false
 python-versions = "*"
 files = [
-    {file = "genbadge-1.1.0-py2.py3-none-any.whl", hash = "sha256:add6a6beea812a8e35c612e0ea0f784bee5b984029b6a4b990721d0901fdb3c8"},
-    {file = "genbadge-1.1.0.tar.gz", hash = "sha256:a061187d49c78fc54c94410af201e873178d1bf1877701846c89341360bf79dc"},
+    {file = "genbadge-1.1.1-py2.py3-none-any.whl", hash = "sha256:c8b67ccdad2867434cdc0be7c4bd3f6af6003c466d8ff5013b8b5842ca8730de"},
+    {file = "genbadge-1.1.1.tar.gz", hash = "sha256:12cdaaacbc9e0ea3164bf580cfb87ec61ff17ae0728f09a7f0102f8ab3112f4c"},
 ]
 
 [package.dependencies]
 click = ">7.0"
 pillow = "*"
 requests = "*"
+setuptools = "*"
 
 [package.extras]
 all = ["defusedxml", "flake8-html"]
