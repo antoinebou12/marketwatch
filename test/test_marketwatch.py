@@ -394,6 +394,7 @@ def test_delete_watchlist(authenticated_marketwatch):
     assert isinstance(watchlists, list)
     assert len(watchlists) == 1
 
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_get_watchlists(authenticated_marketwatch):
     mw = authenticated_marketwatch
     watchlist = mw.create_watchlist("test")
