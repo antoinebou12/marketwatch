@@ -449,29 +449,33 @@ class MarketWatch:
 
     def get_price(self, ticker: str) -> str:
         """
-        Get the price of a stock
-        Return: AAPL : $137.00
+        Get the price of a stock from MarketWatch.
 
-        :param ticker: Ticker of the stock
-
-        :return: Price of the stock
+        :param ticker: Ticker symbol of the stock.
+        :return: String in the format "TICKER : $PRICE" e.g., "AAPL : $137.00".
         """
-        # Get the price of a stock
-        response = self.session.get(
-            f"https://www.marketwatch.com/investing/stock/{ticker}"
-        )
-        if response.status_code != 200:
-            raise MarketWatchException("Failed to get price")
-        soup = BeautifulSoup(response.text, "html.parser")
-        # //*[@id="maincontent"]/div[2]/div[3]/div/div[2]/h2/bg-quote
-        regions = (
-            soup.find("div", {"class": "region--intraday"})
-            .find("h2", {"class": "intraday__price"})
-            .find("bg-quote")
-        )
-        if regions is None:
-            raise MarketWatchException("Failed to get price")
-        return f"{ticker.upper()} : ${regions.text}"
+        try:
+            # Send a GET request to the MarketWatch URL for the given ticker
+            url = f"https://www.marketwatch.com/investing/stock/{ticker.lower()}"
+            response = self.session.get(url)
+            response.raise_for_status()  # Will raise HTTPError for 4XX/5XX status
+
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(response.text, "html.parser")
+
+            # Locate the price in the HTML
+            # Adjust the selector as per the actual structure of the webpage
+            price_container = soup.select_one('.intraday__price .value')
+            if price_container:
+                price = price_container.get_text(strip=True)
+                return f"{ticker.upper()} : ${price}"
+            else:
+                raise MarketWatchException(f"Price not found for ticker {ticker}")
+
+        except HTTPError as http_err:
+            raise MarketWatchException(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            raise MarketWatchException(f"Other error occurred: {err}")
 
     @auth
     def get_portfolio(self, game_id: str):
