@@ -47,18 +47,22 @@ jobs:
       - name: Coverage
         run: poetry run pytest --cov=marketwatch --cov-report=xml --cov-report=html
       - name: genbadge coverage
+        if: matrix.os == 'ubuntu-latest'
         run: genbadge coverage -o .github/badge/coverage.svg -i coverage.xml
       - name: Upload Artifact to Github HTML
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: coverageHTML
           path: htmlcov
       - name: Upload Artifact to Github XML
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: coverageXML
           path: coverage.xml
       - name: Upload coverage reports to Codecov
+        if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
