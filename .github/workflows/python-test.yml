@@ -1,5 +1,3 @@
-# write github actions for python test
-
 name: Python Test and Build
 
 on:
@@ -20,8 +18,11 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -34,11 +35,10 @@ jobs:
           pip install poetry genbadge[coverage] defusedxml
           poetry install
       - name: Export Environment Variables
+        shell: bash
         run: |
           echo "MARKETWATCH_USERNAME=${MARKETWATCH_USERNAME}" >> $GITHUB_ENV
           echo "MARKETWATCH_PASSWORD=${MARKETWATCH_PASSWORD}" >> $GITHUB_ENV
-          export MARKETWATCH_USERNAME
-          export MARKETWATCH_PASSWORD
       - name: Test with pytest
         run: |
           poetry run pytest
