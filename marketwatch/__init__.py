@@ -13,6 +13,8 @@ Example:
 	>>> mw.buy(1234, "AAPL", 1)
 	>>> mw.get_leaderboard(1234)
 """
+import platform
+from time import sleep
 import csv
 import json
 from typing import List
@@ -27,9 +29,6 @@ from marketwatch.schemas import OrderType
 from marketwatch.schemas import Position
 from marketwatch.schemas import PriceType
 from marketwatch.schemas import Term
-
-from time import sleep
-
 
 
 class MarketWatch:
@@ -121,6 +120,17 @@ class MarketWatch:
         soup = BeautifulSoup(game_page.text, "html.parser")
 
         return soup.find("canvas", {"id": "j-chartjs-performance"})["data-pub"]
+    
+    def get_user_agent(self):
+        os_name = platform.system()
+        if os_name == 'Windows':
+            return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        elif os_name == 'Darwin':
+            return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+        elif os_name == 'Linux':
+            return "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        else:
+            return "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2)"
 
     def login(self):
         """
@@ -134,7 +144,7 @@ class MarketWatch:
             "client_id": self.client_id,
             "connection": "DJldap",
             "headers": {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+                "User-Agent": self.get_user_agent(),
                 "Accept": "application/json, text/plain, */*",
                 "Accept-Language": "en-US,en;q=0.5",
                 "Accept-Encoding": "gzip, deflate, br",
