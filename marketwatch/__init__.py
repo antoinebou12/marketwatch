@@ -28,6 +28,9 @@ from marketwatch.schemas import Position
 from marketwatch.schemas import PriceType
 from marketwatch.schemas import Term
 
+from time import sleep
+
+
 
 class MarketWatch:
     """
@@ -64,8 +67,16 @@ class MarketWatch:
 
         :return: CSRF Token
         """
-        client = self.session.get("https://sso.accounts.dowjones.com/login-page")
-        return client.cookies["csrf"]
+        try:
+            sleep(2)
+            client = self.session.get("https://sso.accounts.dowjones.com/login-page")
+            return client.cookies["csrf"]
+        except KeyError as e:
+            raise MarketWatchException("Failed to generate csrf token from cookies {e}")
+        except httpx.HTTPError as e:
+            raise MarketWatchException("Failed to generate csrf token from httpx {e}")
+        except Exception as e:
+            raise MarketWatchException(f"Failed to generate csrf token from unknown {e}")
 
     def get_client_id(self) -> str:
         """
@@ -76,16 +87,26 @@ class MarketWatch:
         return "5hssEAdMy0mJTICnJNvC9TXEw3Va7jfO"
 
     def get_user_id(self):
-        user = self.session.post(
-            "https://sso.accounts.dowjones.com/getuser",
-            data={
-                "username": self.email,
-                "csrf": self.generate_csrf_token(),
-            },
-        )
+        try: 
+            user = self.session.post(
+                "https://sso.accounts.dowjones.com/getuser",
+                data={
+                    "username": self.email,
+                    "csrf": self.generate_csrf_token(),
+                },
+            )
 
-        if user.status_code == 200:
-            return user.json()["id"]
+            if user.status_code == 200:
+                return user.json()["id"]
+            else:
+                raise MarketWatchException("Failed to get user id")
+
+        except KeyError as e:
+            raise MarketWatchException("Failed to get user id from cookies {e}")
+        except httpx.HTTPError as e:
+            raise MarketWatchException("Failed to get user id from httpx {e}")
+        except Exception as e:
+            raise MarketWatchException(f"Failed to get user id from unknown {e}")
 
     def get_ledger_id(self, game_id) -> str:
         """
@@ -113,7 +134,7 @@ class MarketWatch:
             "client_id": self.client_id,
             "connection": "DJldap",
             "headers": {
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
                 "Accept": "application/json, text/plain, */*",
                 "Accept-Language": "en-US,en;q=0.5",
                 "Accept-Encoding": "gzip, deflate, br",
@@ -139,10 +160,14 @@ class MarketWatch:
             "_csrf": self.generate_csrf_token(),
             "_intstate": "deprecated",
         }
-
-        login = self.session.post(
-            "https://sso.accounts.dowjones.com/authenticate", data=login_data
-        )
+        try:
+            login = self.session.post(
+                "https://sso.accounts.dowjones.com/authenticate", data=login_data
+            )
+        except httpx.HTTPError as e:
+            raise MarketWatchException("Failed to login to MarketWatch {e}")
+        except Exception as e:
+            raise MarketWatchException(f"Failed to login to MarketWatch {e}")
 
         if login.status_code == 401:
             print(login.url)
@@ -161,16 +186,27 @@ class MarketWatch:
             "params": params,
         }
 
-        response = self.session.post(
-            "https://sso.accounts.dowjones.com/postauth/handler",
-            data=data,
-            follow_redirects=True,
-        )
-        response = self.session.post(
-            "https://sso.accounts.dowjones.com/postauth/handler",
-            data=data,
-            follow_redirects=True,
-        )
+        try:
+            response = self.session.post(
+                "https://sso.accounts.dowjones.com/postauth/handler",
+                data=data,
+                follow_redirects=True,
+            )
+        except httpx.HTTPError as e:
+            raise MarketWatchException("Failed to login to MarketWatch {e}")
+        except Exception as e:
+            raise MarketWatchException(f"Failed to login to MarketWatch {e}")
+        
+        try:
+            response = self.session.post(
+                "https://sso.accounts.dowjones.com/postauth/handler",
+                data=data,
+                follow_redirects=True,
+            )
+        except httpx.HTTPError as e:
+            raise MarketWatchException("Failed to login to MarketWatch {e}")
+        except Exception as e:
+            raise MarketWatchException(f"Failed to login to MarketWatch {e}")
 
         if response.status_code in [200, 302]:
             print("Login successful")
