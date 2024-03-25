@@ -28,7 +28,7 @@ rich = "^13.3.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
-pytest-cov = "^4.0.0"
+pytest-cov = ">=4,<6"
 sphinx = "^7.0.0"
 pre-commit = "^3.0.0"
 black = "^24.0.0"
