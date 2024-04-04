@@ -49,7 +49,15 @@ class MarketWatch:
         :return: None
 
         """
-        self.session = httpx.Client()
+        inconspicuousUser = { # very temporary fix - makes the HTTPx client spoof Chrome
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.109 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Referer": "https://www.google.com/"
+        }
+
+        self.session = httpx.Client(headers=inconspicuousUser)
 
         self.email = email
         self.password = password
