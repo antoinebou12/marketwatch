@@ -39,7 +39,7 @@ class MarketWatch:
     :param password: Password
     """
 
-    def __init__(self, email: str, password: str):
+    def __init__(self, email: str, password: str, proxy: str = None):
         """
         Initialize the MarketWatch API
 
@@ -49,7 +49,20 @@ class MarketWatch:
         :return: None
 
         """
-        inconspicuousUser = { # very temporary fix - makes the HTTPx client spoof Chrome
+
+        self.email = email
+        self.password = password
+        self.client_id = self.get_client_id()
+        self.proxy = proxy
+        self.session = self.create_session()
+        self.login()
+
+        self.user_id = self.get_user_id()
+        self.ledger_id = None
+        self.games = None
+
+    def create_session(self):
+        inconspicuous_user = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.109 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.5",
@@ -57,16 +70,13 @@ class MarketWatch:
             "Referer": "https://www.google.com/"
         }
 
-        self.session = httpx.Client(headers=inconspicuousUser)
+        proxies = {
+            "http://": self.proxy,
+            "https://": self.proxy,
+        } if self.proxy else None
 
-        self.email = email
-        self.password = password
-        self.client_id = self.get_client_id()
-        self.login()
+        return httpx.Client(follow_redirects=True, headers=inconspicuous_user, proxies=proxies)
 
-        self.user_id = self.get_user_id()
-        self.ledger_id = None
-        self.games = None
 
     def generate_csrf_token(self) -> str:
         """
@@ -75,7 +85,7 @@ class MarketWatch:
         :return: CSRF Token
         """
         try:
-            sleep(2)
+            sleep(3)
             client = self.session.get("https://sso.accounts.dowjones.com/login-page")
             return client.cookies["csrf"]
         except KeyError as e:
@@ -94,7 +104,7 @@ class MarketWatch:
         return "5hssEAdMy0mJTICnJNvC9TXEw3Va7jfO"
 
     def get_user_id(self):
-        try: 
+        try:
             user = self.session.post(
                 "https://sso.accounts.dowjones.com/getuser",
                 data={
@@ -128,7 +138,7 @@ class MarketWatch:
         soup = BeautifulSoup(game_page.text, "html.parser")
 
         return soup.find("canvas", {"id": "j-chartjs-performance"})["data-pub"]
-    
+
     def get_user_agent(self):
         os_name = platform.system()
         if os_name == 'Windows':
@@ -214,7 +224,7 @@ class MarketWatch:
             raise MarketWatchException("Failed to login to MarketWatch {e}")
         except Exception as e:
             raise MarketWatchException(f"Failed to login to MarketWatch {e}")
-        
+
         try:
             response = self.session.post(
                 "https://sso.accounts.dowjones.com/postauth/handler",
@@ -241,6 +251,8 @@ class MarketWatch:
             for cookie in response.cookies.items():
                 self.session.cookies.set(cookie[0], cookie[1])
 
+        print("Not logged in")
+
     def check_login(self):
         """
         Check if the user is logged in
@@ -249,9 +261,11 @@ class MarketWatch:
         """
         # Check if the user is logged in
         response = self.session.get("https://www.marketwatch.com")
+        print(response.status_code)
         if response.status_code != 200:
             return False
         soup = BeautifulSoup(response.text, "html.parser")
+        print(soup)
         return bool(
             username := soup.find(
                 "li", {"class": "profile__item profile--name divider"}
@@ -377,13 +391,13 @@ class MarketWatch:
     def reset_game(self, game_id: str):
         """
         Reset the game.
-        
+
         :param game_id: Game ID
         :return: None
         """
         url = f"https://vse-api.marketwatch.com/v1/reset/{game_id}"
         response = self.session.post(url)
-            
+
         if response.status_code != 200:
             raise MarketWatchException("Failed to reset game")
 

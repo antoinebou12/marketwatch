@@ -26,9 +26,6 @@ def test_get_price_stock(authenticated_marketwatch):
     assert "." in price
     assert "MELI" in price
     assert price != ""
-
-def test_get_price_fund(authenticated_marketwatch):
-    mw = authenticated_marketwatch
     price = mw.get_price("AIQ")
     assert price is not None
     assert isinstance(price, str)
