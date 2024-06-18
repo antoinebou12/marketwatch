@@ -511,7 +511,7 @@ class MarketWatch:
         try:
             # Send a GET request to the MarketWatch URL for the given ticker
             url = f"https://www.marketwatch.com/investing/stock/{ticker.lower()}"
-            response = self.session.get(url)
+            response = self.session.get(url, follow_redirects=True)
             response.raise_for_status()  # Will raise HTTPError for 4XX/5XX status
 
             # Parse the HTML content using BeautifulSoup
