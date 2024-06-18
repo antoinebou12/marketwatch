@@ -526,7 +526,7 @@ class MarketWatch:
             else:
                 raise MarketWatchException(f"Price not found for ticker {ticker}")
 
-        except HTTPError as http_err:
+        except httpx.HTTPError as http_err:
             raise MarketWatchException(f"HTTP error occurred: {http_err}")
         except Exception as err:
             raise MarketWatchException(f"Other error occurred: {err}")
