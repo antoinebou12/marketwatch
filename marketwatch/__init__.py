@@ -263,7 +263,6 @@ class MarketWatch:
 
         if not self.check_login():
             print("Failed to login to MarketWatch")
-            raise MarketWatchException("Failed to login to MarketWatch")
 
         print("Logged in")
 
@@ -289,20 +288,17 @@ class MarketWatch:
 
         :return: True if logged in else False
         """
-        try:
-            response = self.session.get("https://www.marketwatch.com")
-            self.cookies.update(response.cookies)
+        response = self.session.get("https://www.marketwatch.com")
+        self.cookies.update(response.cookies)
 
-            if response.status_code != 200:
-                return False
-            soup = BeautifulSoup(response.text, "html.parser")
-            user = soup.find("li", {"class": "profile__item profile--name divider"}).text.strip()
-            print(user)
-            return (
-                user is not None and user != "Account Settings"
-            )
-        except Exception as e:
-            raise MarketWatchException(f"Failed to check login: {e}") from e
+        if response.status_code != 200:
+            return False
+        soup = BeautifulSoup(response.text, "html.parser")
+        user = soup.find("li", {"class": "profile__item profile--name divider"}).text.strip()
+        print(user)
+        return (
+            user is not None and user != "Account Settings"
+        )
 
     def auth(func):
         def wrapper(self, *args, **kwargs):
