@@ -545,6 +545,108 @@ class MarketWatch:
         except Exception as err:
             raise MarketWatchException(f"Other error occurred: {err}")
 
+    def get_ticker_info(self, ticker: str) -> dict:
+        """
+        Get detailed information about a stock from MarketWatch.
+
+        :param ticker: Ticker symbol of the stock.
+        :return: Dictionary with detailed information e.g., 
+        {
+            "ticker": "AAPL", 
+            "price": "137.00", 
+            "change": "+2.00", 
+            "percent_change": "+1.48%", 
+            ...
+        }.
+        """
+        try:
+            # Send a GET request to the MarketWatch URL for the given ticker with follow_redirects=True
+            url = f"https://www.marketwatch.com/investing/stock/{ticker.lower()}"
+            response = self.session.get(url, follow_redirects=True)
+            response.raise_for_status()  # Will raise HTTPError for 4XX/5XX status
+
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(response.text, "html.parser")
+
+            # Check if "After Hours" section is present
+            after_hours_section = soup.select_one('.intraday__status.status--after')
+            after_hours_info = None
+            if after_hours_section:
+                # Locate the after hours price and change
+                after_hours_price_container = soup.select_one('.intraday__price .value')
+                after_hours_change_container = soup.select_one('.intraday__change .change--point--q')
+                after_hours_percent_change_container = soup.select_one('.intraday__change .change--percent--q')
+
+                if after_hours_price_container and after_hours_change_container and after_hours_percent_change_container:
+                    after_hours_price = after_hours_price_container.get_text(strip=True)
+                    after_hours_change = after_hours_change_container.get_text(strip=True)
+                    after_hours_percent_change = after_hours_percent_change_container.get_text(strip=True)
+
+                    after_hours_info = {
+                        "price": after_hours_price,
+                        "change": after_hours_change,
+                        "percent_change": after_hours_percent_change
+                    }
+
+            # Locate the closing price information
+            closing_price_container = soup.select_one('table.table--primary td.u-semi')
+            closing_change_container = soup.select_one('table.table--primary td.positive, table.table--primary td.negative')
+            closing_percent_change_container = soup.select('table.table--primary td.positive, table.table--primary td.negative')[1]
+
+            if not (closing_price_container and closing_change_container and closing_percent_change_container):
+                raise MarketWatchException(f"Closing price information not found for ticker {ticker}")
+
+            price = closing_price_container.get_text(strip=True)
+            change = closing_change_container.get_text(strip=True)
+            percent_change = closing_percent_change_container.get_text(strip=True)
+
+            # Locate the key data in the HTML
+            key_data = {}
+            key_data_items = soup.select('.element--list .kv__item')
+            for item in key_data_items:
+                label = item.select_one('.label').get_text(strip=True)
+                value = item.select_one('.primary').get_text(strip=True)
+
+                if 'Day Range' in label or '52 Week Range' in label:
+                    low, high = value.split(' - ')
+                    key_data[label] = {
+                        "Low": low.strip(),
+                        "High": high.strip()
+                    }
+                else:
+                    key_data[label] = value
+
+            # Locate the performance data in the HTML
+            performance_data = {}
+            performance_section = soup.select_one('.element.element--table.performance')
+            if performance_section:
+                performance_rows = performance_section.select('tbody .table__row')
+                for row in performance_rows:
+                    period = row.select_one('.table__cell').get_text(strip=True)
+                    value = row.select_one('.value').get_text(strip=True)
+                    performance_data[period] = value
+
+            result = {
+                "ticker": ticker.upper(),
+                "price": price,
+                "change": change,
+                "percent_change": percent_change,
+                **key_data  # Merge key data into the result dictionary
+            }
+
+            if after_hours_info:
+                result['after_hours'] = after_hours_info
+
+            if performance_data:
+                result['performance'] = performance_data
+
+            return result
+
+        except httpx.HTTPError as http_err:
+            raise MarketWatchException(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            raise MarketWatchException(f"Other error occurred: {err}")
+        
     @auth
     def get_portfolio(self, game_id: str):
         """
