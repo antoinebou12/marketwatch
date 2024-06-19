@@ -279,7 +279,7 @@ class MarketWatch:
             print("Failed to get token and params")
             raise MarketWatchException("Failed to get token and params")
 
-        handler = self.session.post(f"{SSO_URL}/postauth/handler", data=login_data.update({"token": token, "params": params}), follow_redirects=True, allow_redirects=True)
+        handler = self.session.post(f"{SSO_URL}/postauth/handler", data=login_data.update({"token": token, "params": params}), follow_redirects=True)
         self.cookies.update(handler.cookies)
         return handler
 
