@@ -225,8 +225,8 @@ class MarketWatch:
                 "x-_dj-_client__id": self.client_id,
                 "x-_oidc-_provider": "localop",
             },
-            "nonce": "e2b9f0db-6d33-4bc6-8ae6-8ba4481d4589",
-            "state": "Cj7dNnFK7REhOmVo.PSqb-_MZxuAsd4jtK1W-Y2cedjMZ7WIech20DNAepn0",
+            "nonce": self.generate_nonce(),
+            "state": self.generate_state(),
             "ns": "prod/accounts-mw",
             "password": self.password,
             "protocol": "oauth2",
@@ -249,7 +249,7 @@ class MarketWatch:
             raise MarketWatchException(f"Failed to login to MarketWatch: {e}")
 
         if response.status_code == 200:
-            handler_resp = self.handler_login(response)
+            handler_resp = self.handler_login(response, login_data)
         else:
             print("Failed to login to MarketWatch")
             raise MarketWatchException("Failed to login to MarketWatch")
@@ -267,7 +267,7 @@ class MarketWatch:
 
         print("Logged in")
 
-    def handler_login(self, response):
+    def handler_login(self, response, login_data):
         """
         Handler login
         """
@@ -279,10 +279,7 @@ class MarketWatch:
             print("Failed to get token and params")
             raise MarketWatchException("Failed to get token and params")
 
-        handler = self.session.post(f"{SSO_URL}/postauth/handler", data={
-            "token": token,
-            'params':  params
-        }, follow_redirects=True)
+        handler = self.session.post(f"{SSO_URL}/postauth/handler", data=login_data.update({"token": token, "params": params}), follow_redirects=True, allow_redirects=True)
         self.cookies.update(handler.cookies)
         return handler
 
