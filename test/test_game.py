@@ -5,8 +5,8 @@ import pytest
 from marketwatch.exceptions import MarketWatchException
 from marketwatch.game import MarketWatchGame
 
-GAME_OWNER = "marketwatchapiunittest"
-GAME = "algoets-h2023"
+GAME_OWNER = "marketwatchapiunittest2"
+GAME = "marketwatchapiunittest2"
 
 
 def is_stock_market_open():
@@ -16,9 +16,7 @@ def is_stock_market_open():
         return False
     if now.hour < 9 or now.hour > 16:
         return False
-    if now.hour == 9 and now.minute < 30:
-        return False
-    return True
+    return now.hour != 9 or now.minute >= 30
 
 
 @pytest.fixture
