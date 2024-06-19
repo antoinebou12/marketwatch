@@ -72,3 +72,50 @@ def test_get_ticker_info(authenticated_marketwatch):
         assert "3 Month" in performance
         assert "YTD" in performance
         assert "1 Year" in performance
+        
+def test_get_holdings_with_fund_ticker(authenticated_marketwatch):
+    mw = authenticated_marketwatch
+    ticker = "aiq"
+    result = mw.get_holdings(ticker)
+    
+    # Verificar que el resultado es un diccionario
+    assert result is not None
+    assert isinstance(result, dict)
+    
+    # Verificar campos generales
+    assert "ticker" in result
+    assert result["ticker"] == "AIQ"
+    assert "sector_allocation" in result
+    assert isinstance(result["sector_allocation"], dict)
+    assert "top_holdings" in result
+    assert isinstance(result["top_holdings"], list)
+    
+    # Verificar contenido de sector_allocation
+    sector_allocation = result["sector_allocation"]
+    assert "Technology" in sector_allocation
+    assert "Consumer Services" in sector_allocation
+    assert "Industrials" in sector_allocation
+    
+    # Verificar contenido de top_holdings
+    top_holdings = result["top_holdings"]
+    assert len(top_holdings) > 0
+    assert all(isinstance(item, dict) for item in top_holdings)
+    assert all("company" in item for item in top_holdings)
+    assert all("symbol" in item for item in top_holdings)
+    assert all("net_assets" in item for item in top_holdings)
+
+def test_get_holdings_with_stock_ticker(authenticated_marketwatch):
+    mw = authenticated_marketwatch
+    ticker = "meli"
+    
+    with pytest.raises(MarketWatchException) as exc_info:
+        mw.get_holdings(ticker)
+    
+    assert str(exc_info.value) == "Other error occurred: The ticker MELI is not a fund, it is a stock or index."
+    
+    ticker_index = "spx"
+    
+    with pytest.raises(MarketWatchException) as exc_info:
+        mw.get_holdings(ticker_index)
+        
+    assert str(exc_info.value) == "Other error occurred: The ticker SPX is not a fund, it is a stock or index."

@@ -647,6 +647,68 @@ class MarketWatch:
         except Exception as err:
             raise MarketWatchException(f"Other error occurred: {err}")
         
+    def get_holdings(self, ticker: str) -> dict:
+        """
+        Get holdings information for a given fund ticker from MarketWatch.
+
+        :param ticker: Ticker symbol of the fund.
+        :return: Dictionary with holdings information.
+        """
+        try:
+            # Send a GET request to the MarketWatch holdings URL for the given ticker with follow_redirects=True
+            url = f"https://www.marketwatch.com/investing/fund/{ticker.lower()}/holdings"
+            response = self.session.get(url, follow_redirects=True)
+            response.raise_for_status()  # Will raise HTTPError for 4XX/5XX status
+
+            # Check if the URL has been redirected to a stock or index URL
+            if "investing/stock" in str(response.url) or "investing/index" in str(response.url):
+                raise MarketWatchException(f"The ticker {ticker.upper()} is not a fund, it is a stock or index.")
+
+
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(response.text, "html.parser")
+
+            # Extract sector allocation
+            sector_allocation = {}
+            sector_table = soup.select_one('table.value-pairs.no-heading')
+            if sector_table:
+                for row in sector_table.select('tr.table__row'):
+                    cells = row.select('td.table__cell')
+                    if len(cells) == 2:
+                        sector = cells[0].get_text(strip=True)
+                        allocation = cells[1].get_text(strip=True)
+                        sector_allocation[sector] = allocation
+
+            # Extract top 25 holdings
+            top_holdings = []
+            holdings_table = soup.select_one('.element--table.holdings table.table--primary')
+            if holdings_table:
+                for row in holdings_table.select('tbody tr.table__row'):
+                    cells = row.select('td.table__cell')
+                    if len(cells) == 3:
+                        company = cells[0].get_text(strip=True)
+                        symbol = cells[1].get_text(strip=True)
+                        net_assets = cells[2].get_text(strip=True)
+                        top_holdings.append({
+                            "company": company,
+                            "symbol": symbol,
+                            "net_assets": net_assets
+                        })
+
+            # Compile the result
+            result = {
+                "ticker": ticker.upper(),
+                "sector_allocation": sector_allocation,
+                "top_holdings": top_holdings
+            }
+
+            return result
+
+        except httpx.HTTPError as http_err:
+            raise MarketWatchException(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            raise MarketWatchException(f"Other error occurred: {err}")
+        
     @auth
     def get_portfolio(self, game_id: str):
         """
