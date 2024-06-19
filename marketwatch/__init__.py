@@ -5,13 +5,13 @@ This is a Python API for the MarketWatch game. It allows you to get your
 portfolio, place orders, and get the leaderboard.
 
 Example:
-	>>> from marketwatch import MarketWatch
+    >>> from marketwatch import MarketWatch
     >>> import os
-	>>> mw = MarketWatch(os.environ["MARKETWATCH_USERNAME"], os.environ["MARKETWATCH_PASSWORD"])
-	>>> mw.get_games()
-	>>> mw.get_portfolio(1234)
-	>>> mw.buy(1234, "AAPL", 1)
-	>>> mw.get_leaderboard(1234)
+    >>> mw = MarketWatch(os.environ["MARKETWATCH_USERNAME"], os.environ["MARKETWATCH_PASSWORD"])
+    >>> mw.get_games()
+    >>> mw.get_portfolio(1234)
+    >>> mw.buy(1234, "AAPL", 1)
+    >>> mw.get_leaderboard(1234)
 """
 import platform
 from time import sleep
@@ -19,24 +19,27 @@ import csv
 import json
 from typing import List
 
+import uuid
+
 import httpx
 from bs4 import BeautifulSoup
 from rich.progress import track
 
 from marketwatch.exceptions import MarketWatchException
-from marketwatch.schemas import Order
-from marketwatch.schemas import OrderType
-from marketwatch.schemas import Position
-from marketwatch.schemas import PriceType
-from marketwatch.schemas import Term
+from marketwatch.schemas import Order, OrderType, Position, PriceType, Term
 
+
+BASE_URL = "https://www.marketwatch.com"
+SSO_URL = "https://sso.accounts.dowjones.com"
 
 class MarketWatch:
     """
     MarketWatch API
 
-    :param email: Email
-    :param password: Password
+        :param email: Email
+        :param password: Password
+        :param proxy: Proxy URL (optional)
+        :return: None
     """
 
     def __init__(self, email: str, password: str, proxy: str = None):
@@ -45,15 +48,17 @@ class MarketWatch:
 
         :param email: Email
         :param password: Password
-
+        :param proxy: Proxy URL (optional)
         :return: None
 
+        :return: None
         """
 
         self.email = email
         self.password = password
         self.client_id = self.get_client_id()
-        self.proxy = proxy
+        self.proxy = proxy if proxy.startswith('http://') or proxy.startswith('https://') else f"http://{proxy}"
+        self.cookies = httpx.Cookies()
         self.session = self.create_session()
         self.login()
 
@@ -71,12 +76,22 @@ class MarketWatch:
         }
 
         proxies = {
-            "http://": self.proxy,
-            "https://": self.proxy,
+            "http://": httpx.HTTPTransport(proxy=self.proxy),
+            "https://": httpx.HTTPTransport(proxy=self.proxy),
         } if self.proxy else None
 
-        return httpx.Client(follow_redirects=True, headers=inconspicuous_user, proxies=proxies)
+        client = httpx.Client(headers=inconspicuous_user, cookies=self.cookies, follow_redirects=False, mounts=proxies)
 
+        # test proxy
+        try:
+            response = client.get("https://httpbin.org/ip")
+            response.raise_for_status()
+            print(f"Proxy {self.proxy} is working. Status code: {response.status_code}")
+            print("Response content:", response.json())
+        except httpx.HTTPError as e:
+            raise MarketWatchException(f"Failed to test proxy: {e}") from e
+
+        return client
 
     def generate_csrf_token(self) -> str:
         """
@@ -86,14 +101,17 @@ class MarketWatch:
         """
         try:
             sleep(3)
-            client = self.session.get("https://sso.accounts.dowjones.com/login-page")
+            client = self.session.get(f"{SSO_URL}/login-page")
+            self.cookies.update(client.cookies)
             return client.cookies["csrf"]
         except KeyError as e:
-            raise MarketWatchException("Failed to generate csrf token from cookies {e}")
+            raise MarketWatchException(
+                f"Failed to generate csrf token from cookies: {e}"
+            ) from e
         except httpx.HTTPError as e:
-            raise MarketWatchException("Failed to generate csrf token from httpx {e}")
+            raise MarketWatchException(f"Failed to generate csrf token from httpx: {e}")
         except Exception as e:
-            raise MarketWatchException(f"Failed to generate csrf token from unknown {e}")
+            raise MarketWatchException(f"Failed to generate csrf token from unknown: {e}")
 
     def get_client_id(self) -> str:
         """
@@ -114,16 +132,17 @@ class MarketWatch:
             )
 
             if user.status_code == 200:
+                self.cookies.update(user.cookies)
                 return user.json()["id"]
             else:
                 raise MarketWatchException("Failed to get user id")
 
         except KeyError as e:
-            raise MarketWatchException("Failed to get user id from cookies {e}")
+            raise MarketWatchException(f"Failed to get user id from cookies: {e}")
         except httpx.HTTPError as e:
-            raise MarketWatchException("Failed to get user id from httpx {e}")
+            raise MarketWatchException(f"Failed to get user id from httpx: {e}")
         except Exception as e:
-            raise MarketWatchException(f"Failed to get user id from unknown {e}")
+            raise MarketWatchException(f"Failed to get user id from unknown: {e}")
 
     def get_ledger_id(self, game_id) -> str:
         """
@@ -137,7 +156,9 @@ class MarketWatch:
             raise MarketWatchException("Game not found")
         soup = BeautifulSoup(game_page.text, "html.parser")
 
+        self.cookies.update(game_page.cookies)
         return soup.find("canvas", {"id": "j-chartjs-performance"})["data-pub"]
+
 
     def get_user_agent(self):
         os_name = platform.system()
@@ -156,8 +177,7 @@ class MarketWatch:
 
         :return: None
         """
-
-        # https://sso.accounts.dowjones.com/authorize?response_type=id_token&nonce=foobar&ui_locales=en-us-x-wsj-3-0&scope=email%2Cfirst_name%2Clast_name%2Croles%2Copenid%2Cuuid&client_id=5hssEAdMy0mJTICnJNvC9TXEw3Va7jfO&redirect_uri=${CALLBACK_URI}
+        print("Logging in")
         login_data = {
             "client_id": self.client_id,
             "connection": "DJldap",
@@ -175,83 +195,65 @@ class MarketWatch:
                 "x-_dj-_client__id": self.client_id,
                 "x-_oidc-_provider": "localop",
             },
-            "nonce": "0590aaf2-c662-4fc4-9edc-81727f80798c",
+            "nonce": str(uuid.uuid4()),
             "ns": "prod/accounts-mw",
+            "state":str(uuid.uuid4()),
             "password": self.password,
             "protocol": "oauth2",
-            "redirect_uri": "https://accounts.marketwatch.com/login-page/callback",
+            "redirect_uri": "https://www.marketwatch.com/client/auth",
             "response_type": "code",
-            "scope": "openid idp_id roles email given_name family_name djid djUsername djStatus trackid tags prts suuid updated_at",
+            "scope": "openid idp_id roles tags email given_name family_name uuid djid djUsername djStatus trackid prts updated_at created_at offline_access",
             "tenant": "sso",
             "username": self.email,
-            "ui_locales": "en-us-x-mw-11-8",
+            "ui_locales": "en-us-x-mw-223-2",
             "_csrf": self.generate_csrf_token(),
             "_intstate": "deprecated",
         }
-        try:
-            login = self.session.post(
-                "https://sso.accounts.dowjones.com/authenticate", data=login_data
-            )
-        except httpx.HTTPError as e:
-            raise MarketWatchException("Failed to login to MarketWatch {e}")
-        except Exception as e:
-            raise MarketWatchException(f"Failed to login to MarketWatch {e}")
-
-        if login.status_code == 401:
-            print(login.url)
-            print(login.content)
-            raise MarketWatchException("Login failed check your credentials")
-
-        # Get the token value from the response
-        response_data = BeautifulSoup(login.text, "html.parser")
-
-        # Get the token value from the response
-        token = response_data.find("input", {"name": "token"})["value"]
-        params = response_data.find("input", {"name": "params"})["value"]
-
-        data = {
-            "token": token,
-            "params": params,
-        }
 
         try:
-            response = self.session.post(
-                "https://sso.accounts.dowjones.com/postauth/handler",
-                data=data,
-                follow_redirects=True,
-            )
+            response = self.session.post(f"{SSO_URL}/authenticate", data=login_data)
+            response.raise_for_status()
+            self.cookies.update(response.cookies)
         except httpx.HTTPError as e:
-            raise MarketWatchException("Failed to login to MarketWatch {e}")
-        except Exception as e:
-            raise MarketWatchException(f"Failed to login to MarketWatch {e}")
+            print(f"Failed to login to MarketWatch: {e}")
+            raise MarketWatchException(f"Failed to login to MarketWatch: {e}")
 
-        try:
-            response = self.session.post(
-                "https://sso.accounts.dowjones.com/postauth/handler",
-                data=data,
-                follow_redirects=True,
-            )
-        except httpx.HTTPError as e:
-            raise MarketWatchException("Failed to login to MarketWatch {e}")
-        except Exception as e:
-            raise MarketWatchException(f"Failed to login to MarketWatch {e}")
-
-        if response.status_code in [200, 302]:
-            print("Login successful")
-
-        # check if the login was successful
         if response.status_code == 200:
-            soup = BeautifulSoup(response.text, "html.parser")
-            username = soup.find(
-                "li", {"class": "profile__item profile--name divider"}
-            ).text.strip()
-            print(f"Logged in as {username}")
+            handler_resp = self.handler_login(response)
+            handler_resp.raise_for_status()
+        else:
+            print("Failed to login to MarketWatch")
+            raise MarketWatchException("Failed to login to MarketWatch")
 
-            # set all the response cookies to the session
-            for cookie in response.cookies.items():
-                self.session.cookies.set(cookie[0], cookie[1])
+        # marketwatch.com
+        response = self.session.get(BASE_URL)
+        response.raise_for_status()
+        self.cookies.update(response.cookies)
 
-        print("Not logged in")
+        if not self.check_login():
+            print("Failed to login to MarketWatch")
+            raise MarketWatchException("Failed to login to MarketWatch")
+
+    def handler_login(self, response):
+        """
+        Handler login
+        """
+        soup = BeautifulSoup(response.text, "html.parser")
+        form = soup.find("form")
+        token = form.find("input", {"name": "token"})["value"]
+        params = form.find("input", {"name": "params"})["value"]
+        print(token, params)
+        if not token or not params:
+            print("Failed to get token and params")
+            raise MarketWatchException("Failed to get token and params")
+
+        handler = self.session.post(f"{SSO_URL}/postauth/handler", data={
+            "token": token,
+            'params':  params
+        }, follow_redirects=True)
+        print(handler.text)
+        self.cookies.update(handler.cookies)
+        return handler
 
     def check_login(self):
         """
@@ -259,20 +261,18 @@ class MarketWatch:
 
         :return: True if logged in else False
         """
-        # Check if the user is logged in
         response = self.session.get("https://www.marketwatch.com")
-        print(response.status_code)
+        self.cookies.update(response.cookies)
+
         if response.status_code != 200:
             return False
         soup = BeautifulSoup(response.text, "html.parser")
-        print(soup)
-        return bool(
-            username := soup.find(
-                "li", {"class": "profile__item profile--name divider"}
-            ).text.strip()
+        user = soup.find("li", {"class": "profile__item profile--name divider"}).text.strip()
+        print(user)
+        return (
+            user is not None and user != "Account Settings"
         )
 
-    # auth decorator in class
     def auth(func):
         def wrapper(self, *args, **kwargs):
             if not self.check_login():
@@ -683,7 +683,6 @@ class MarketWatch:
 
         table_element = soup.find("mw-table-dropdown")
         if table_element is None:
-            
             return {}
 
         table = table_element.find("tbody").find_all("tr")
