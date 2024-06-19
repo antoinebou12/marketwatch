@@ -1,5 +1,5 @@
 # Use a specific version for the base image
-FROM python:3.13.0a3-slim AS build-env
+FROM python:3.13.0b2-slim AS build-env
 
 # Set working directory
 WORKDIR /api
@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY api/ ./api/
 
 # Actual runtime image
-FROM python:3.13.0a3-slim
+FROM python:3.13.0b2-slim
 
 # Set working directory
 WORKDIR /api
