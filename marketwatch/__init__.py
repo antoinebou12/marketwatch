@@ -20,6 +20,8 @@ import json
 from typing import List
 
 import uuid
+import random
+import string
 
 import httpx
 from bs4 import BeautifulSoup
@@ -42,7 +44,7 @@ class MarketWatch:
         :return: None
     """
 
-    def __init__(self, email: str, password: str, proxy: str = None):
+    def __init__(self, email: str, password: str, proxy: str = ""):
         """
         Initialize the MarketWatch API
 
@@ -57,7 +59,7 @@ class MarketWatch:
         self.email = email
         self.password = password
         self.client_id = self.get_client_id()
-        self.proxy = proxy if proxy.startswith('http://') or proxy.startswith('https://') else f"http://{proxy}"
+        self.proxy = proxy
         self.cookies = httpx.Cookies()
         self.session = self.create_session()
         self.login()
@@ -75,21 +77,22 @@ class MarketWatch:
             "Referer": "https://www.google.com/"
         }
 
-        proxies = {
-            "http://": httpx.HTTPTransport(proxy=self.proxy),
-            "https://": httpx.HTTPTransport(proxy=self.proxy),
-        } if self.proxy else None
-
-        client = httpx.Client(headers=inconspicuous_user, cookies=self.cookies, follow_redirects=False, mounts=proxies)
-
-        # test proxy
-        try:
-            response = client.get("https://httpbin.org/ip")
-            response.raise_for_status()
-            print(f"Proxy {self.proxy} is working. Status code: {response.status_code}")
-            print("Response content:", response.json())
-        except httpx.HTTPError as e:
-            raise MarketWatchException(f"Failed to test proxy: {e}") from e
+        if self.proxy == "":
+            client = httpx.Client(headers=inconspicuous_user, cookies=self.cookies, follow_redirects=False)
+        else:
+            proxies = {
+                "http://": httpx.HTTPTransport(proxy=self.proxy),
+                "https://": httpx.HTTPTransport(proxy=self.proxy),
+            } if self.proxy != "" else {}
+            client = httpx.Client(headers=inconspicuous_user, cookies=self.cookies, follow_redirects=False, mounts=proxies)
+            # test proxy
+            try:
+                response = client.get("https://httpbin.org/ip")
+                response.raise_for_status()
+                print(f"Proxy {self.proxy} is working. Status code: {response.status_code}")
+                print("Response content:", response.json())
+            except httpx.HTTPError as e:
+                raise MarketWatchException(f"Failed to test proxy: {e}") from e
 
         return client
 
@@ -171,6 +174,33 @@ class MarketWatch:
         else:
             return "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2)"
 
+
+    def generate_nonce(self) -> str:
+        """
+        Generate a unique nonce
+
+        :return: Nonce
+        """
+        return str(uuid.uuid4())
+
+    def generate_state(self) -> str:
+        """
+        Generate a unique state
+
+        :return: State
+        """
+        random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+        return str(uuid.uuid4()) + random_string
+
+    def generate_multiple_nonces(self, count: int) -> list:
+        """
+        Generate multiple unique nonces
+
+        :param count: Number of nonces to generate
+        :return: List of nonces
+        """
+        return [self.generate_nonce() for _ in range(count)]
+
     def login(self):
         """
         Login to the MarketWatch API
@@ -195,9 +225,9 @@ class MarketWatch:
                 "x-_dj-_client__id": self.client_id,
                 "x-_oidc-_provider": "localop",
             },
-            "nonce": str(uuid.uuid4()),
+            "nonce": "e2b9f0db-6d33-4bc6-8ae6-8ba4481d4589",
+            "state": "Cj7dNnFK7REhOmVo.PSqb-_MZxuAsd4jtK1W-Y2cedjMZ7WIech20DNAepn0",
             "ns": "prod/accounts-mw",
-            "state":str(uuid.uuid4()),
             "password": self.password,
             "protocol": "oauth2",
             "redirect_uri": "https://www.marketwatch.com/client/auth",
@@ -220,19 +250,22 @@ class MarketWatch:
 
         if response.status_code == 200:
             handler_resp = self.handler_login(response)
-            handler_resp.raise_for_status()
         else:
             print("Failed to login to MarketWatch")
             raise MarketWatchException("Failed to login to MarketWatch")
 
         # marketwatch.com
         response = self.session.get(BASE_URL)
-        response.raise_for_status()
+        if response.status_code != 200:
+            print("Failed to login to MarketWatch")
+            raise MarketWatchException("Failed to login to MarketWatch")
         self.cookies.update(response.cookies)
 
         if not self.check_login():
             print("Failed to login to MarketWatch")
             raise MarketWatchException("Failed to login to MarketWatch")
+
+        print("Logged in")
 
     def handler_login(self, response):
         """
@@ -242,7 +275,6 @@ class MarketWatch:
         form = soup.find("form")
         token = form.find("input", {"name": "token"})["value"]
         params = form.find("input", {"name": "params"})["value"]
-        print(token, params)
         if not token or not params:
             print("Failed to get token and params")
             raise MarketWatchException("Failed to get token and params")
@@ -251,7 +283,6 @@ class MarketWatch:
             "token": token,
             'params':  params
         }, follow_redirects=True)
-        print(handler.text)
         self.cookies.update(handler.cookies)
         return handler
 
@@ -261,17 +292,20 @@ class MarketWatch:
 
         :return: True if logged in else False
         """
-        response = self.session.get("https://www.marketwatch.com")
-        self.cookies.update(response.cookies)
+        try:
+            response = self.session.get("https://www.marketwatch.com")
+            self.cookies.update(response.cookies)
 
-        if response.status_code != 200:
-            return False
-        soup = BeautifulSoup(response.text, "html.parser")
-        user = soup.find("li", {"class": "profile__item profile--name divider"}).text.strip()
-        print(user)
-        return (
-            user is not None and user != "Account Settings"
-        )
+            if response.status_code != 200:
+                return False
+            soup = BeautifulSoup(response.text, "html.parser")
+            user = soup.find("li", {"class": "profile__item profile--name divider"}).text.strip()
+            print(user)
+            return (
+                user is not None and user != "Account Settings"
+            )
+        except Exception as e:
+            raise MarketWatchException(f"Failed to check login: {e}") from e
 
     def auth(func):
         def wrapper(self, *args, **kwargs):
