@@ -1,6 +1,6 @@
 # Marketwatch API Python Library
 
-# Broken in developpement
+# Broken login by captcha
 
 ![PyPI](https://img.shields.io/pypi/v/marketwatch)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/marketwatch)
