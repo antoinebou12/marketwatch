@@ -56,7 +56,7 @@ from marketwatch import MarketWatch
 ### Login
 Then, create an instance of the MarketWatch class using your MarketWatch username and password:
 ```python
-marketwatch = MarketWatch(username, password)
+marketwatch = MarketWatch(email='emai', password='password', proxy="", skip_login=True)
 ```
 
 ### Get Stock Price
