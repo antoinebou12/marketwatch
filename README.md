@@ -62,7 +62,7 @@ marketwatch = MarketWatch(email='emai', password='password', proxy="", skip_logi
 ### Get Stock Price
 To get the current price of a stock:
 ```python
-marketwatch.get_price("AAPL")
+marketwatch.get_price("AAPL") # working
 ```
 
 ### Interact with Games
@@ -70,47 +70,47 @@ https://www.marketwatch.com/games
 
 To get information about games on the site:
 ```python
-marketwatch.get_games()
+marketwatch.get_games() # not working
 ```
 
 ### Get Game
 ```python
-marketwatch.get_game("game-name")
+marketwatch.get_game("game-name") # not working captcha
 ```
 
 ### Get Game Settings
 ```python
-marketwatch.get_game_settings("game-name")
+marketwatch.get_game_settings("game-name") # not working captcha
 ```
 
 ### Get Leaderboard
 ```python
-marketwatch.get_leaderboard("game-name")
+marketwatch.get_leaderboard("game-name") # not working captcha
 ```
 
 ### Get Portfolio
 ```python
-marketwatch.get_portfolio("game-name")
+marketwatch.get_portfolio("game-name") # not working captcha
 ```
 
 ### Get Positions
 ```python
-marketwatch.get_positions("game-name")
+marketwatch.get_positions("game-name") # not working captcha
 ```
 
 ### Get Pending Orders 
 ```python
-marketwatch.get_pending_orders("game-name")
+marketwatch.get_pending_orders("game-name") # not working captcha
 ```
 
 ### Buy Stock
 ```python
-marketwatch.buy(game_id, "AAPL", 100)
+marketwatch.buy(game_id, "AAPL", 100) # not working captcha
 ```
 
 ### Sell Stock
 ```python
-marketwatch.sell("game-name", "AAPL", 100)
+marketwatch.sell("game-name", "AAPL", 100) # not working captcha
 ```
 
 ### Create Watchlist
@@ -118,25 +118,25 @@ https://www.marketwatch.com/watchlist
 
 To create a watchlist:
 ```python
-marketwatch.create_watchlist('My Watchlist')
+marketwatch.create_watchlist('My Watchlist')  # not working captcha
 ```
 
 ### Add Stock to Watchlist
 To add stocks to a watchlist:
 ```python
-marketwatch.add_to_watchlist(watchlist_id, ['AAPL', 'GOOG'])
+marketwatch.add_to_watchlist(watchlist_id, ['AAPL', 'GOOG'])  # not working captcha
 ```
 
 ### Get All Watchlists
 To get all watchlists:
 ```python
-watchlists = marketwatch.get_watchlists()
+watchlists = marketwatch.get_watchlists()  # not working captcha
 ```
 
 ### Delete Watchlist
 To delete a watchlist:
 ```python
-marketwatch.delete_watchlist(watchlist_id)
+marketwatch.delete_watchlist(watchlist_id)  # not working captcha
 ```
 
 ### Example
