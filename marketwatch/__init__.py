@@ -41,19 +41,17 @@ class MarketWatch:
         :param email: Email
         :param password: Password
         :param proxy: Proxy URL (optional)
-        :return: None
+        :param skip_login: If True, skip the login process (useful for certain non-authenticated calls).
     """
 
-    def __init__(self, email: str, password: str, proxy: str = ""):
+    def __init__(self, email: str, password: str, proxy: str = "", skip_login: bool = False):
         """
         Initialize the MarketWatch API
 
         :param email: Email
         :param password: Password
         :param proxy: Proxy URL (optional)
-        :return: None
-
-        :return: None
+        :param skip_login: If True, skip the login process (useful for certain non-authenticated calls).
         """
 
         self.email = email
@@ -62,9 +60,11 @@ class MarketWatch:
         self.proxy = proxy
         self.cookies = httpx.Cookies()
         self.session = self.create_session()
-        self.login()
 
-        self.user_id = self.get_user_id()
+        if not skip_login:
+            self.login()
+
+        self.user_id = self.get_user_id() if not skip_login else None
         self.ledger_id = None
         self.games = None
 
