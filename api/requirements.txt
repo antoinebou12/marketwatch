@@ -4,3 +4,4 @@ httpx
 marketwatch
 jinja2
 pydantic
+anyio>=4.4.0 # not directly required, pinned by Snyk to avoid a vulnerability
