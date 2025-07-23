@@ -4,3 +4,4 @@ httpx
 marketwatch
 jinja2
 pydantic
+starlette>=0.47.2 # not directly required, pinned by Snyk to avoid a vulnerability
